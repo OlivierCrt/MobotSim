@@ -535,7 +535,7 @@ return;
 
 
 
-int main() {
+int main() {//si vous utilisez include de mon header supprimer ce main() et l appeler dans le fichier principal
     // Déclaration des variables pour les rayons et milieux
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
