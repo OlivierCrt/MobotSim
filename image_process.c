@@ -512,16 +512,25 @@ printf("\x1B[4mDETECTIONS DES OBJETS :\x1B[0m\n\n");
 if(isObjet(objet_poss_bleu)){printf("Objet de couleur \x1B[34mBleu\x1B[0m détecté!\n");}
 if(isObjet(objet_poss_jaune)){printf("Objet de couleur \x1B[33mJaune\x1B[0m détecté!\n");}
 if(isObjet(objet_poss_Orange)){printf("Objet de couleur \x1B[38;5;208mOrange\x1B[0m détecté!\n");}
+if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
+    printf("\x1B[31m\x1B[1mAucun objet détecté!\x1B[0m\n");
+}
 //Milieux
 printf("\n\x1B[4mCALCULS DES MILIEUX :\x1B[0m\n\n");
 *milieu_bleu = trouver_milieu(objet_poss_bleu, largeur, hauteur);
 *milieu_jaune = trouver_milieu(objet_poss_jaune, largeur, hauteur);
 *milieu_orange = trouver_milieu(objet_poss_Orange, largeur, hauteur);
+if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
+    printf("\x1B[31m\x1B[1mCalcul des milieux impossible il n'y a pas d'objet!\x1B[0m\n");
+}
 printf("\n\x1B[4mRAYON DES OBJETS\x1B[0m\n\n");
 //rayons
 *rayon_bleu = trouver_rayon(objet_poss_bleu, largeur, hauteur);
 *rayon_jaune = trouver_rayon(objet_poss_jaune, largeur, hauteur);
 *rayon_orange = trouver_rayon(objet_poss_Orange, largeur, hauteur);
+if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
+    printf("\x1B[31m\x1B[1mCalcul des rayons impossible il n'y a pas d'objet!\x1B[0m\n");
+}
 printf("-----------------------------------------------\n\n\n\n");
 //Fichier txt avec les matrices des plages de la forme vue en TP, j'utilise le script de M.Ferrané afin de les visualiser par la suite
 if (isObjet(objet_poss_bleu))  { ecrireMatriceDansFichier(objet_poss_bleu,hauteur,largeur,"obj_bleu.dat"); };
@@ -535,7 +544,7 @@ return;
 
 
 
-int main() {//si vous utilisez include de mon header supprimer ce main() et l appeler dans le fichier principal
+int main() {
     // Déclaration des variables pour les rayons et milieux
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
