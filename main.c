@@ -1381,7 +1381,6 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
     char res[1000] = "";
 
    sprintf(res + strlen(res),"initialisation(%d,%d,'%s')",coin_HD[0],coin_HD[1],nomfichier);
-   printf("%s",res);
 
     if (rayon_bleu > 0){
         sprintf(res + strlen(res),";boule(%d,%d,%d,'blue')", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
@@ -1633,7 +1632,7 @@ rajouter la phrase combien il y a t il de balles
 
  affirmative 2f
 
- IMPORTANT POUR OLIVIER: MODIFIES TON .h EN RAJOUTANT NOMFICHIER A MAIN.IT, COMME CA : void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char nomFichier);
+ IMPORTANT POUR OLIVIER: MODIFIES TON .h EN RAJOUTANT char* nomFichier A MAIN.IT, COMME CA : void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier);
  
 
 */
