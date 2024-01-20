@@ -551,7 +551,7 @@ printf("\n\x1B[4mRAYON DES OBJETS\x1B[0m\n\n");
 if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
     printf("\x1B[31m\x1B[1mCalcul des rayons impossible il n'y a pas d'objet!\x1B[0m\n");
 }
-printf("-----------------------------------------------\n\n\n\n");
+printf("-----------------------------------------------\n\n");
 //Fichier txt avec les matrices des plages de la forme vue en TP, j'utilise le script de M.Ferrané afin de les visualiser par la suite
 //if (isObjet(objet_poss_bleu))  { ecrireMatriceDansFichier(objet_poss_bleu,hauteur,largeur,"obj_bleu.dat"); };
 
@@ -1381,6 +1381,7 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
     char res[1000] = "";
 
    sprintf(res + strlen(res),"initialisation(%d,%d,'%s')",coin_HD[0],coin_HD[1],nomfichier);
+  
 
     if (rayon_bleu > 0){
         sprintf(res + strlen(res),";boule(%d,%d,%d,'blue')", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
@@ -1552,15 +1553,21 @@ int main() {
     milieu_orange[0] -= recentrage_x;
     milieu_orange[1] = -milieu_orange[1] +recentrage_y;
    
-    printf("Appuyez sur la touche 'Espace' pour continuer...");
+    printf("\nAppuyez sur la touche 'Espace' pour continuer...");
     while (getchar() != '\n') {    
     }
-    printf("\n");
 
 
     envPy(nomfichier, coin_HD, rayon_bleu/2, rayon_jaune/2, rayon_orange/2, milieu_bleu, milieu_jaune, milieu_orange);
-    
-   printf("Choisissez la langue avec laquelle gérer la phrase.\n'es' pour espagnol et 'fr' pour français: ");
+
+     printf("\n\n\n");
+
+    printf("\x1B[1m---------------TRAITEMENT DE TEXTE--------------\x1B[0m\n\n");
+    printf("\x1B[4mCHOIX DE LA LANGUE:\x1B[0m\n\n");
+
+
+
+   printf("Choisissez la langue avec laquelle gérer la phrase.\nEntrez'es' pour espagnol et 'fr' pour français: ");
     fgets(lang, sizeof(lang), stdin); // Lee la elección del idioma, incluyendo '\n'
 
     // Limpia el buffer de entrada si es necesario
@@ -1569,7 +1576,9 @@ int main() {
         while ((c = getchar()) != '\n' && c != EOF) { }
     }
 
-    printf("\nIntroduisez la phrase a traiter:\n");
+     printf("\n");
+printf("\x1B[4mPHRASE A TRAITER:\x1B[0m\n\n");
+    printf("Ecrivez la phrase à traiter:\n");
     fgets(phrase, sizeof(phrase), stdin);
     phrase[strcspn(phrase, "\n")] = 0; // Remueve el salto de línea al final
 
@@ -1579,6 +1588,8 @@ int main() {
         afficher_Action_fr(phrase, &myQueue);
     }
 
+    printf("\n");
+printf("\x1B[4mSEPARATION EN MOTS-CLES:\x1B[0m\n");
     while (!isQueueEmpty(myQueue) && mat_compt < 5) {
         ActionData action = dequeue(&myQueue);
         printf("\nAction: %s\nParametre 1: %s\nParametre 2: %s\nType de phrase: %s\n",
@@ -1591,12 +1602,16 @@ int main() {
     }
     printf("\n");
 
+/*
     for(i = 0; i < mat_compt; i++) {
         for(j = 0; j < 4; j++) {
             printf("\t%s\t", mat[i][j]);
         }
         printf("\n");
     }   
+*/
+
+printf("-----------------------------------------------\n\n");
 
     printf("Appuyez sur la touche 'Espace' pour continuer...");
     while (getchar() != '\n') {
@@ -1620,20 +1635,13 @@ int main() {
         boucle = getchar(); 
     }
 
+
 }
 /*
+POUR COPY PASTA les tests:
+IMG_5402.txt
 exemples de phrase pour tester
 
-avancer de 15 mètres puis tourner de 70 degrés puis reculer de 150 mètres puis tourner de 50 degrés
+avancer de 1000 mètres puis tourner de 70 degrés puis reculer de 150 mètres puis tourner de 50 degrés
 avance jusqua la boule jaune puis avance jusqua la boule orange puis avance jusqua la boule bleue
-
-rajouter la phrase de type trouver une balle rouge, ou bleue
-rajouter la phrase combien il y a t il de balles
-
- affirmative 2f
-
- IMPORTANT POUR OLIVIER: MODIFIES TON .h EN RAJOUTANT char* nomFichier A MAIN.IT, COMME CA : void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier);
- 
-
 */
-
