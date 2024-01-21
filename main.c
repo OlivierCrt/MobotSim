@@ -1463,32 +1463,34 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
                 sprintf(res + strlen(res),";reculer(%s)", mat[nbaction][2]);           
             }
         }
-//Subphrase:"Tourner de [Val] degrés"
+//Subphrase:"Tourner de [Val] degrés" ; Subphrase:"TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
         if(strcmp(mat[nbaction][0], "tourner") == 0 || strcmp(mat[nbaction][0], "tourne") == 0 || strcmp(mat[nbaction][0], "girar") == 0 || strcmp(mat[nbaction][0], "gira") == 0 || strcmp(mat[nbaction][0], "gires") == 0){
             if (strstr(mat[nbaction][2], "degrés") != NULL){
                 char *substring = "degrés";
                 char *ptr = strstr(mat[nbaction][2], substring);
                 strcpy(ptr, ptr + strlen(substring));
-                sprintf(res + strlen(res),";tl.right(%s)", mat[nbaction][2]);
             }
             else if (strstr(mat[nbaction][2], "degré") != NULL){
                 char *substring = "degré";
                 char *ptr = strstr(mat[nbaction][2], substring);
                 strcpy(ptr, ptr + strlen(substring));
-                sprintf(res + strlen(res),";tl.right(%s)", mat[nbaction][2]);  
             }
             else if (strstr(mat[nbaction][2], "grados") != NULL){
                 char *substring = "grados";
                 char *ptr = strstr(mat[nbaction][2], substring);
                 strcpy(ptr, ptr + strlen(substring));
-                sprintf(res + strlen(res),";tl.right(%s)", mat[nbaction][2]);
             }
             else if (strstr(mat[nbaction][2], "grado") != NULL){
                 char *substring = "grado";
                 char *ptr = strstr(mat[nbaction][2], substring);
-                strcpy(ptr, ptr + strlen(substring));
-                sprintf(res + strlen(res),";tl.right(%s)", mat[nbaction][2]);         
+                strcpy(ptr, ptr + strlen(substring));        
             }
+            if (strcmp(mat[nbaction][1], "gauche") == 0 || strcmp(mat[nbaction][1], "izquierda") == 0) {
+                    sprintf(res + strlen(res),";tl.left(%s)", mat[nbaction][2]);
+            }
+            else{
+                sprintf(res + strlen(res),";tl.right(%s)", mat[nbaction][2]);
+            } 
         }
 //Subphrase:"AVANCER JUSQU'À L'[OBJET]"
         if(strcmp(mat[nbaction][0], "avancer") == 0 || strcmp(mat[nbaction][0], "avance") == 0 || strcmp(mat[nbaction][0], "avanzar") == 0 || strcmp(mat[nbaction][0], "avanza") == 0 || strcmp(mat[nbaction][0], "avances") == 0){
@@ -1502,7 +1504,14 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
             else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
                 sprintf(res + strlen(res),";gobj([%d,%d,%d,'orange'])", milieu_orange[0],milieu_orange[1],rayon_orange);      
             }
-        }   
+        } 
+/*Subphrase:"TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
+    
+ActionData data;
+    sprintf(data.action, "Tourner");
+    sprintf(data.action, "[Direction]");
+    sprintf(data.action, "[Val] degrés");
+*/
     }
 }
 
@@ -1517,6 +1526,8 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
 
 int main() {
 
+
+    printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
     char nomfichier[100]; //je l'utilise aussi pour le fond d'ecran turtle
 
     printf("Veuillez entrer le nom de l'image que vous souhaitez utiliser : ");
@@ -1624,8 +1635,10 @@ printf("-----------------------------------------------\n\n");
     printf("Pour Recommencer avec une nouvelle image, appuyez sur 'R', pour Quitter appuyez sur 'Q'\n");
     char boucle = getchar(); 
 
+
     while (1) {
         if (boucle == 'r' || boucle == 'R') {
+            printf("\n\n");
             main();
         } else if (boucle == 'q' || boucle == 'Q') {
             return 0; 
@@ -1638,10 +1651,10 @@ printf("-----------------------------------------------\n\n");
 
 }
 /*
-POUR COPY PASTA les tests:
 IMG_5402.txt
 exemples de phrase pour tester
 
 avancer de 1000 mètres puis tourner de 70 degrés puis reculer de 150 mètres puis tourner de 50 degrés
 avance jusqua la boule jaune puis avance jusqua la boule orange puis avance jusqua la boule bleue
 */
+
