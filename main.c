@@ -306,9 +306,9 @@ int  trouver_rayon(Groupe_Pixel_ptr objet, int largeur , int hauteur){
             }
         }
     }
-    int maxres = jmax_l-jmin_l ;
-    if ((imax_h-imin_h)>maxres){
-        maxres = imax_h-imin_h ;
+    int maxres = (jmax_l-jmin_l)/2 ;
+    if ((imax_h-imin_h)/2>maxres){
+        maxres = (imax_h-imin_h)/2 ;
     }
 
     if(objet->couleur == "Bleu"){
@@ -1505,7 +1505,33 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
                 sprintf(res + strlen(res),";gobj([%d,%d,%d,'orange'])", milieu_orange[0],milieu_orange[1],rayon_orange);      
             }
         } 
-
+//Subphrase:"CONTOURNER PAR LA [DIRECTION] L'[OBJET]" ou bien "CONTOURNER L'[OBJET] PAR LA [DIRECTION]"
+        if(strcmp(mat[nbaction][0], "contourner") == 0 || strcmp(mat[nbaction][0], "contourne") == 0 || strcmp(mat[nbaction][0], "rodear") == 0 || strcmp(mat[nbaction][0], "rodea") == 0 || strcmp(mat[nbaction][0], "rodées") == 0){
+            if ((strstr(mat[nbaction][2], "jaune") != NULL) || (strstr(mat[nbaction][2], "amarillo") != NULL) || (strstr(mat[nbaction][2], "amarilla") != NULL)){
+                if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
+                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',-1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);  
+                }
+                else{
+                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);
+                }                 
+            }
+            else if ((strstr(mat[nbaction][2], "bleu") != NULL)||(strstr(mat[nbaction][2], "bleue") != NULL)||(strstr(mat[nbaction][2], "azul") != NULL)){
+                if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
+                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',-1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);             
+                }
+                else{
+                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
+                }
+            }
+            else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
+                if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){             
+                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',-1)", milieu_orange[0],milieu_orange[1],rayon_orange);      
+                }
+                else{
+                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',1)", milieu_orange[0],milieu_orange[1],rayon_orange);  
+                }
+            }
+        }
     }
 }
 
@@ -1538,6 +1564,7 @@ int main() {
     char *mat[5][4];
     int mat_compt = 0;
     int i,j;
+    char boucle ='\0';
 
     int *coin_HD = (int*)malloc(2 * sizeof(int));
     coin_HD[0] = 300;
@@ -1558,21 +1585,24 @@ int main() {
     milieu_orange[0] -= recentrage_x;
     milieu_orange[1] = -milieu_orange[1] +recentrage_y;
    
-    printf("\nAppuyez sur la touche 'Espace' pour continuer...");
-    while (getchar() != '\n') {    
+    while (getchar() != '\n') {         
+    }
+
+    printf("\nAppuyez sur la touche 'Entrée' pour continuer...");
+    while (getchar() != '\n') {   
     }
 
 
-    envPy(nomfichier, coin_HD, rayon_bleu/2, rayon_jaune/2, rayon_orange/2, milieu_bleu, milieu_jaune, milieu_orange);
+    envPy(nomfichier, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
 
-     printf("\n\n\n");
+     printf("\n\n");
 
     printf("\x1B[1m---------------TRAITEMENT DE TEXTE--------------\x1B[0m\n\n");
     printf("\x1B[4mCHOIX DE LA LANGUE:\x1B[0m\n\n");
 
 
 
-   printf("Choisissez la langue avec laquelle gérer la phrase.\nEntrez'es' pour espagnol et 'fr' pour français: ");
+   printf("Choisissez la langue avec laquelle gérer la phrase.\nEntrez 'es' pour espagnol et 'fr' pour français : ");
     fgets(lang, sizeof(lang), stdin); // Lee la elección del idioma, incluyendo '\n'
 
     // Limpia el buffer de entrada si es necesario
@@ -1618,16 +1648,16 @@ printf("\x1B[4mSEPARATION EN MOTS-CLES:\x1B[0m\n");
 
 printf("-----------------------------------------------\n\n");
 
-    printf("Appuyez sur la touche 'Espace' pour continuer...");
+    printf("Appuyez sur la touche 'Entrée' pour continuer...");
     while (getchar() != '\n') {
     }
     printf("\n");
 
-   actionsPy(nomfichier,mat,mat_compt, coin_HD, rayon_bleu/2, rayon_jaune/2, rayon_orange/2, milieu_bleu, milieu_jaune, milieu_orange);
+   actionsPy(nomfichier,mat,mat_compt, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
 
 
-    printf("Pour Recommencer avec une nouvelle image, appuyez sur 'R', pour Quitter appuyez sur 'Q'\n");
-    char boucle = getchar(); 
+    printf("Pour Recommencer avec une nouvelle image, appuyez sur 'R', pour Quitter appuyez sur 'Q' : \n");
+    boucle = getchar(); 
 
 
     while (1) {
@@ -1638,7 +1668,7 @@ printf("-----------------------------------------------\n\n");
             return 0; 
         }
         getchar(); 
-        printf("Pour Continuer appuyez sur 'C', pour Quitter appuyez sur 'Q'\n");
+        printf("Pour Recommencer avec une nouvelle image, appuyez sur 'R', pour Quitter appuyez sur 'Q' : \n");
         boucle = getchar(); 
     }
 
@@ -1650,5 +1680,5 @@ exemples de phrase pour tester
 
 avancer de 1000 mètres puis tourner de 70 degrés puis reculer de 150 mètres puis tourner de 50 degrés
 avance jusqua la boule jaune puis avance jusqua la boule orange puis avance jusqua la boule bleue
+contourne la balle bleue par la droite
 */
-
