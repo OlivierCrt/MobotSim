@@ -18,5 +18,5 @@ void ecrireMatriceDansFichier(Groupe_Pixel_ptr groupePixel, int hauteur, int lar
 int dfs (int ** matrice_p , int hauteur , int largeur , int deb_i , int deb_j ,int ** visite);
 void trouverLePlusGros (int ** matrice , int hauteur, int largeur);
 int  trouver_rayon(Groupe_Pixel_ptr objet, int largeur , int hauteur);
-void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange);
+void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomfichier);
 #endif 
