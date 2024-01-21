@@ -1505,13 +1505,7 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
                 sprintf(res + strlen(res),";gobj([%d,%d,%d,'orange'])", milieu_orange[0],milieu_orange[1],rayon_orange);      
             }
         } 
-/*Subphrase:"TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
-    
-ActionData data;
-    sprintf(data.action, "Tourner");
-    sprintf(data.action, "[Direction]");
-    sprintf(data.action, "[Val] degrés");
-*/
+
     }
 }
 
