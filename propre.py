@@ -73,7 +73,7 @@ def reculer(d):
         elif (-140<tl.xcor()<140) and (-140<tl.ycor()<140):
             tl.backward(9)
             d-=9 
-        elif (-150.1<tl.xcor()<150.1) and (-150.1<tl.ycor()<150.1):
+        elif (-151<tl.xcor()<151) and (-151<tl.ycor()<151):
             tl.backward(1)
             d-=1
         else:
@@ -107,7 +107,16 @@ def gobj(couleur):
     tl.setheading(angle)
     distance = tl.distance(couleur[0], couleur[1]) - couleur[2]
     tl.forward(distance)
-   
+
+def contobj(x,y,r,coul,sens):
+    gobj([x,y,r,coul])
+    tl.right(sens*90)
+    tl.forward(r)
+    tl.left(sens*90)
+    tl.forward(2*r)
+    tl.left(sens*90)
+    tl.forward(r)
+    tl.right(sens*90)
    
 # Fonction pour setup le robot
 def set_robot_position(x, y, angle_degrees):
@@ -132,3 +141,6 @@ if __name__ == "__main__":
 
 time.sleep(3)
 sc.exitonclick()
+
+#rajouter la phrase de type trouver une balle rouge, ou bleue
+#rajouter la phrase combien il y a t il de balles
