@@ -784,7 +784,7 @@ bool detect_chiffre_es(const char *word) {
     const char *nombre_mot[] = {
             "uno","un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve",
             "diez", "once", "doce", "trece", "catorce", "quince", "dieciseis","diecisiete","dieciocho","diecinueve",
-            "veinte","veintiun","veintudos","veintitres","veinticuatro","veinticinco","veintiseis","veintisiete","veintiocho","veintinueve",
+            "veinte","veintiun","veintidos","veintitres","veinticuatro","veinticinco","veintiseis","veintisiete","veintiocho","veintinueve",
             "treinta", "cuarenta", "cincuenta", "sesenta", "setenta","ochenta", "noventa",
             "cien", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos",
             "mil", NULL
