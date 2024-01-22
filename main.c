@@ -1090,7 +1090,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
         }
         
         //On copie le contenu de action, param1, param2 et type dans les paramétres de resultData, qui est une variable du type ActionData
-        strcpy(resultData.action, action, 20 - 1);
+        strcpy(resultData.action, action);
         strcpy(resultData.param1, param1);
         strcpy(resultData.param2, param2);
         strcpy(resultData.type, type);
@@ -1369,7 +1369,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 
         enqueue(q, resultData);
     }
-}
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
