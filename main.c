@@ -566,27 +566,28 @@ return;
 
 
 
-double convertDouble(char *str) {
+double convertDouble(char *str) {    //Fonction pour transformer des str en double
     char *temp;
     double val = strtod(str, &temp);
     return val;
 }
 
-void toLowercase(char *str) {
+void toLowercase(char *str) {    //Fonction pour passer n'importe quelle chaine en minuscule 
     for (int i = 0; str[i]; i++) {
         str[i] = tolower((unsigned char) str[i]);
     }
 }
 
-typedef struct{
+typedef struct{    //Structure definissant les parametres qu'on cherche a obtenir a la fin du traitement de la phrase
     char action[20];
     char param1[20];
     char param2[20];
     char type[20];
 } ActionData;
 
+//Definition du FIFO des parametres
 
-typedef struct node {
+typedef struct node {    //Structure definissant la conexion entre plusieurs "cases" comportant les parametres en ActionData
     ActionData data;
     struct node* next;
 } Node;
