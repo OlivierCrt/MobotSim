@@ -644,7 +644,7 @@ int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la fi
     return (q.front == NULL);
 }
 
-int str_to_num_fr(char *nombre) {    //Retournera un entier en fonction du str qui lui correspond (en français puis en espagnol).
+int str_to_num_fr(char *nombre) {    //Retournera un entier en fonction du str qui lui correspond.
     if (strcmp(nombre, "un") == 0) return 1;
     if (strcmp(nombre, "deux") == 0) return 2;
     if (strcmp(nombre, "trois") == 0) return 3;
@@ -723,7 +723,7 @@ int str_to_num_es(char *nombre) {
 }
 
 
-int num_to_chiffre_tot_fr(char *str) {    //Utilisera les chiffres obtenus séparement pour les traiter après et obtenir le chiffre total (en français et espagnol).
+int num_to_chiffre_tot_fr(char *str) {    //Utilisera les chiffres obtenus séparement pour les traiter après et obtenir le chiffre total.
     char *mot;
     char ponctuation[] = " ',.-";
     int total = 0, temp = 0;
