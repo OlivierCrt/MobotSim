@@ -9,7 +9,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
-// OLIVIER EN DESSOUS -------------------------------------------------------------------------------------------------------------------------------
+//FONCTIONS OLIVIER EN DESSOUS -------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -573,7 +573,7 @@ return;
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
-// ISMAEL EN DESSOUS -------------------------------------------------------------------------------------------------------------------------------
+// FONCTIONS ISMAEL EN DESSOUS -------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -1374,7 +1374,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
-// SOLAL EN DESSOUS -------------------------------------------------------------------------------------------------------------------------------
+// FONCTIONS SOLAL EN DESSOUS -------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -1499,53 +1499,64 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
         if(strcmp(mat[nbaction][0], "avancer") == 0 || strcmp(mat[nbaction][0], "avance") == 0 || strcmp(mat[nbaction][0], "avanzar") == 0 || strcmp(mat[nbaction][0], "avanza") == 0 || strcmp(mat[nbaction][0], "avances") == 0){
 
             if ((strstr(mat[nbaction][2], "jaune") != NULL) || (strstr(mat[nbaction][2], "amarillo") != NULL) || (strstr(mat[nbaction][2], "amarilla") != NULL)){
-                sprintf(res + strlen(res),";gobj([%d,%d,%d,'yellow'])", milieu_jaune[0],milieu_jaune[1],rayon_jaune);  
+                if (rayon_jaune >0){
+                    sprintf(res + strlen(res),";gobj([%d,%d,%d,'yellow'])", milieu_jaune[0],milieu_jaune[1],rayon_jaune);  
+                }
             }
             else if ((strstr(mat[nbaction][2], "bleu") != NULL)||(strstr(mat[nbaction][2], "bleue") != NULL)||(strstr(mat[nbaction][2], "azul") != NULL)){
-                sprintf(res + strlen(res),";gobj([%d,%d,%d,'blue'])", milieu_bleu[0],milieu_bleu[1],rayon_bleu);             
+                if (rayon_bleu >0){
+                    sprintf(res + strlen(res),";gobj([%d,%d,%d,'blue'])", milieu_bleu[0],milieu_bleu[1],rayon_bleu); 
+                }            
             }
             else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
-                sprintf(res + strlen(res),";gobj([%d,%d,%d,'orange'])", milieu_orange[0],milieu_orange[1],rayon_orange);      
+                if (rayon_orange >0){
+                    sprintf(res + strlen(res),";gobj([%d,%d,%d,'orange'])", milieu_orange[0],milieu_orange[1],rayon_orange);      
+                }
             }
         } 
 //Subphrase:"CONTOURNER PAR LA [DIRECTION] L'[OBJET]" ou bien "CONTOURNER L'[OBJET] PAR LA [DIRECTION]"
         if(strcmp(mat[nbaction][0], "contourner") == 0 || strcmp(mat[nbaction][0], "contourne") == 0 || strcmp(mat[nbaction][0], "rodear") == 0 || strcmp(mat[nbaction][0], "rodea") == 0 || strcmp(mat[nbaction][0], "rodées") == 0){
             if ((strstr(mat[nbaction][2], "jaune") != NULL) || (strstr(mat[nbaction][2], "amarillo") != NULL) || (strstr(mat[nbaction][2], "amarilla") != NULL)){
-                if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
-                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',-1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);  
-                }
-                else{
-                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);
+                if (rayon_jaune >0){
+                    if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',-1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);  
+                    }
+                    else{
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);
+                    }
                 }                 
             }
             else if ((strstr(mat[nbaction][2], "bleu") != NULL)||(strstr(mat[nbaction][2], "bleue") != NULL)||(strstr(mat[nbaction][2], "azul") != NULL)){
-                if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
-                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',-1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);             
-                }
-                else{
-                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
+                if (rayon_bleu >0){
+                    if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',-1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);             
+                    }
+                    else{
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
+                    }
                 }
             }
             else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
-                if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){             
-                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',-1)", milieu_orange[0],milieu_orange[1],rayon_orange);      
-                }
-                else{
-                    sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',1)", milieu_orange[0],milieu_orange[1],rayon_orange);  
-                }
+                if (rayon_orange >0){
+                    if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){             
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',-1)", milieu_orange[0],milieu_orange[1],rayon_orange);      
+                    }
+                    else{
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',1)", milieu_orange[0],milieu_orange[1],rayon_orange);  
+                    }
+                }    
             }
         }
     }
 }
 
-    // Exécuter le script Python avec le code Turtle en tant que sortie
-    FILE* python_process = popen("python3 propre.py", "w");
+// Exécuter le script Python avec le code Turtle en tant que sortie
+FILE* python_process = popen("python3 propre.py", "w");
 
-    // Écrire le code Turtle dans le processus Python
-    fprintf(python_process, "%s", res);
-    fclose(python_process);
+// Écrire le code Turtle dans le processus Python
+fprintf(python_process, "%s", res);
+fclose(python_process);
 }
-
 
 int main() {
 
