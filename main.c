@@ -1123,7 +1123,6 @@ void afficher_Action_es(char *phrase, Queue* q){
     }
 
 
-// Dividir en subfrases y concatenarlas
     for (i = 0; i < compt; i++) {
         if (strcmp(mots[i], "luego") == 0) {
             subphr_compt++;
@@ -1135,7 +1134,6 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     for (i = 0; i <= subphr_compt; i++) {
 
-        // Resetear las variables para la subfrase actual
         nombre_trouve = false;
         strcpy(Avant_chiffre, "");
         strcpy(Chiffre_mots, "");
@@ -1159,14 +1157,12 @@ void afficher_Action_es(char *phrase, Queue* q){
             mot = strtok(NULL, ponctuation_chiffre);
         }
 
-        // Procesar el número y reconstruir la subfrase
         chiffre = num_to_chiffre_tot_es(Chiffre_mots);
         sprintf(subphrases[i], "%s%d %s", Avant_chiffre, chiffre, Apres_chiffre);
     }
 
 
-    // Imprimir las subfrases
-    for (i = 0; i <= subphr_compt; i++) {
+    //for (i = 0; i <= subphr_compt; i++) {
 
 
         compt_sub = 0;
@@ -1206,8 +1202,7 @@ void afficher_Action_es(char *phrase, Queue* q){
                 action = mots_sub[j];
             }
 
-            //PHRASE DU TYPE "CONTOURNER PAR LA [DIRECTION] L'[OBJET]"
-            //PHRASE DU TYPE "CONTOURNER L'[OBJET] PAR LA [DIRECTION]"
+            
             if(strcmp(action, "rodear") == 0 || strcmp(action, "rodea") == 0 || strcmp(mots_sub[j], "rodées") == 0) {
 
                 if(strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
@@ -1225,18 +1220,16 @@ void afficher_Action_es(char *phrase, Queue* q){
                 }
             }
 
-                //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
-                //PHRASE DU TYPE "PASSER À [DIRECTION] DE L'[OBJET]"
+                
             else if (strcmp(action, "pasar") == 0 || strcmp(action, "pasa") == 0 || strcmp(mots_sub[j], "pases") == 0) {
 
                 if(strcmp(mots_sub[j], "entre") == 0) {
-                    entre_flag = 1;                                         // Mot "entre" trouvé
+                    entre_flag = 1;              
                     continue;
                 }
 
-                // Procesar objetos y colores después de "entre"
                 if (entre_flag == 1 && strcmp(mots_sub[j], "y") == 0){
-                    entre_flag = 0;                                         // On remet le flag de "entre" a 0
+                    entre_flag = 0;                                        
                     continue;
                 }
 
@@ -1268,9 +1261,8 @@ void afficher_Action_es(char *phrase, Queue* q){
             else if(strcmp(action, "localizar") == 0 || strcmp(action, "localiza") == 0 || strcmp(action, "localices") == 0 ||
                     strcmp(action, "encontrar") == 0 || strcmp(action, "encuentra") == 0 || strcmp(action, "encuentres") == 0) {
 
-                // Procesar objetos y colores después de "entre"
                 if (ou_flag == 0 && strcmp(mots_sub[j], "o") == 0){
-                    ou_flag = 1;                                         // On remet le flag de "ou" a 1
+                    ou_flag = 1;                                      
                     continue;
                 }
 
@@ -1314,7 +1306,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 
             else{
 
-                //PHRASE DU TYPE "AVANCER DE [DISTANCE]"
+                
                 if (strcmp(mots_sub[j], "metros") == 0 || strcmp(mots_sub[j], "metro") == 0 || strcmp(mots_sub[j], "centimetros") == 0 || strcmp(mots_sub[j], "milimetros") == 0) {
                     if(strcmp(mots_sub[j-1], "y") == 0) {
                         result = convertDouble(mots_sub[j - 2]);
@@ -1326,26 +1318,23 @@ void afficher_Action_es(char *phrase, Queue* q){
                     } else if (strcmp(mots_sub[j], "milimetros") == 0) {
                         result *= 0.001;
                     }
-                    sprintf(param2, "%.3f metros ", result);                     // On converti le résultat en chaine et on les met ensemble
+                    sprintf(param2, "%.3f metros ", result);                     
                 }
 
-                //PHRASE DU TYPE "AVANCER JUSQU'À L'[OBJET]"
-                //PHRASE DU TYPE "TOURNER JUSQU'À LOCALISER L'[OBJET]"
-                //PHRASE DU TYPE "TOURNER À [DIRECTION] JUSQU'À LOCALISER L'[OBJET]"
+                
                 if (strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
                     strcmp(mots_sub[j], "cuadrado") == 0 || strcmp(mots_sub[j], "cubo") == 0) {
-                    // Vérifier s'il y a un mot suivant pour la couleur.
+
                     if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
                     strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
-                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);         // On converti le résultat en chaine et on les met ensemble
+                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);        
                     } else {
                         sprintf(param2, "%s ", mots_sub[j]);
                     }
                 }
 
 
-                //PHRASE DU TYPE "TOURNER DE [VAL] DEGRÉS"
-                //PHRASE DU TYPE "TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
+                
                 if(strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
                     sprintf(param1, "%s", mots_sub[j]);
 
@@ -1355,19 +1344,17 @@ void afficher_Action_es(char *phrase, Queue* q){
                     }else{
                         result = convertDouble(mots_sub[j - 1]);
                     }
-                    sprintf(param2, "%.0f %s", result, mots_sub[j]);                 // On converti le résultat en chaine et on les met ensemble
+                    sprintf(param2, "%.0f %s", result, mots_sub[j]);          
                 }
             }
         }
-        if (action != NULL && action[0] != '\0') {
-            strncpy(resultData.action, action, 20 - 1);
-        }
-        // Asumiendo que param1 y param2 se llenan correctamente en el procesamiento
+            
+        strcpy(resultData.action, action);
         strcpy(resultData.param1, param1);
         strcpy(resultData.param2, param2);
         strcpy(resultData.type, type);
 
-        enqueue(q, resultData); // Enqueue cada subfrase procesada
+        enqueue(q, resultData);
     }
 }
 
