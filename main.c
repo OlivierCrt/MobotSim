@@ -942,17 +942,17 @@ void afficher_Action_fr(char *phrase, Queue* q){
             }
 
 
-                //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
+            //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
             else if (strcmp(action, "passer") == 0 || strcmp(action, "passe") == 0) {
 
                 if(strcmp(mots_sub[j], "entre") == 0) {
-                    entre_flag = 1;                                         // Mot "entre" trouvé
+                    entre_flag = 1;                                         // Mot "entre" trouvé, donc flag_entre (qui indique ça) est mit a 1
                     continue;
                 }
 
                 // Procesar objetos y colores después de "entre"
                 if (entre_flag == 1 && strcmp(mots_sub[j], "et") == 0){
-                    entre_flag = 0;                                         // On remet le flag de "entre" a 0
+                    entre_flag = 0;                                         // On remet lentre_flag à 0
                     continue;
                 }
 
@@ -981,10 +981,11 @@ void afficher_Action_fr(char *phrase, Queue* q){
                 }
             }
 
+            //PHRASE DU TYPE "LOCALISE/TROUVE L'[OBJET]"
+            //PHRASE DU TYPE "LOCALISE/TROUVE L'[OBJET] OU L'[OBJET]"
             else if(strcmp(action, "localiser") == 0 || strcmp(action, "localise") == 0 ||
                     strcmp(action, "trouver") == 0 || strcmp(action, "trouve") == 0) {
 
-                // Procesar objetos y colores después de "entre"
                 if (ou_flag == 0 && strcmp(mots_sub[j], "ou") == 0){
                     ou_flag = 1;                                         // On remet le flag de "ou" a 1
                     continue;
@@ -1053,7 +1054,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
                     // Vérifier s'il y a un mot suivant pour la couleur.
                     if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rouge") == 0 || strcmp(mots_sub[j + 1], "bleu") == 0 || strcmp(mots_sub[j + 1], "bleue") == 0 ||
                         strcmp(mots_sub[j + 1], "jaune") == 0 || strcmp(mots_sub[j + 1], "orange") == 0)) {
-                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);         // On converti le résultat en chaine et on les met ensemble
+                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);
                     } else {
                         sprintf(param2, "%s ", mots_sub[j]);
                     }
@@ -1070,20 +1071,19 @@ void afficher_Action_fr(char *phrase, Queue* q){
                     }else{
                         result = convertDouble(mots_sub[j - 1]);
                     }
-                    sprintf(param2, "%.0f %s", result, mots_sub[j]);                 // On converti le résultat en chaine et on les met ensemble
+                    sprintf(param2, "%.0f %s", result, mots_sub[j]);
                 }
             }
         }
-        if (action != NULL && action[0] != '\0') {
-            strncpy(resultData.action, action, 20 - 1);
-        }
-        // Asumiendo que param1 y param2 se llenan correctamente en el procesamiento
+        
+        //On copie le contenu de action, param1, param2 et type dans les paramétres de resultData, qui est une variable du type ActionData
+        strcpy(resultData.action, action, 20 - 1);
         strcpy(resultData.param1, param1);
         strcpy(resultData.param2, param2);
         strcpy(resultData.type, type);
 
-
-        enqueue(q, resultData); // Enqueue cada subfrase procesada
+        //On enfile le contenu de resultData dans le file du FIFO
+        enqueue(q, resultData);
     }
 
 }
