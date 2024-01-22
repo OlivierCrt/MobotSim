@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>//uniquement pour le controle de chemin d acces
 #include "image_process.h"
 
 
@@ -558,4 +559,24 @@ printf("-----------------------------------------------\n\n");
   
 
 return;
+}
+
+
+int main(){
+    printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
+    char nomfichier[100]; //Utilisé par la simulation aussi
+    printf("Veuillez entrer le chemin d'accès de l'image que vous souhaitez utiliser : ");
+    scanf("%s", nomfichier);
+    if (access(nomfichier, F_OK)!= -1){
+        printf("\x1B[1;32mLe fichier à bien été chargé.\x1B[0m\n");
+    }
+    else{
+        printf("Le chemin spécifié n'existe pas.");
+        return 0 ;
+    }
+
+    int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
+    int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
+    main_it(&rayon_bleu, &rayon_jaune, &rayon_orange,&milieu_bleu, &milieu_jaune, &milieu_orange, nomfichier );
+    return 0 ;
 }
