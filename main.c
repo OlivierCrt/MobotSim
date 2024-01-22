@@ -823,7 +823,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
     ActionData resultData;
 
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 5; i++) {    //Initialise toutes les sous-phrases à vide.
         subphrases[i][0] = '\0';
     }
 
@@ -836,8 +836,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
         mot = strtok(NULL, ponctuation);
     }
 
-
-// Dividir en subfrases y concatenarlas
+    //On divise les sous-phrases à chaque fois qu'on trouve un "puis" et on passe a la prochaine sous-phrase, si non on garde la phrase traité diréctement comme une sous-phrase.
     for (i = 0; i < compt; i++) {
         if (strcmp(mots[i], "puis") == 0) {
             subphr_compt++;
@@ -850,23 +849,23 @@ void afficher_Action_fr(char *phrase, Queue* q){
     for (i = 0; i <= subphr_compt; i++) {
         //printf("\nSubphrase %d: %s\n", i + 1, subphrases[i]);
 
-        // Resetear las variables para la subfrase actual
+        //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         nombre_trouve = false;
         strcpy(Avant_chiffre, "");
         strcpy(Chiffre_mots, "");
         strcpy(Apres_chiffre, "");
 
-        mot = strtok(subphrases[i], ponctuation_chiffre);
+        mot = strtok(subphrases[i], ponctuation_chiffre);    //On diférentie les parties de la sous-phrase qui definissent les chiffres ou pas.
         while (mot != NULL) {
-            if (detect_chiffre_fr(mot)) {
+            if (detect_chiffre_fr(mot)) {    //Si on détecte un mot corréspondant à un chiffre on les garde comme "Chiffre_mots".
                 nombre_trouve = true;
                 strcat(Chiffre_mots, mot);
                 strcat(Chiffre_mots, " ");
             } else {
-                if (!nombre_trouve) {
+                if (!nombre_trouve) {    //Si les mots se trouvent avant la détection des mots corréspondant aux chiffres on les garde comme "Avant_chiffre".
                     strcat(Avant_chiffre, mot);
                     strcat(Avant_chiffre, " ");
-                } else {
+                } else {    //Si les mots se trouvent après la détection des mots corréspondant aux chiffres on les garde comme "Apres_chiffre".
                     strcat(Apres_chiffre, mot);
                     strcat(Apres_chiffre, " ");
                 }
@@ -874,18 +873,18 @@ void afficher_Action_fr(char *phrase, Queue* q){
             mot = strtok(NULL, ponctuation_chiffre);
         }
 
-        // Procesar el número y reconstruir la subfrase
+        //On transforme "Chiffre_mots" en chiffre puis on réconstruit la sous-phrase initiale en charactéres et chiffres
         chiffre = num_to_chiffre_tot_fr(Chiffre_mots);
         sprintf(subphrases[i], "%s%d %s", Avant_chiffre, chiffre, Apres_chiffre);
-        //printf("Processed Subphrase: %s\n", subphrases[i]);
+        //printf("Subphrase traité: %s\n", subphrases[i]);
     }
 
     //printf("Nb ss-phrases : %d\n",subphr_compt+1);
 
     // Imprimir las subfrases
-    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j pcq ça em donnait erreur
+    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j pcq ça nous donne erreur sinon
 
-
+        //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         compt_sub = 0;
         entre_flag = 0;
 
@@ -893,8 +892,6 @@ void afficher_Action_fr(char *phrase, Queue* q){
         char param2[20] = "";
         char type[20] = "";
 
-
-        compt_sub = 0;
         mot_sub = strtok(subphrases[i], ponctuation_sub);
         while (mot_sub != NULL && compt_sub < 20) {
             mots_sub[compt_sub++] = mot_sub;
