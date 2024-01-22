@@ -566,26 +566,26 @@ return;
 
 
 
-double convertDouble(char *str) {    //Fonction pour transformer des str en double
+double convertDouble(char *str) {    //Fonction pour transformer des str en double.
     char *temp;
     double val = strtod(str, &temp);
     return val;
 }
 
-void toLowercase(char *str) {    //Fonction pour passer n'importe quelle chaine en minuscule 
+void toLowercase(char *str) {    //Fonction pour passer n'importe quelle chaine en minuscule.
     for (int i = 0; str[i]; i++) {
         str[i] = tolower((unsigned char) str[i]);
     }
 }
 
-typedef struct{    //Structure definissant les parametres qu'on cherche a obtenir a la fin du traitement de la phrase
+typedef struct{    //Structure definissant les parametres qu'on cherche a obtenir a la fin du traitement de la phrase.
     char action[20];
     char param1[20];
     char param2[20];
     char type[20];
 } ActionData;
 
-//Definition du FIFO des parametres
+//**Definition du FIFO des parametres**//
 
 typedef struct node {    //Un noeud pour la file d'attente, contenant une donnée de type ActionData et un pointeur vers le noeud suivant.
     ActionData data;
@@ -605,7 +605,7 @@ Queue createQueue() {    //Initialise et renvoie une nouvelle file vide.
     return q;
 }
 
-void enqueue(Queue* q, ActionData data) {    //Rajoute un élément à la file
+void enqueue(Queue* q, ActionData data) {    //Rajoute un élément à la file.
     Node* temp = (Node*) malloc(sizeof(Node));
     temp->data = data;
     temp->next = NULL;
@@ -621,30 +621,30 @@ void enqueue(Queue* q, ActionData data) {    //Rajoute un élément à la file
     q->size++;    //Incrémente la taille de la file.
 }
 
-ActionData dequeue(Queue* q) {    //Dégage un élément à la file
-    if (q->front == NULL) {    //Si la file est deja vide on affichera une erreur
+ActionData dequeue(Queue* q) {    //Dégage un élément à la file.
+    if (q->front == NULL) {    //Si la file est deja vide on affichera une erreur.
         fprintf(stderr, "Erreur: La file est deja vide.\n");
         exit(EXIT_FAILURE);
     }
 
     Node *temp = q->front;    //Un pointeur temporaire temp est créé pour conserver le pointeur vers le noeud de tête actuel, qui sera retiré.
-    ActionData data = temp->data;  //On copie tous les parametres de data
+    ActionData data = temp->data;  //On copie tous les parametres de data.
 
     q->front = q->front->next;    //Le pointeur front de la file est déplacé vers le nœud suivant, car le nœud de tête actuel est sur le point d'être supprimé.
     if (q->front == NULL) {    //Si après cette opération, q->front devient NULL, cela signifie que la file est maintenant vide.
         q->rear = NULL;    //Par conséquent, q->rear est également mis à NULL.
     }
-    q->size--;    //Et on met a jour la taille de la file
+    q->size--;    //Et on met a jour la taille de la file.
 
-    free(temp);    //On libere de la mémoire
-    return data;    //La focntion retourne finalement les parametres de data qui viennent d'étre enlevés
+    free(temp);    //On libere de la mémoire.
+    return data;    //La focntion retourne finalement les parametres de data qui viennent d'étre enlevés.
 }
 
-int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la file est vide ou pas et renvoie 1 pour un front NULL
+int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la file est vide ou pas et renvoie 1 pour un front NULL.
     return (q.front == NULL);
 }
 
-int str_to_num_fr(char *nombre) {
+int str_to_num_fr(char *nombre) {    //Retournera un entier en fonction du str qui lui correspond (en français puis en espagnol).
     if (strcmp(nombre, "un") == 0) return 1;
     if (strcmp(nombre, "deux") == 0) return 2;
     if (strcmp(nombre, "trois") == 0) return 3;
@@ -723,14 +723,14 @@ int str_to_num_es(char *nombre) {
 }
 
 
-int num_to_chiffre_tot_fr(char *str) {
+int num_to_chiffre_tot_fr(char *str) {    //Utilisera les chiffres obtenus séparement pour les traiter après et obtenir le chiffre total (en français et espagnol).
     char *mot;
     char ponctuation[] = " ',.-";
     int total = 0, temp = 0;
 
-    mot = strtok(str, ponctuation);
+    mot = strtok(str, ponctuation);    //Sépare les mots de la phrase (str) pour chaque ponctuation qu'on a déjà defini.
     while (mot != NULL) {
-        int num = str_to_num_fr(mot);
+        int num = str_to_num_fr(mot);    //Traitement des chiffres (somme ou multiplication, dépendant de leurs utilisation dans une phrase.
         if (num == 1000 || num == 100 || num == 20) {
             temp = (temp == 0 ? 1 : temp) * num;
             total += temp;
@@ -738,9 +738,9 @@ int num_to_chiffre_tot_fr(char *str) {
         } else {
             temp += num;
         }
-        mot = strtok(NULL, ponctuation);
+        mot = strtok(NULL, ponctuation);    //Appel au mot defini.
     }
-    total += temp; // Añadir cualquier valor restante
+    total += temp;    //On rajoute les valeurs réstants.
     return total;
 }
 
@@ -761,12 +761,12 @@ int num_to_chiffre_tot_es(char *str) {
         }
         mot = strtok(NULL, ponctuation);
     }
-    total += temp; // Añadir cualquier valor restante
+    total += temp;
     return total;
 }
 
 
-bool detect_chiffre_fr(const char *word) {
+bool detect_chiffre_fr(const char *word) {    //Fonction ayant le role de détecter si le str introduit corréspond à un chiffre. 
     const char *nombre_mot[] = {
             "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf",
             "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize",
