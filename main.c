@@ -1441,8 +1441,8 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
                 strcpy(ptr, ptr + strlen(substring));
                 sprintf(res + strlen(res),";avancer(%s)", mat[nbaction][2]); 
             }
-            else if (strstr(mat[nbaction][2], "mètre") != NULL){
-                char *substring = "mètre";
+            else if (strstr(mat[nbaction][2], "metros") != NULL){
+                char *substring = "metros";
                 char *ptr = strstr(mat[nbaction][2], substring);
                 strcpy(ptr, ptr + strlen(substring));
                 sprintf(res + strlen(res),";avancer(%s)", mat[nbaction][2]);            
