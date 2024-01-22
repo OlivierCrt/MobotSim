@@ -10,10 +10,12 @@
 void main_img(){
     printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
     char nomfichier[100]; //je l'utilise aussi pour le fond d'ecran turtle
-
-    printf("Veuillez entrer le nom de l'image que vous souhaitez utiliser : ");
-    scanf("%s", nomfichier);
-    printf("%s",nomfichier);
+    int nombre;
+    do {
+        printf("Entrez le nom de l'image que vous souhaitez modéliser : ");
+        scanf("%s", nomfichier);
+        sscanf(nomfichier, "IMG_%d.txt", &nombre);
+    } while (nombre < 5389 || nombre > 5408 );
 
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
@@ -134,11 +136,15 @@ void main_txt(){
 void main_imgtxt(){
 
     printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
+    
     char nomfichier[100]; //je l'utilise aussi pour le fond d'ecran turtle
+    int nombre;
 
-    printf("Veuillez entrer le nom de l'image que vous souhaitez utiliser : ");
-    scanf("%s", nomfichier);
-    printf("%s",nomfichier);
+    do {
+        printf("Entrez le nom de l'image que vous souhaitez modéliser : ");
+        scanf("%s", nomfichier);
+        sscanf(nomfichier, "IMG_%d.txt", &nombre);
+    } while (nombre < 5389 || nombre > 5408 );
 
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
