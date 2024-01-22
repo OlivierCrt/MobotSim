@@ -587,62 +587,63 @@ typedef struct{    //Structure definissant les parametres qu'on cherche a obteni
 
 //Definition du FIFO des parametres
 
-typedef struct node {    //Structure definissant la conexion entre plusieurs "cases" comportant les parametres en ActionData
+typedef struct node {    //Un noeud pour la file d'attente, contenant une donnée de type ActionData et un pointeur vers le noeud suivant.
     ActionData data;
     struct node* next;
 } Node;
 
-typedef struct {
+typedef struct {    //Une structure représentant un ordre de positionnement dans une file avec des pointeurs vers le premier (front) et le dernier élément (rear), ainsi qu'un entier pour stocker la taille de la file.
     Node* front;
     Node* rear;
     int size;
 } Queue;
 
-Queue createQueue() {
+Queue createQueue() {    //Initialise et renvoie une nouvelle file vide.
     Queue q;
     q.front = q.rear = NULL;
     q.size = 0;
     return q;
 }
 
-void enqueue(Queue* q, ActionData data) {
+void enqueue(Queue* q, ActionData data) {    //Rajoute un élément à la file
     Node* temp = (Node*) malloc(sizeof(Node));
-    temp->data = data;  // Direct copy as ActionData is no longer using pointer for action
+    temp->data = data;
     temp->next = NULL;
 
-    if (q->rear == NULL) {
+    if (q->rear == NULL) {    //Si la file est vide, le nouvel élément devient à la fois le premier et le dernier élément.
         q->front = q->rear = temp;
         q->size = 1;
         return;
     }
 
-    q->rear->next = temp;
+    q->rear->next = temp;    //Sinon, il est rajouté à la fin et devient le nouvel élément rear.
     q->rear = temp;
-    q->size++;
+    q->size++;    //Incrémente la taille de la file.
 }
 
-ActionData dequeue(Queue* q) {
-    if (q->front == NULL) {
-        fprintf(stderr, "Error: Intento de desencolar de una cola vacía.\n");
+ActionData dequeue(Queue* q) {    //Dégage un élément à la file
+    if (q->front == NULL) {    //Si la file est deja vide on affichera une erreur
+        fprintf(stderr, "Erreur: La file est deja vide.\n");
         exit(EXIT_FAILURE);
     }
 
-    Node *temp = q->front;
-    ActionData data = temp->data;  // Copy the data
+    Node *temp = q->front;    //Un pointeur temporaire temp est créé pour conserver le pointeur vers le noeud de tête actuel, qui sera retiré.
+    ActionData data = temp->data;  //On copie tous les parametres de data
 
-    q->front = q->front->next;
-    if (q->front == NULL) {
-        q->rear = NULL;
+    q->front = q->front->next;    //Le pointeur front de la file est déplacé vers le nœud suivant, car le nœud de tête actuel est sur le point d'être supprimé.
+    if (q->front == NULL) {    //Si après cette opération, q->front devient NULL, cela signifie que la file est maintenant vide.
+        q->rear = NULL;    //Par conséquent, q->rear est également mis à NULL.
     }
-    q->size--;
+    q->size--;    //Et on met a jour la taille de la file
 
-    free(temp);
-    return data;
+    free(temp);    //On libere de la mémoire
+    return data;    //La focntion retourne finalement les parametres de data qui viennent d'étre enlevés
 }
 
-int isQueueEmpty(Queue q) {
+int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la file est vide ou pas et renvoie 1 pour un front NULL
     return (q.front == NULL);
 }
+
 int str_to_num_fr(char *nombre) {
     if (strcmp(nombre, "un") == 0) return 1;
     if (strcmp(nombre, "deux") == 0) return 2;
