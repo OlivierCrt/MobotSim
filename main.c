@@ -882,7 +882,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
     //printf("Nb ss-phrases : %d\n",subphr_compt+1);
 
     // Imprimir las subfrases
-    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j pcq ça nous donne erreur sinon
+    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j parce que ça nous donne erreur sinon
 
         //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         compt_sub = 0;
@@ -903,12 +903,13 @@ void afficher_Action_fr(char *phrase, Queue* q){
         //}
 
         for (j = 0; j < compt_sub; j++) {
+            //Si le mot de la sous-phrase corréspond a un de ceux-là alors le parametre type sur ActionData sera "Négative"
             if(strcmp(mots_sub[0], "ne") == 0 || strcmp(mots_sub[0], "n") == 0)
                 sprintf(type, "Négative");
             else
                 sprintf(type, "Affirmative");
 
-
+            //Si le mot de la sous-phrase corréspond a un de ceux-là alors le parametre action sur ActionData prendra cette valeur
             if (strcmp(mots_sub[j], "avancer") == 0 || strcmp(mots_sub[j], "avance") == 0 ||
                 strcmp(mots_sub[j], "reculer") == 0 || strcmp(mots_sub[j], "recule") == 0 ||
                 strcmp(mots_sub[j], "tourner") == 0 || strcmp(mots_sub[j], "tourne") == 0 ||
