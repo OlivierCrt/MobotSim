@@ -5,17 +5,10 @@
 #include <stdlib.h>
 
 
-double convertDouble(char *str) {    //Fonction pour transformer des str en double.
-    char *temp;
-    double val = strtod(str, &temp);
-    return val;
-}
+double convertDouble(char *str);    //Fonction pour transformer des str en double.
 
-void toLowercase(char *str) {    //Fonction pour passer n'importe quelle chaine en minuscule.
-    for (int i = 0; str[i]; i++) {
-        str[i] = tolower((unsigned char) str[i]);
-    }
-}
+void toLowercase(char *str);    //Fonction pour passer n'importe quelle chaine en minuscule.
+    
 
 typedef struct{    //Structure definissant les parametres qu'on cherche a obtenir a la fin du traitement de la phrase.
     char action[20];
