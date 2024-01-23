@@ -1,3 +1,10 @@
+#ifndef IMAGE_PROCESS_H
+#define IMAGE_PROCESS_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
 double convertDouble(char *str) {    //Fonction pour transformer des str en double.
     char *temp;
     double val = strtod(str, &temp);
@@ -46,4 +53,6 @@ bool detect_chiffre_es(const char *word);
 
 void afficher_Action_fr(char *phrase, Queue* q);
 void afficher_Action_es(char *phrase, Queue* q);
+
+#endif
     
