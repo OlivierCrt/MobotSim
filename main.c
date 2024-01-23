@@ -9,9 +9,6 @@
 //#include "ismael.h"
 //#include "solal.h"
 
-
-
-
 void main_img(){
     printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
     char nomfichier[100]; //je l'utilise aussi pour le fond d'ecran turtle
@@ -72,8 +69,8 @@ void main_txt(){
     int i,j;
     
     int *coin_HD = (int*)malloc(2 * sizeof(int));
-    coin_HD[0] = 300;
-    coin_HD[1] = 300;
+    coin_HD[0] = 150;
+    coin_HD[1] = 150;
 
     int b;
     while ((b = getchar()) != '\n' && b != EOF) { }
