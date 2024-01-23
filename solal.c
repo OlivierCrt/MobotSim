@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <unistd.h>
+#include "solal.h"
+
+
 void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){//-1 si pas de rayon ; liste vide si existe pas
 
     char res[1000] = "";
@@ -23,7 +30,7 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
 
 
     // Exécuter le script Python avec le code Turtle en tant que sortie
-    FILE* python_process = popen("python3 propre.py", "w");
+    FILE* python_process = popen("python3 solal.py", "w");
 
     // Écrire le code Turtle dans le processus Python
     fprintf(python_process, "%s", res);
@@ -170,7 +177,7 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
 }
 
 // Exécuter le script Python avec le code Turtle en tant que sortie
-FILE* python_process = popen("python3 propre.py", "w");
+FILE* python_process = popen("python3 solal.py", "w");
 
 // Écrire le code Turtle dans le processus Python
 fprintf(python_process, "%s", res);
