@@ -6,8 +6,8 @@
 #include <unistd.h>
 
 #include "image_process.h"
-//#include "ismael.h"
-//#include "solal.h"
+#include "ismael.h"
+#include "solal.h"
 
 void main_img(){
     printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
