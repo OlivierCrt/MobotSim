@@ -5,13 +5,12 @@
 #include "solal.h"
 
 
-void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){//-1 si pas de rayon ; liste vide si existe pas
+void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){
 
     char res[1000] = "";
 
    sprintf(res + strlen(res),"initialisation(%d,%d,'%s')",coin_HD[0],coin_HD[1],nomfichier);
   
-
     if (rayon_bleu > 0){
         sprintf(res + strlen(res),";boule(%d,%d,%d,'blue')", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
     }
@@ -24,7 +23,7 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
 
     sprintf(res + strlen(res),";tl.up()");
 
-    sprintf(res + strlen(res),";set_robot_position(x, y, angle_degrees)"); // peut etre modifier en fonction de la taille de l'image
+    sprintf(res + strlen(res),";set_robot_position(x, y, angle_degrees)"); 
     
     sprintf(res + strlen(res),";tl.up()");
 
@@ -37,7 +36,7 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
     fclose(python_process);
 } 
 
-void actionsPy(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune, int *milieu_orange){ //+ info olivier
+void actionsPy(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune, int *milieu_orange){ 
     char res[1000] = "";
 
     sprintf(res + strlen(res),"tl.speed(0)");
