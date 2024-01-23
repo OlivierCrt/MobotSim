@@ -169,3 +169,10 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
     }
 }
 
+// Exécuter le script Python avec le code Turtle en tant que sortie
+FILE* python_process = popen("python3 propre.py", "w");
+
+// Écrire le code Turtle dans le processus Python
+fprintf(python_process, "%s", res);
+fclose(python_process);
+}
