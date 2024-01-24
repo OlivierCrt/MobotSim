@@ -6,10 +6,14 @@
 
 
 /**
- * @mainpage Traitement d'image
+ * @mainpage Déplacement de robot par compréhension syntaxique et détection de couleurs.
  *
  * @section intro Introduction
- * Cette partie de code permet de detecter des pixels dans differentes plages de couleurs RGB.    
+ * Ce programme est composé de trois parties utilisables seules et inter-compatibles.
+ * - Traitement de texte et compréhension syntaxique.
+ * - Detection d'obstacles par la couleur.
+ * - Simulation robotique. 
+ *    
  * Elle permet aussi de savoir si ces pixels détectés forment des objets et ainsi les utiliser dans les autres partie du pfr1.
  *
  * @section usage Usage
@@ -65,12 +69,10 @@ struct Groupe_Pixel_s {
 
 //Allocation pixel
 /**
- * @brief Fonction d'allocation pour un pointeur vers un groupe de pixels.
- * @param nbp Nombre de pixel du groupe.
- * @param matrice_ass_param Tableau à deux dimensions concernant la couleur.
- * @param couleur Chaîne de caractère correspondant à la couleur du groupe.
- * @return Pointeur vers un groupe de pixel.
- * */
+ * @brief Fonction exclue du groupe.
+ * @cond EXCLURE_FONCTION
+ */
+
 Groupe_Pixel_ptr alloc_Groupe_Pixel(int nbp , int** matrice_ass_param,char * couleur){
     Groupe_Pixel_ptr res = malloc(sizeof(struct Groupe_Pixel_s)) ;
     res->nbpixel_g = nbp ;
@@ -385,15 +387,7 @@ void ecrireMatriceDansFichier(Groupe_Pixel_ptr groupePixel, int hauteur, int lar
 
     fclose(fichier); // Ferme le fichier
 }
-/**
- * @brief Fonction de parcours en profondeur ( Deep First Search) récursive.
- * @param matrice_p Matrice à explorer.( Avec : matrice[hauteur][largeur]).
- * @param hauteur Hauteur de l'image/matrice.
- * @param largeur Largeur de l'image/matrice.
- * @param deb_i Indice de la hauteur du début du dfs.
- * @param deb_j Indice de la largeur du début du dfs.
- * @param visite Matrice des élements deja visité, marqués par un 1.
-*/
+
 int dfs (int ** matrice_p , int hauteur , int largeur , int deb_i , int deb_j ,int ** visite){
     if (deb_i < 0 || deb_i >= hauteur || deb_j < 0 || deb_j >= largeur || visite[deb_i][deb_j] == 1 || matrice_p[deb_i][deb_j] == 0) {
         // Conditions d'arrêt (coordonnées invalides, déjà visité, ou pixel non marqué)
