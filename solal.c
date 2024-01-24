@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include "solal.h"
@@ -181,4 +182,8 @@ FILE* python_process = popen("python3 solal.py", "w");
 // Écrire le code Turtle dans le processus Python
 fprintf(python_process, "%s", res);
 fclose(python_process);
+}
+
+int main(){
+    return 1;
 }
