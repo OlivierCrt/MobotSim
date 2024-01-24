@@ -3,9 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-/**
- * @brief Pointeur vers un groupe de pixel
-*/
+
 typedef struct Groupe_Pixel_s * Groupe_Pixel_ptr ;
 Groupe_Pixel_ptr detecterPixelsJaune(int **matriceR, int ** matriceG, int ** matriceB,int hauteur , int largeur);
 int * trouver_milieu(Groupe_Pixel_ptr groupe, int largeur , int hauteur) ;
@@ -18,5 +16,5 @@ void ecrireMatriceDansFichier(Groupe_Pixel_ptr groupePixel, int hauteur, int lar
 int dfs (int ** matrice_p , int hauteur , int largeur , int deb_i , int deb_j ,int ** visite);
 void trouverLePlusGros (int ** matrice , int hauteur, int largeur);
 int  trouver_rayon(Groupe_Pixel_ptr objet, int largeur , int hauteur);
-void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomfichier);
+void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier);
 #endif 
