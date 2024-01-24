@@ -1,4 +1,4 @@
-ll:main
+all:main
 
 main: txt.o main.o
 	gcc -o main txt.o main.o
