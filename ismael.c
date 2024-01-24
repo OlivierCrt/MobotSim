@@ -1,82 +1,68 @@
-double convertDouble(char *str) {    //Fonction pour transformer des str en double.
+#include "txt.h"
+#include "stdio.h"
+#include "string.h"
+#include "stdlib.h"
+#include "stdbool.h"
+#include "ctype.h"
+
+double convertDouble(char *str) {
     char *temp;
     double val = strtod(str, &temp);
     return val;
 }
 
-void toLowercase(char *str) {    //Fonction pour passer n'importe quelle chaine en minuscule.
+void toLowercase(char *str) {
     for (int i = 0; str[i]; i++) {
         str[i] = tolower((unsigned char) str[i]);
     }
 }
 
-typedef struct{    //Structure definissant les parametres qu'on cherche a obtenir a la fin du traitement de la phrase.
-    char action[20];
-    char param1[20];
-    char param2[20];
-    char type[20];
-} ActionData;
-
-//**Definition du FIFO des parametres**//
-
-typedef struct node {    //Un noeud pour la file d'attente, contenant une donnée de type ActionData et un pointeur vers le noeud suivant.
-    ActionData data;
-    struct node* next;
-} Node;
-
-typedef struct {    //Une structure représentant un ordre de positionnement dans une file avec des pointeurs vers le premier (front) et le dernier élément (rear), ainsi qu'un entier pour stocker la taille de la file.
-    Node* front;
-    Node* rear;
-    int size;
-} Queue;
-
-Queue createQueue() {    //Initialise et renvoie une nouvelle file vide.
+Queue createQueue() {
     Queue q;
     q.front = q.rear = NULL;
     q.size = 0;
     return q;
 }
 
-void enqueue(Queue* q, ActionData data) {    //Rajoute un élément à la file.
+void enqueue(Queue* q, ActionData data) {
     Node* temp = (Node*) malloc(sizeof(Node));
-    temp->data = data;
+    temp->data = data;  // Direct copy as ActionData is no longer using pointer for action
     temp->next = NULL;
 
-    if (q->rear == NULL) {    //Si la file est vide, le nouvel élément devient à la fois le premier et le dernier élément.
+    if (q->rear == NULL) {
         q->front = q->rear = temp;
         q->size = 1;
         return;
     }
 
-    q->rear->next = temp;    //Sinon, il est rajouté à la fin et devient le nouvel élément rear.
+    q->rear->next = temp;
     q->rear = temp;
-    q->size++;    //Incrémente la taille de la file.
+    q->size++;
 }
 
-ActionData dequeue(Queue* q) {    //Dégage un élément à la file.
-    if (q->front == NULL) {    //Si la file est deja vide on affichera une erreur.
-        fprintf(stderr, "Erreur: La file est deja vide.\n");
+ActionData dequeue(Queue* q) {
+    if (q->front == NULL) {
+        fprintf(stderr, "Error: Intento de desencolar de una cola vacía.\n");
         exit(EXIT_FAILURE);
     }
 
-    Node *temp = q->front;    //Un pointeur temporaire temp est créé pour conserver le pointeur vers le noeud de tête actuel, qui sera retiré.
-    ActionData data = temp->data;  //On copie tous les parametres de data.
+    Node *temp = q->front;
+    ActionData data = temp->data;  // Copy the data
 
-    q->front = q->front->next;    //Le pointeur front de la file est déplacé vers le nœud suivant, car le nœud de tête actuel est sur le point d'être supprimé.
-    if (q->front == NULL) {    //Si après cette opération, q->front devient NULL, cela signifie que la file est maintenant vide.
-        q->rear = NULL;    //Par conséquent, q->rear est également mis à NULL.
+    q->front = q->front->next;
+    if (q->front == NULL) {
+        q->rear = NULL;
     }
-    q->size--;    //Et on met a jour la taille de la file.
+    q->size--;
 
-    free(temp);    //On libere de la mémoire.
-    return data;    //La focntion retourne finalement les parametres de data qui viennent d'étre enlevés.
+    free(temp);
+    return data;
 }
 
-int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la file est vide ou pas et renvoie 1 pour un front NULL.
+int isQueueEmpty(Queue q) {
     return (q.front == NULL);
 }
-
-int str_to_num_fr(char *nombre) {    //Retournera un entier en fonction du str qui lui correspond.
+int str_to_num_fr(char *nombre) {
     if (strcmp(nombre, "un") == 0) return 1;
     if (strcmp(nombre, "deux") == 0) return 2;
     if (strcmp(nombre, "trois") == 0) return 3;
@@ -155,14 +141,14 @@ int str_to_num_es(char *nombre) {
 }
 
 
-int num_to_chiffre_tot_fr(char *str) {    //Utilisera les chiffres obtenus séparement pour les traiter après et obtenir le chiffre total.
+int num_to_chiffre_tot_fr(char *str) {
     char *mot;
     char ponctuation[] = " ',.-";
     int total = 0, temp = 0;
 
-    mot = strtok(str, ponctuation);    //Sépare les mots de la phrase (str) pour chaque ponctuation qu'on a déjà defini.
+    mot = strtok(str, ponctuation);
     while (mot != NULL) {
-        int num = str_to_num_fr(mot);    //Traitement des chiffres (somme ou multiplication, dépendant de leurs utilisation dans une phrase.
+        int num = str_to_num_fr(mot);
         if (num == 1000 || num == 100 || num == 20) {
             temp = (temp == 0 ? 1 : temp) * num;
             total += temp;
@@ -170,9 +156,9 @@ int num_to_chiffre_tot_fr(char *str) {    //Utilisera les chiffres obtenus sépa
         } else {
             temp += num;
         }
-        mot = strtok(NULL, ponctuation);    //Appel au mot defini.
+        mot = strtok(NULL, ponctuation);
     }
-    total += temp;    //On rajoute les valeurs réstants.
+    total += temp; // Añadir cualquier valor restante
     return total;
 }
 
@@ -193,12 +179,12 @@ int num_to_chiffre_tot_es(char *str) {
         }
         mot = strtok(NULL, ponctuation);
     }
-    total += temp;
+    total += temp; // Añadir cualquier valor restante
     return total;
 }
 
 
-bool detect_chiffre_fr(const char *word) {    //Fonction ayant le role de détecter si le str introduit corréspond à un chiffre. 
+bool detect_chiffre_fr(const char *word) {
     const char *nombre_mot[] = {
             "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf",
             "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize",
@@ -233,7 +219,7 @@ bool detect_chiffre_es(const char *word) {
 }
 
 void afficher_Action_fr(char *phrase, Queue* q){
-    char subphrases[5][200];
+    char subphrases[5][500];
     char *mots[20];
     int compt = 0;
     char Avant_chiffre[100] = "", Chiffre_mots[100] = "", Apres_chiffre[100] = "";
@@ -255,7 +241,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
     ActionData resultData;
 
 
-    for (i = 0; i < 5; i++) {    //Initialise toutes les sous-phrases à vide.
+    for (i = 0; i < 5; i++) {
         subphrases[i][0] = '\0';
     }
 
@@ -268,7 +254,8 @@ void afficher_Action_fr(char *phrase, Queue* q){
         mot = strtok(NULL, ponctuation);
     }
 
-    //On divise les sous-phrases à chaque fois qu'on trouve un "puis" et on passe a la prochaine sous-phrase, si non on garde la phrase traité diréctement comme une sous-phrase.
+
+// Dividir en subfrases y concatenarlas
     for (i = 0; i < compt; i++) {
         if (strcmp(mots[i], "puis") == 0) {
             subphr_compt++;
@@ -281,23 +268,23 @@ void afficher_Action_fr(char *phrase, Queue* q){
     for (i = 0; i <= subphr_compt; i++) {
         //printf("\nSubphrase %d: %s\n", i + 1, subphrases[i]);
 
-        //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
+        // Resetear las variables para la subfrase actual
         nombre_trouve = false;
         strcpy(Avant_chiffre, "");
         strcpy(Chiffre_mots, "");
         strcpy(Apres_chiffre, "");
 
-        mot = strtok(subphrases[i], ponctuation_chiffre);    //On diférentie les parties de la sous-phrase qui definissent les chiffres ou pas.
+        mot = strtok(subphrases[i], ponctuation_chiffre);
         while (mot != NULL) {
-            if (detect_chiffre_fr(mot)) {    //Si on détecte un mot corréspondant à un chiffre on les garde comme "Chiffre_mots".
+            if (detect_chiffre_fr(mot)) {
                 nombre_trouve = true;
                 strcat(Chiffre_mots, mot);
                 strcat(Chiffre_mots, " ");
             } else {
-                if (!nombre_trouve) {    //Si les mots se trouvent avant la détection des mots corréspondant aux chiffres on les garde comme "Avant_chiffre".
+                if (!nombre_trouve) {
                     strcat(Avant_chiffre, mot);
                     strcat(Avant_chiffre, " ");
-                } else {    //Si les mots se trouvent après la détection des mots corréspondant aux chiffres on les garde comme "Apres_chiffre".
+                } else {
                     strcat(Apres_chiffre, mot);
                     strcat(Apres_chiffre, " ");
                 }
@@ -305,24 +292,24 @@ void afficher_Action_fr(char *phrase, Queue* q){
             mot = strtok(NULL, ponctuation_chiffre);
         }
 
-        //On transforme "Chiffre_mots" en chiffre puis on réconstruit la sous-phrase initiale en charactéres et chiffres
+        // Procesar el número y reconstruir la subfrase
         chiffre = num_to_chiffre_tot_fr(Chiffre_mots);
         sprintf(subphrases[i], "%s%d %s", Avant_chiffre, chiffre, Apres_chiffre);
-        //printf("Subphrase traité: %s\n", subphrases[i]);
+        //printf("Processed Subphrase: %s\n", subphrases[i]);
     }
 
     //printf("Nb ss-phrases : %d\n",subphr_compt+1);
 
     // Imprimir las subfrases
-    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j parce que ça nous donne erreur sinon
+    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j pcq ça em donnait erreur
 
-        //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         compt_sub = 0;
         entre_flag = 0;
 
         char param1[20] = "";
         char param2[20] = "";
         char type[20] = "";
+
 
         mot_sub = strtok(subphrases[i], ponctuation_sub);
         while (mot_sub != NULL && compt_sub < 20) {
@@ -335,13 +322,12 @@ void afficher_Action_fr(char *phrase, Queue* q){
         //}
 
         for (j = 0; j < compt_sub; j++) {
-            //Si le mot de la sous-phrase corréspond a un de ceux-là alors le parametre type sur ActionData sera "Négative"
             if(strcmp(mots_sub[0], "ne") == 0 || strcmp(mots_sub[0], "n") == 0)
                 sprintf(type, "Négative");
             else
-                sprintf(type, "Affirmative");
+                sprintf(type, "Afirmative");
 
-            //Si le mot de la sous-phrase corréspond a un de ceux-là alors le parametre action sur ActionData prendra cette valeur
+
             if (strcmp(mots_sub[j], "avancer") == 0 || strcmp(mots_sub[j], "avance") == 0 ||
                 strcmp(mots_sub[j], "reculer") == 0 || strcmp(mots_sub[j], "recule") == 0 ||
                 strcmp(mots_sub[j], "tourner") == 0 || strcmp(mots_sub[j], "tourne") == 0 ||
@@ -374,17 +360,17 @@ void afficher_Action_fr(char *phrase, Queue* q){
             }
 
 
-            //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
+                //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
             else if (strcmp(action, "passer") == 0 || strcmp(action, "passe") == 0) {
 
                 if(strcmp(mots_sub[j], "entre") == 0) {
-                    entre_flag = 1;                                         // Mot "entre" trouvé, donc flag_entre (qui indique ça) est mit a 1
+                    entre_flag = 1;                                         // Mot "entre" trouvé
                     continue;
                 }
 
                 // Procesar objetos y colores después de "entre"
                 if (entre_flag == 1 && strcmp(mots_sub[j], "et") == 0){
-                    entre_flag = 0;                                         // On remet lentre_flag à 0
+                    entre_flag = 0;                                         // On remet le flag de "entre" a 0
                     continue;
                 }
 
@@ -413,11 +399,10 @@ void afficher_Action_fr(char *phrase, Queue* q){
                 }
             }
 
-            //PHRASE DU TYPE "LOCALISE/TROUVE L'[OBJET]"
-            //PHRASE DU TYPE "LOCALISE/TROUVE L'[OBJET] OU L'[OBJET]"
             else if(strcmp(action, "localiser") == 0 || strcmp(action, "localise") == 0 ||
                     strcmp(action, "trouver") == 0 || strcmp(action, "trouve") == 0) {
 
+                // Procesar objetos y colores después de "entre"
                 if (ou_flag == 0 && strcmp(mots_sub[j], "ou") == 0){
                     ou_flag = 1;                                         // On remet le flag de "ou" a 1
                     continue;
@@ -486,7 +471,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
                     // Vérifier s'il y a un mot suivant pour la couleur.
                     if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rouge") == 0 || strcmp(mots_sub[j + 1], "bleu") == 0 || strcmp(mots_sub[j + 1], "bleue") == 0 ||
                         strcmp(mots_sub[j + 1], "jaune") == 0 || strcmp(mots_sub[j + 1], "orange") == 0)) {
-                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);
+                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);         // On converti le résultat en chaine et on les met ensemble
                     } else {
                         sprintf(param2, "%s ", mots_sub[j]);
                     }
@@ -503,25 +488,26 @@ void afficher_Action_fr(char *phrase, Queue* q){
                     }else{
                         result = convertDouble(mots_sub[j - 1]);
                     }
-                    sprintf(param2, "%.0f %s", result, mots_sub[j]);
+                    sprintf(param2, "%.0f %s", result, mots_sub[j]);                 // On converti le résultat en chaine et on les met ensemble
                 }
             }
         }
-        
-        //On copie le contenu de action, param1, param2 et type dans les paramétres de resultData, qui est une variable du type ActionData
-        strcpy(resultData.action, action);
+        if (action != NULL && action[0] != '\0') {
+            strncpy(resultData.action, action, 20 - 1);
+        }
+        // Asumiendo que param1 y param2 se llenan correctamente en el procesamiento
         strcpy(resultData.param1, param1);
         strcpy(resultData.param2, param2);
         strcpy(resultData.type, type);
 
-        //On enfile le contenu de resultData dans le file du FIFO
-        enqueue(q, resultData);
+
+        enqueue(q, resultData); // Enqueue cada subfrase procesada
     }
 
 }
 
 void afficher_Action_es(char *phrase, Queue* q){
-    char subphrases[5][200];
+    char subphrases[5][500];
     char *mots[20];
     int compt = 0;
     char Avant_chiffre[100] = "", Chiffre_mots[100] = "", Apres_chiffre[100] = "";
@@ -555,6 +541,7 @@ void afficher_Action_es(char *phrase, Queue* q){
     }
 
 
+// Dividir en subfrases y concatenarlas
     for (i = 0; i < compt; i++) {
         if (strcmp(mots[i], "luego") == 0) {
             subphr_compt++;
@@ -566,6 +553,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     for (i = 0; i <= subphr_compt; i++) {
 
+        // Resetear las variables para la subfrase actual
         nombre_trouve = false;
         strcpy(Avant_chiffre, "");
         strcpy(Chiffre_mots, "");
@@ -589,12 +577,14 @@ void afficher_Action_es(char *phrase, Queue* q){
             mot = strtok(NULL, ponctuation_chiffre);
         }
 
+        // Procesar el número y reconstruir la subfrase
         chiffre = num_to_chiffre_tot_es(Chiffre_mots);
         sprintf(subphrases[i], "%s%d %s", Avant_chiffre, chiffre, Apres_chiffre);
     }
 
 
-    //for (i = 0; i <= subphr_compt; i++) {
+    // Imprimir las subfrases
+    for (i = 0; i <= subphr_compt; i++) {
 
 
         compt_sub = 0;
@@ -611,7 +601,7 @@ void afficher_Action_es(char *phrase, Queue* q){
             mot_sub = strtok(NULL, ponctuation_sub);
         }
 
-        //for (j = 0; j < compt_sub; j++) { 
+        //for (j = 0; j < compt_sub; j++) {
         //    printf("mot[%d]=%s\n", j, mots_sub[j]);
         //}
 
@@ -634,7 +624,8 @@ void afficher_Action_es(char *phrase, Queue* q){
                 action = mots_sub[j];
             }
 
-            
+            //PHRASE DU TYPE "CONTOURNER PAR LA [DIRECTION] L'[OBJET]"
+            //PHRASE DU TYPE "CONTOURNER L'[OBJET] PAR LA [DIRECTION]"
             if(strcmp(action, "rodear") == 0 || strcmp(action, "rodea") == 0 || strcmp(mots_sub[j], "rodées") == 0) {
 
                 if(strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
@@ -652,16 +643,18 @@ void afficher_Action_es(char *phrase, Queue* q){
                 }
             }
 
-                
+                //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
+                //PHRASE DU TYPE "PASSER À [DIRECTION] DE L'[OBJET]"
             else if (strcmp(action, "pasar") == 0 || strcmp(action, "pasa") == 0 || strcmp(mots_sub[j], "pases") == 0) {
 
                 if(strcmp(mots_sub[j], "entre") == 0) {
-                    entre_flag = 1;              
+                    entre_flag = 1;                                         // Mot "entre" trouvé
                     continue;
                 }
 
+                // Procesar objetos y colores después de "entre"
                 if (entre_flag == 1 && strcmp(mots_sub[j], "y") == 0){
-                    entre_flag = 0;                                        
+                    entre_flag = 0;                                         // On remet le flag de "entre" a 0
                     continue;
                 }
 
@@ -693,8 +686,9 @@ void afficher_Action_es(char *phrase, Queue* q){
             else if(strcmp(action, "localizar") == 0 || strcmp(action, "localiza") == 0 || strcmp(action, "localices") == 0 ||
                     strcmp(action, "encontrar") == 0 || strcmp(action, "encuentra") == 0 || strcmp(action, "encuentres") == 0) {
 
+                // Procesar objetos y colores después de "entre"
                 if (ou_flag == 0 && strcmp(mots_sub[j], "o") == 0){
-                    ou_flag = 1;                                      
+                    ou_flag = 1;                                         // On remet le flag de "ou" a 1
                     continue;
                 }
 
@@ -738,7 +732,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 
             else{
 
-                
+                //PHRASE DU TYPE "AVANCER DE [DISTANCE]"
                 if (strcmp(mots_sub[j], "metros") == 0 || strcmp(mots_sub[j], "metro") == 0 || strcmp(mots_sub[j], "centimetros") == 0 || strcmp(mots_sub[j], "milimetros") == 0) {
                     if(strcmp(mots_sub[j-1], "y") == 0) {
                         result = convertDouble(mots_sub[j - 2]);
@@ -750,23 +744,26 @@ void afficher_Action_es(char *phrase, Queue* q){
                     } else if (strcmp(mots_sub[j], "milimetros") == 0) {
                         result *= 0.001;
                     }
-                    sprintf(param2, "%.3f metros ", result);                     
+                    sprintf(param2, "%.3f metros ", result);                     // On converti le résultat en chaine et on les met ensemble
                 }
 
-                
+                //PHRASE DU TYPE "AVANCER JUSQU'À L'[OBJET]"
+                //PHRASE DU TYPE "TOURNER JUSQU'À LOCALISER L'[OBJET]"
+                //PHRASE DU TYPE "TOURNER À [DIRECTION] JUSQU'À LOCALISER L'[OBJET]"
                 if (strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
                     strcmp(mots_sub[j], "cuadrado") == 0 || strcmp(mots_sub[j], "cubo") == 0) {
-
+                    // Vérifier s'il y a un mot suivant pour la couleur.
                     if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
                     strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
-                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);        
+                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);         // On converti le résultat en chaine et on les met ensemble
                     } else {
                         sprintf(param2, "%s ", mots_sub[j]);
                     }
                 }
 
 
-                
+                //PHRASE DU TYPE "TOURNER DE [VAL] DEGRÉS"
+                //PHRASE DU TYPE "TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
                 if(strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
                     sprintf(param1, "%s", mots_sub[j]);
 
@@ -776,17 +773,18 @@ void afficher_Action_es(char *phrase, Queue* q){
                     }else{
                         result = convertDouble(mots_sub[j - 1]);
                     }
-                    sprintf(param2, "%.0f %s", result, mots_sub[j]);          
+                    sprintf(param2, "%.0f %s", result, mots_sub[j]);                 // On converti le résultat en chaine et on les met ensemble
                 }
             }
         }
-            
-        strcpy(resultData.action, action);
+        if (action != NULL && action[0] != '\0') {
+            strncpy(resultData.action, action, 20 - 1);
+        }
+        // Asumiendo que param1 y param2 se llenan correctamente en el procesamiento
         strcpy(resultData.param1, param1);
         strcpy(resultData.param2, param2);
         strcpy(resultData.type, type);
 
-        enqueue(q, resultData);
+        enqueue(q, resultData); // Enqueue cada subfrase procesada
     }
-
-
+}
