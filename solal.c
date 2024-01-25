@@ -5,8 +5,24 @@
 #include <unistd.h>
 #include "solal.h"
 
+void changementDeBase(int* coin_HD, int* milieu_bleu, int* milieu_jaune, int* milieu_orange) {
+    int recentrage_x = coin_HD[0] / 2;
+    int recentrage_y = coin_HD[1] / 2;
 
-void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){
+    coin_HD[0] -= recentrage_x;
+    coin_HD[1] -= recentrage_y;
+
+    milieu_bleu[0] -= recentrage_x;
+    milieu_bleu[1] = -milieu_bleu[1] + recentrage_y;
+
+    milieu_jaune[0] -= recentrage_x;
+    milieu_jaune[1] = -milieu_jaune[1] + recentrage_y;
+
+    milieu_orange[0] -= recentrage_x;
+    milieu_orange[1] = -milieu_orange[1] + recentrage_y;
+}
+
+void modeliserEnvironnement(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){
 
     char res[1000] = "";
 
@@ -33,7 +49,7 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
     fclose(python_process);
 } 
 
-void actionsPy(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune, int *milieu_orange){ 
+void modeliserActions(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune, int *milieu_orange){ 
     char res[1000] = "";
 
     sprintf(res + strlen(res),"tl.speed(0)");
