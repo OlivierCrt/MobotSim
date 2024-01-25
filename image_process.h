@@ -1,5 +1,5 @@
-#ifndef IMAGE_PROCESS_H
-#define IMAGE_PROCESS_H
+#ifndef OLIVIER_H
+#define OLIVIER_H
 
 #include <stdio.h>
 #include <stdlib.h>
