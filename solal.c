@@ -184,6 +184,42 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
                 }    
             }
         }
+//Subphrase: "TOURNER JUSQU'À LOCALISER L'[OBJET]" ou bien "TOURNER À [DIRECTION] JUSQU'À LOCALISER L'[OBJET]"
+
+//Subphrase:"TROUVER L'[OBJET]" ou bien "LOCALISER L'[OBJET]"
+
+//Subphrase:"PASSER ENTRE [OBJET_1] ET [OBJET_2]"
+
+//Subphrase:"COMPTER LE NOMBRE D'[OBJET]"
+        if(strcmp(mat[nbaction][0], "compter") == 0 || strcmp(mat[nbaction][0], "compte") == 0 || strcmp(mat[nbaction][0], "contar") == 0 || strcmp(mat[nbaction][0], "cuenta") == 0 || strcmp(mat[nbaction][0], "cuentes") == 0){
+            if ((strstr(mat[nbaction][2], "balles") != NULL) || (strstr(mat[nbaction][2], "boules") != NULL) || (strstr(mat[nbaction][2], "bolas") != NULL)|| (strstr(mat[nbaction][2], "pelotas") != NULL)){                
+                if ((strstr(mat[nbaction][2], "jaune") != NULL) || (strstr(mat[nbaction][2], "amarillo") != NULL) || (strstr(mat[nbaction][2], "amarilla") != NULL)){
+                    if (rayon_jaune >0){
+                        sprintf(res + strlen(res),";print('Il y a 1 boule jaune.')"); 
+                    }                 
+                }
+                else if ((strstr(mat[nbaction][2], "bleu") != NULL)||(strstr(mat[nbaction][2], "bleue") != NULL)||(strstr(mat[nbaction][2], "azul") != NULL)){
+                    if (rayon_bleu >0){
+                        sprintf(res + strlen(res),";print('Il y a 1 boule bleue.')");
+                    }
+                }
+                else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
+                    if (rayon_orange >0){
+                        sprintf(res + strlen(res),";print('Il y a 1 boule orange.')");
+                    }    
+                }
+                else{
+                    int nb_boules = 0;
+                    if (rayon_jaune >0){nb_boules+=1;}
+                    if (rayon_bleu >0){nb_boules+=1;}
+                    if (rayon_orange >0){nb_boules+=1;}
+                    sprintf(res + strlen(res),";print('Il y a %d boule(s).')",nb_boules);
+                }
+            }
+            else{
+                sprintf(res + strlen(res),";print('Lobjet recherché nest pas présent sur limage.')");
+            }
+        }      
     }
 }
 
