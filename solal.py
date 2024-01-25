@@ -5,9 +5,9 @@ import sys
 sc = tl.Screen() 
 tl.speed(2)
 
-#
-def initialisation(x_HD, y_HD,nom):
 
+
+def initialisation(x_HD, y_HD,nom):
     """
     Initialise l'environnement : Donne u titre, place le fond, créé un contour et affiche les coordonnées. 
 
@@ -29,7 +29,6 @@ def initialisation(x_HD, y_HD,nom):
     sc.bgpic(newnom)
 
     sc.setup(2*x_HD + 50,2*y_HD + 50) 
-
 
     tl.up()
     tl.right(90)
@@ -59,6 +58,30 @@ def initialisation(x_HD, y_HD,nom):
         tl.write(coy+5, font=("Calibri", 8, "bold"),align='center')
         coy+=50
     tl.down()
+
+
+
+# Fonction pour setup le robot
+def set_robot_position(x, y, angle):
+    """
+    Place le robot dans la position d'où est prise la photo, puis configure son apparence et l'apparence de son tracé.
+
+    :param x: Coordonnée X du centre du robot.
+    :type x: int
+    :param y: Coordonnée Y du centre du robot.
+    :type y: int
+    :param angle_degrees: Orientation initiale du robot en degrés.
+    :type angle_degrees: int
+    """
+    tl.up()
+    tl.goto(x, y)
+    tl.shape()
+    tl.shapesize(2, 2)
+    tl.fillcolor("aqua")
+    tl.setheading(angle)
+    tl.down()
+    tl.width(1) 
+    tl.color("aqua")      
 
 def avancer(d):
     '''
@@ -91,15 +114,14 @@ def avancer(d):
         tl.sety(-150)
         
 
-def reculer(d):
 
+def reculer(d):
     '''
     Permet au robot de reculer sans sortir de l'image. Même fonction qu'au dessus mais pour reculer.
 
     :param d: Distance à parcourir.
     :type d: int
-    '''
-    
+    '''   
     while d > 0:
         if (-50<tl.xcor()<50) and (-50<tl.ycor()<50):
             tl.backward(90)
@@ -123,10 +145,7 @@ def reculer(d):
 
 
 
-# Fonction pour créer une boule
-
 def boule(x, y, r, coul):
-
     '''
     Dessine une boule de couleur "coul" de centre (x,y) et de rayon r.
 
@@ -149,6 +168,8 @@ def boule(x, y, r, coul):
     tl.circle(r)
     tl.end_fill()
 
+
+
 def gobj(couleur): 
     """
     Déplace le robot vers le point le plus proche de la boule en paramètre.
@@ -165,9 +186,24 @@ def gobj(couleur):
     #fais avancer le robot jusqua ce point
     tl.forward(distance)
 
+
+def tournobj(x,y,sens):
+    '''
+    Fait tourner le robot sur lui même jusqu'à ce qu'il détecte l'objet spécifié. Tourne par la droite si sens =1 et par la gauche si sens = -1
+
+    :param x: Coordonnée X du centre de l'objet.
+    :type x: int
+    :param y: Coordonnée Y du centre de l'objet.
+    :type y: int
+    :param sens: Direction de rotation (1 pour horaire, -1 pour anti-horaire).
+    :type sens: int
+    '''
+    tl.setheading(tl.towards(x, y))
+
+
 def contobj(x,y,r,coul,sens):
     """
-    Fais avancer le robot jusqu'à la boule spécifiée puis la contourne. Par la droite si sens =1 et par la gauche si sens = -1
+    Fais avancer le robot jusqu'à l'objet spécifié puis le contourne. Par la droite si sens =1 et par la gauche si sens = -1
 
     :param x: Coordonnée X du centre de l'objet.
     :type x: int
@@ -189,34 +225,11 @@ def contobj(x,y,r,coul,sens):
     tl.forward(r)
     tl.right(sens*90)
    
-# Fonction pour setup le robot
-def set_robot_position(x, y, angle):
-    """
-    Place le robot dans la position d'où est prise la photo, puis configure son apparence et l'apparence de son tracé.
-
-    :param x: Coordonnée X du centre du robot.
-    :type x: int
-    :param y: Coordonnée Y du centre du robot.
-    :type y: int
-    :param angle_degrees: Orientation initiale du robot en degrés.
-    :type angle_degrees: int
-    """
-    tl.up()
-    tl.goto(x, y)
-    tl.shape()
-    tl.shapesize(2, 2)
-    tl.fillcolor("aqua")
-    tl.setheading(angle)
-    tl.down()
-    tl.width(1) 
-    tl.color("aqua")                
+          
 
 #Ne s'exécute que si ce code est exécuté en tant que code principal
 if __name__ == "__main__":
-    # peut etre placer random le robot ???
-    x = 0
-    y = -140
-    angle_degrees = 90
+    #Assure que le robot est bien en mode standard.
     tl.mode("standard")
     #Lis les fonctions envoyé par le .c
     code_turtle = sys.stdin.read() 
@@ -228,5 +241,3 @@ time.sleep(3)
 #La fenêtre se ferme en cliquant dessus.
 sc.exitonclick()
 
-#rajouter la phrase de type trouver une balle rouge, ou bleue
-#rajouter la phrase combien il y a t il de balles
