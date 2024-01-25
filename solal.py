@@ -5,19 +5,36 @@ import sys
 sc = tl.Screen() 
 tl.speed(2)
 
+#
 def initialisation(x_HD, y_HD,nom):
-    
-    sc.title("MODELISATION: " + nom)
-    indice_txt = nom.find("txt")
+
+    """
+    Initialise l'environnement : Donne u titre, place le fond, créé un contour et affiche les coordonnées. 
+
+    :param x_HD: Coordonnée X du coin supérieur droit.
+    :type x_HD: int
+    :param y_HD: Coordonnée Y du coin supérieur droit.
+    :type y_HD: int
+    :param nom: Position de l'image.
+    :type nom: str
+    """ 
+    # Titre
+    sc.title("MODELISATION: " + nom) 
+
+    #Place le fond d'écran après remplacé l'extension par .gif
+    indice_txt = nom.find("txt") 
     newnom = nom[:indice_txt] + "gif" 
     newnom+= newnom[indice_txt + 3:]
     sc.bgpic(newnom)
 
-    sc.setup(350,350) 
+    sc.setup(x_HD + 50,y_HD + 50) 
+
+
     tl.up()
     tl.right(90)
     longueur_cote = x_HD * 2 +10 
     tl.goto(x_HD+5, y_HD+5)
+
     # Traçage du contour
     tl.width(20)                 
     tl.color('DarkGreen')          
@@ -25,6 +42,8 @@ def initialisation(x_HD, y_HD,nom):
     for i in range(4):
         tl.forward(longueur_cote)
         tl.right(90)
+
+    # Affichage des coordonnées
     tl.width(1) 
     tl.up()
     tl.color('red')
@@ -41,7 +60,13 @@ def initialisation(x_HD, y_HD,nom):
     tl.down()
 
 def avancer(d):
-    
+    '''
+    Permet au robot d'avancer sans sortir de l'image.
+
+    :param d: Distance à parcourir.
+    :type d: int
+    '''
+    #Fais avancer le robot tant qu'il est dans la zone de l'image.
     while d > 0:
         if (-50<tl.xcor()<50) and (-50<tl.ycor()<50):
             tl.forward(90)
@@ -54,6 +79,7 @@ def avancer(d):
             d-=1          
         else:
             d=0 
+    #Dans le cas où le robot serait sorti de la zone de quelques millimètres, il est replacé dedans.
     if tl.xcor()>150:
         tl.setx(150)
     if tl.xcor()<-150:
@@ -65,6 +91,13 @@ def avancer(d):
         
 
 def reculer(d):
+
+    '''
+    Permet au robot de reculer sans sortir de l'image. Même fonction qu'au dessus mais pour reculer.
+
+    :param d: Distance à parcourir.
+    :type d: int
+    '''
     
     while d > 0:
         if (-50<tl.xcor()<50) and (-50<tl.ycor()<50):
@@ -92,6 +125,19 @@ def reculer(d):
 # Fonction pour créer une boule
 
 def boule(x, y, r, coul):
+
+    '''
+    Dessine une boule de couleur "coul" de centre (x,y) et de rayon r.
+
+    :param x: Coordonnée X du centre de la boule.
+    :type x: int
+    :param y: Coordonnée Y du centre de la boule.
+    :type y: int
+    :param r: Rayon de la boule.
+    :type r: int
+    :param coul: Couleur de la boule.
+    :type c
+    '''
     
     tl.up()
     tl.goto(x-r,y)
@@ -103,12 +149,36 @@ def boule(x, y, r, coul):
     tl.end_fill()
 
 def gobj(couleur): 
+    """
+    Déplace le robot vers le point le plus proche de la boule en paramètre.
+
+    :param couleur: Liste représentant l'objet [x, y, r, coul].
+    :type couleur: list
+    """
+    #trouve l'angle entre le centre de la boule et le robot
     angle = tl.towards(couleur[0], couleur[1])
+    #place le robot dans cette direction
     tl.setheading(angle)
+    #calcul la distance entre le robot et le point le plus proche de la boule
     distance = tl.distance(couleur[0], couleur[1]) - couleur[2]
+    #fais avancer le robot jusqua ce point
     tl.forward(distance)
 
 def contobj(x,y,r,coul,sens):
+    """
+    Fais avancer le robot jusqu'à la boule spécifiée puis la contourne. Par la droite si sens =1 et par la gauche si sens = -1
+
+    :param x: Coordonnée X du centre de l'objet.
+    :type x: int
+    :param y: Coordonnée Y du centre de l'objet.
+    :type y: int
+    :param r: Rayon de l'objet.
+    :type r: int
+    :param coul: Couleur de l'objet.
+    :type coul: str
+    :param sens: Direction de rotation (1 pour horaire, -1 pour anti-horaire).
+    :type sens: int
+    """
     gobj([x,y,r,coul])
     tl.right(sens*90)
     tl.forward(r)
@@ -119,27 +189,42 @@ def contobj(x,y,r,coul,sens):
     tl.right(sens*90)
    
 # Fonction pour setup le robot
-def set_robot_position(x, y, angle_degrees):
+def set_robot_position(x, y, angle):
+    """
+    Place le robot dans la position d'où est prise la photo, puis configure son apparence et l'apparence de son tracé.
+
+    :param x: Coordonnée X du centre du robot.
+    :type x: int
+    :param y: Coordonnée Y du centre du robot.
+    :type y: int
+    :param angle_degrees: Orientation initiale du robot en degrés.
+    :type angle_degrees: int
+    """
     tl.up()
     tl.goto(x, y)
     tl.shape()
     tl.shapesize(2, 2)
     tl.fillcolor("aqua")
-    tl.setheading(angle_degrees)
+    tl.setheading(angle)
     tl.down()
     tl.width(1) 
     tl.color("aqua")                
 
+#Ne s'exécute que si ce code est exécuté en tant que code principal
 if __name__ == "__main__":
     # peut etre placer random le robot ???
     x = 0
     y = -140
-    angle_degrees = 90 
+    angle_degrees = 90
     tl.mode("standard")
+    #Lis les fonctions envoyé par le .c
     code_turtle = sys.stdin.read() 
+    #Exécute ces fonctions
     exec(code_turtle)
 
+#Attend 3 secondes que le robot ait terminé.
 time.sleep(3)
+#La fenêtre se ferme en cliquant dessus.
 sc.exitonclick()
 
 #rajouter la phrase de type trouver une balle rouge, ou bleue
