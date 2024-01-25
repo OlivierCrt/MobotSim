@@ -5,19 +5,29 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#include "image_process.h"
+#include "olivier.h"
 #include "ismael.h"
 #include "solal.h"
 
+
+
 void main_img(){
-    printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
-    char nomfichier[100]; //je l'utilise aussi pour le fond d'ecran turtle
-    int nombre;
-    do {
-        printf("Entrez le nom de l'image que vous souhaitez modéliser : ");
+    printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
+    char nomfichier[100]; //Utilisé par la simulation aussi
+    int verif=0;
+    while( verif !=1){
+        printf("Veuillez entrer le chemin d'accès de l'image que vous souhaitez utiliser : ");
         scanf("%s", nomfichier);
-        sscanf(nomfichier, "IMG_%d.txt", &nombre);
-    } while (nombre < 5389 || nombre > 5408 );
+        if (access(nomfichier, F_OK)!= -1){           
+            verif = 1;
+            printf("\x1B[1;32mLe fichier a bien été chargé.\x1B[0m\n");
+        }
+        else{
+            printf("Le chemin spécifié n'existe pas.\n");
+        }
+    }
+
+    printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
 
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
@@ -55,7 +65,7 @@ void main_img(){
 
 void main_txt(){
     printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
-    char nomfichier[100]= "IMG_5408.txt"; //je l'utilise aussi pour le fond d'ecran turtle
+    char nomfichier[100]= "images/IMG_5408.txt"; //je l'utilise aussi pour le fond d'ecran turtle
 
     int rayon_bleu =-1;int rayon_jaune=-1;int rayon_orange=-1;//-1 si pas de rayon
     int *milieu_bleu =malloc(2 * sizeof(int));int *milieu_jaune=malloc(2 * sizeof(int));int *milieu_orange= malloc(2 * sizeof(int));//liste vide si existe pas
@@ -137,16 +147,21 @@ void main_txt(){
 
 void main_imgtxt(){
 
-    printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
-    
-    char nomfichier[100]; //je l'utilise aussi pour le fond d'ecran turtle
-    int nombre;
-
-    do {
-        printf("Entrez le nom de l'image que vous souhaitez modéliser : ");
+    printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
+    char nomfichier[100]; //Utilisé par la simulation aussi
+   
+    int verif=0;
+    while( verif !=1){
+         printf("Veuillez entrer le chemin d'accès de l'image que vous souhaitez utiliser : ");
         scanf("%s", nomfichier);
-        sscanf(nomfichier, "IMG_%d.txt", &nombre);
-    } while (nombre < 5389 || nombre > 5408 );
+        if (access(nomfichier, F_OK)!= -1){           
+            verif = 1;
+            printf("\x1B[1;32mLe fichier a bien été chargé.\x1B[0m\n");
+        }
+        else{
+            printf("Le chemin spécifié n'existe pas.\n");
+        }
+    }
 
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
@@ -253,10 +268,11 @@ void main_imgtxt(){
 
 
 int main() {
+    printf("\n\x1B[1m---------------BIENVENUE DANS LE MENU PRINCIPAL--------------\x1B[0m\n\n");
     char choix;
 
     do {
-        printf("Veuillez entrer un chiffre entre 1 et 4\n\n1- Modéliser une image.\n2- Se déplacer dans une pièce vide.\n3- Modéliser une image puis se déplacer dedans.\n4- Quitter ce programme.\n");
+        printf("Veuillez entrer le chiffre correspondant à l'action souhaitée: \n\n1- Modéliser une image.\n2- Se déplacer dans une pièce vide.\n3- Modéliser une image puis se déplacer dedans.\n4- Quitter ce programme.\n\n");
         scanf(" %c", &choix);
 
         switch (choix) {
@@ -273,6 +289,7 @@ int main() {
                 return 0;
             default:
                 printf("Choix non valide.\n");
+                printf("-----------------------------------------------\n\n");
         }
     } while (choix < '1' || choix > '4');
 
