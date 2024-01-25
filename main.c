@@ -9,8 +9,6 @@
 #include "ismael.h"
 #include "solal.h"
 
-
-
 void main_img(){
     printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
     char nomfichier[100]; //Utilisé par la simulation aussi
@@ -27,8 +25,6 @@ void main_img(){
         }
     }
 
-    printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
-
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
     main_it(&rayon_bleu, &rayon_jaune, &rayon_orange,&milieu_bleu, &milieu_jaune, &milieu_orange, nomfichier );
@@ -37,20 +33,7 @@ void main_img(){
     coin_HD[0] = 300;
     coin_HD[1] = 300;
 
-    int recentrage_x = coin_HD[0]/2;
-    int recentrage_y = coin_HD[1]/2;
-
-    coin_HD[0] -= recentrage_x;
-    coin_HD[1] -= recentrage_y;
-      
-    milieu_bleu[0] -= recentrage_x;
-    milieu_bleu[1] = -milieu_bleu[1] +recentrage_y;
-
-    milieu_jaune[0] -= recentrage_x;
-    milieu_jaune[1] = -milieu_jaune[1] +recentrage_y;
-   
-    milieu_orange[0] -= recentrage_x;
-    milieu_orange[1] = -milieu_orange[1] +recentrage_y;
+    changementDeBase(coin_HD, milieu_bleu, milieu_jaune, milieu_orange);
    
     while (getchar() != '\n') {         
     }
@@ -59,16 +42,15 @@ void main_img(){
     while (getchar() != '\n') {   
     }
 
-    envPy(nomfichier, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
+    modeliserEnvironnement(nomfichier, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
 
 }
 
 void main_txt(){
-    printf("\n\x1B[1m---------------NOUVELLE IMAGE--------------\x1B[0m\n\n");
-    char nomfichier[100]= "images/IMG_5408.txt"; //je l'utilise aussi pour le fond d'ecran turtle
+    char nomfichier[100]= "images/IMG_5408.txt"; 
 
-    int rayon_bleu =-1;int rayon_jaune=-1;int rayon_orange=-1;//-1 si pas de rayon
-    int *milieu_bleu =malloc(2 * sizeof(int));int *milieu_jaune=malloc(2 * sizeof(int));int *milieu_orange= malloc(2 * sizeof(int));//liste vide si existe pas
+    int rayon_bleu =-1;int rayon_jaune=-1;int rayon_orange=-1;
+    int *milieu_bleu =malloc(2 * sizeof(int));int *milieu_jaune=malloc(2 * sizeof(int));int *milieu_orange= malloc(2 * sizeof(int));
     milieu_bleu[0] = milieu_bleu[1] = milieu_jaune[0] = milieu_jaune[1] = milieu_orange[0] = milieu_orange[1] = 0;
 
     char phrase[200];
@@ -87,8 +69,6 @@ void main_txt(){
 
     printf("\x1B[1m---------------TRAITEMENT DE TEXTE--------------\x1B[0m\n\n");
     printf("\x1B[4mCHOIX DE LA LANGUE:\x1B[0m\n\n");
-
-
 
     printf("Choisissez la langue avec laquelle gérer la phrase.\nEntrez 'es' pour espagnol et 'fr' pour français : ");
     fgets(lang, sizeof(lang), stdin); // Lee la elección del idioma, incluyendo '\n'
@@ -141,7 +121,7 @@ void main_txt(){
     }
     printf("\n");
 
-   actionsPy(nomfichier,mat,mat_compt, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
+   modeliserActions(nomfichier,mat,mat_compt, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
 
 }
 
@@ -179,20 +159,8 @@ void main_imgtxt(){
     coin_HD[0] = 300;
     coin_HD[1] = 300;
 
-    int recentrage_x = coin_HD[0]/2;
-    int recentrage_y = coin_HD[1]/2;
+    changementDeBase(coin_HD, milieu_bleu,  milieu_jaune,  milieu_orange);
 
-    coin_HD[0] -= recentrage_x;
-    coin_HD[1] -= recentrage_y;
-      
-    milieu_bleu[0] -= recentrage_x;
-    milieu_bleu[1] = -milieu_bleu[1] +recentrage_y;
-
-    milieu_jaune[0] -= recentrage_x;
-    milieu_jaune[1] = -milieu_jaune[1] +recentrage_y;
-   
-    milieu_orange[0] -= recentrage_x;
-    milieu_orange[1] = -milieu_orange[1] +recentrage_y;
    
     while (getchar() != '\n') {         
     }
@@ -202,9 +170,9 @@ void main_imgtxt(){
     }
 
 
-    envPy(nomfichier, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
+    modeliserEnvironnement(nomfichier, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
 
-     printf("\n\n");
+    printf("\n\n");
 
     printf("\x1B[1m---------------TRAITEMENT DE TEXTE--------------\x1B[0m\n\n");
     printf("\x1B[4mCHOIX DE LA LANGUE:\x1B[0m\n\n");
@@ -262,7 +230,7 @@ void main_imgtxt(){
     }
     printf("\n");
 
-   actionsPy(nomfichier,mat,mat_compt, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
+    modeliserActions(nomfichier,mat,mat_compt, coin_HD, rayon_bleu, rayon_jaune, rayon_orange, milieu_bleu, milieu_jaune, milieu_orange);
 
 }
 
@@ -307,7 +275,8 @@ avance jusqua la boule jaune puis avance jusqua la boule orange puis avance jusq
 contourne la balle bleue par la droite
 
 compter le nb de boul
-
+#rajouter la phrase de type trouver une balle rouge, ou bleue
+#rajouter la phrase combien il y a t il de balles
 
 mettre un menu avec 1 faire la modélisation ; 2 faire les instruction ; 3 faire les 2 l'un apres l'autre ; 4 quitter 
 */
