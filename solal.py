@@ -19,7 +19,8 @@ def initialisation(x_HD, y_HD,nom):
     :type nom: str
     """ 
     # Titre
-    sc.title("MODELISATION: " + nom) 
+    nomtitre = nom
+    sc.title("MODELISATION: " + nomtitre.split("/")[-1]) 
 
     #Place le fond d'écran après remplacé l'extension par .gif
     indice_txt = nom.find("txt") 
@@ -27,7 +28,7 @@ def initialisation(x_HD, y_HD,nom):
     newnom+= newnom[indice_txt + 3:]
     sc.bgpic(newnom)
 
-    sc.setup(x_HD + 50,y_HD + 50) 
+    sc.setup(2*x_HD + 50,2*y_HD + 50) 
 
 
     tl.up()
