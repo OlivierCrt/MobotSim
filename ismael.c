@@ -325,7 +325,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
             if(strcmp(mots_sub[0], "ne") == 0 || strcmp(mots_sub[0], "n") == 0)
                 sprintf(type, "Négative");
             else
-                sprintf(type, "Afirmative");
+                sprintf(type, "Affirmative");
 
 
             if (strcmp(mots_sub[j], "avancer") == 0 || strcmp(mots_sub[j], "avance") == 0 ||
@@ -610,7 +610,7 @@ void afficher_Action_es(char *phrase, Queue* q){
             if(strcmp(mots_sub[0], "no") == 0)
                 sprintf(type, "Negativa");
             else
-                sprintf(type, "Afirmativa");
+                sprintf(type, "Affirmativa");
 
 
             if (strcmp(mots_sub[j], "avanzar") == 0 || strcmp(mots_sub[j], "avanza") == 0 || strcmp(mots_sub[j], "avances") == 0 ||
