@@ -49,7 +49,6 @@ void actionsPy(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, 
         sprintf(res + strlen(res),";boule(%d,%d,%d,'orange')", milieu_orange[0],milieu_orange[1],rayon_orange);
     }
       
-    sprintf(res + strlen(res),";tl.up()");
     sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
     sprintf(res + strlen(res),";tl.speed(1);time.sleep(1)");
     
