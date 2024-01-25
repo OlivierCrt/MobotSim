@@ -22,11 +22,7 @@ void envPy(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int r
         sprintf(res + strlen(res),";boule(%d,%d,%d,'orange')", milieu_orange[0],milieu_orange[1],rayon_orange);
     }    
 
-    sprintf(res + strlen(res),";tl.up()");
-
-    sprintf(res + strlen(res),";set_robot_position(x, y, angle_degrees)"); 
-    
-    sprintf(res + strlen(res),";tl.up()");
+    sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
 
 
     // Exécuter le script Python avec le code Turtle en tant que sortie
@@ -54,7 +50,7 @@ void actionsPy(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, 
     }
       
     sprintf(res + strlen(res),";tl.up()");
-    sprintf(res + strlen(res),";set_robot_position(x, y, angle_degrees)"); // peut etre modifier apres avoir eu la taille de l'image
+    sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
     sprintf(res + strlen(res),";tl.speed(1);time.sleep(1)");
     
 
