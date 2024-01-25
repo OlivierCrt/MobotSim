@@ -178,7 +178,3 @@ FILE* python_process = popen("python3 solal.py", "w");
 fprintf(python_process, "%s", res);
 fclose(python_process);
 }
-
-int main(){
-    return 1;
-}
