@@ -185,8 +185,40 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
             }
         }
 //Subphrase: "TOURNER JUSQU'À LOCALISER L'[OBJET]" ou bien "TOURNER À [DIRECTION] JUSQU'À LOCALISER L'[OBJET]"
-
 //Subphrase:"TROUVER L'[OBJET]" ou bien "LOCALISER L'[OBJET]"
+
+        if(strcmp(mat[nbaction][0], "localise") == 0 || strcmp(mat[nbaction][0], "localiser") == 0 || strcmp(mat[nbaction][0], "localizar") == 0 || strcmp(mat[nbaction][0], "localiza") == 0 || strcmp(mat[nbaction][0], "localices") == 0 || strcmp(mat[nbaction][0], "trouve") == 0 || strcmp(mat[nbaction][0], "trouver") == 0 || strcmp(mat[nbaction][0], "encontrar") == 0 || strcmp(mat[nbaction][0], "encuentra") == 0 || strcmp(mat[nbaction][0], "encuentres") == 0){
+            if ((strstr(mat[nbaction][1], "jaune") != NULL) || (strstr(mat[nbaction][1], "amarillo") != NULL) || (strstr(mat[nbaction][1], "amarilla") != NULL)){
+                if (rayon_jaune >0){
+                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_jaune[0],milieu_jaune[1]);  
+                    }
+                    else{
+                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_jaune[0],milieu_jaune[1]);
+                    }
+                }                 
+            }
+            else if ((strstr(mat[nbaction][1], "bleu") != NULL)||(strstr(mat[nbaction][1], "bleue") != NULL)||(strstr(mat[nbaction][1], "azul") != NULL)){
+                if (rayon_bleu >0){
+                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_bleu[0],milieu_bleu[1]);             
+                    }
+                    else{
+                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_bleu[0],milieu_bleu[1]);
+                    }
+                }
+            }
+            else if ((strstr(mat[nbaction][1], "orange") != NULL)||(strstr(mat[nbaction][1], "naranja") != NULL)){
+                if (rayon_orange >0){
+                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){             
+                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_orange[0],milieu_orange[1]);      
+                    }
+                    else{
+                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_orange[0],milieu_orange[1]);  
+                    }
+                }    
+            }
+        }
 
 //Subphrase:"PASSER ENTRE [OBJET_1] ET [OBJET_2]"
 
