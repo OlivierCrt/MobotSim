@@ -4,6 +4,10 @@
 #include "stdlib.h"
 #include "stdbool.h"
 #include "ctype.h"
+/**
+ * @file
+ * @brief fichier d isma
+*/
 
 Queue createQueue() {    //Initialise et renvoie une nouvelle file vide.
     Queue q;
@@ -52,8 +56,8 @@ int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la fi
 }
 
 /**
- * @defgroup Fonctions utiles
- * {@
+ * @defgroup fonctionut Fonctions partie texte utiles
+ * @{
  */
  /**
   *
@@ -255,8 +259,8 @@ bool detect_chiffre_es(const char *word) {
  * @}
  */
  /**
-  * @defgroup Fonctions Afficher
-  * {@
+  * @defgroup Fonctionsaff Fonctions partie texte afficher
+  * @{
   */
  /**
   * @brief Fonctions principales du code,afficher_Action_fr traitera une phrase en français et afficher_Action_es en espagnol
