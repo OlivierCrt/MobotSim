@@ -5,6 +5,25 @@
 #include <unistd.h>
 #include "solal.h"
 
+/**
+ * @file
+ * @brief Ce fichier rassemble les fonctions nécessaires pour le traitement de commandes.
+*/
+
+/**
+ * @defgroup Feur
+ * @{
+ * 
+*/
+
+/**
+ * @brief Fonction qui permet de changer les coordonnées de la base de l'image vers la base de la modélisation Python Turtle
+ * @param coin_HD à deux dimension correspondant à la matrice initiale du Rouge.
+ * @param milieu_bleu Tableau à deux dimension correspondant à la matrice initiale du Vert.
+ * @param milieu_jaune Tableau à deux dimension correspondant à la matrice initiale du Bleu.
+ * @param milieu_orange Hauteur de l'image iniatiale/tableau.
+*/
+
 void changementDeBase(int* coin_HD, int* milieu_bleu, int* milieu_jaune, int* milieu_orange) {
     int recentrage_x = coin_HD[0] / 2;
     int recentrage_y = coin_HD[1] / 2;
@@ -21,6 +40,18 @@ void changementDeBase(int* coin_HD, int* milieu_bleu, int* milieu_jaune, int* mi
     milieu_orange[0] -= recentrage_x;
     milieu_orange[1] = -milieu_orange[1] + recentrage_y;
 }
+
+/**
+ * @brief Fonction qui prends en entrée les informations connues sur l'environnement. Puis, les transforme en appels de fonctions python qui s'éxecutent pour modéliser l'environnement.
+ * @param nomfichier chemin d'accès de l'image que l'on modélise
+ * @param coin_HD duo d'entiers correspondants aux coordonnées (x,y) du coin droit de l'image que l'on modélise
+ * @param rayon_bleu entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_jaune entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_orange entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param milieu_bleu duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule bleue ; vaut [] si il n'y en a pas
+ * @param milieu_jaune duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule jaune ; vaut [] si il n'y en a pas
+ * @param milieu_orange duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule orange ; vaut [] si il n'y en a pas
+*/
 
 void modeliserEnvironnement(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){
 
@@ -41,13 +72,24 @@ void modeliserEnvironnement(char nomfichier[],int *coin_HD, int rayon_bleu, int 
     sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
 
 
-    // Exécuter le script Python avec le code Turtle en tant que sortie
     FILE* python_process = popen("python3 solal.py", "w");
-
-    // Écrire le code Turtle dans le processus Python
     fprintf(python_process, "%s", res);
     fclose(python_process);
 } 
+
+/**
+ * @brief Fonction qui prends en entrée les informations connues sur l'environnement et les mots-clés extraits de la phrase entrée par l'utilisateur. Puis, les transforme en appels de fonctions python  qui s'éxecutent pour modéliser l'environnement et les actions du robots.
+ * @param nomfichier chemin d'accès de l'image que l'on modélise
+ * @param mat matrice contenant tous les mots-clés extraits de la phrase entrée par l'utilisateur : jusqu'à 5 éléments de type[[action],[param1],[param2]]
+ * @param mat_compt entier correspondant au nombre d'éléments dans "mat"
+ * @param coin_HD duo d'entiers correspondants aux coordonnées (x,y) du coin droit de l'image que l'on modélise
+ * @param rayon_bleu entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_jaune entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_orange entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param milieu_bleu duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule bleue ; vaut [] si il n'y en a pas
+ * @param milieu_jaune duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule jaune ; vaut [] si il n'y en a pas
+ * @param milieu_orange duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule orange ; vaut [] si il n'y en a pas
+*/
 
 void modeliserActions(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune, int *milieu_orange){ 
     char res[1000] = "";
@@ -249,10 +291,12 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
     }
 }
 
-// Exécuter le script Python avec le code Turtle en tant que sortie
 FILE* python_process = popen("python3 solal.py", "w");
-
-// Écrire le code Turtle dans le processus Python
 fprintf(python_process, "%s", res);
 fclose(python_process);
 }
+
+/**
+ * @}
+ * 
+*/
