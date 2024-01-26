@@ -22,21 +22,21 @@ typedef struct {
     int size;
 } Queue;
 
-double convertDouble(char *str);    //Fonction pour transformer des str en double.
-void toLowercase(char *str);    //Fonction pour passer n'importe quelle chaine en minuscule.
+double convertDouble(char *str);
+void toLowercase(char *str);
 
-Queue createQueue(); //Initialise et renvoie une nouvelle file vide.
-void enqueue(Queue* q, ActionData data); //Rajoute un élément à la file.
-ActionData dequeue(Queue* q);   //Dégage un élément à la file.
-int isQueueEmpty(Queue q);   //Fonction qui nous indiquera simplement si la file est vide ou pas et renvoie 1 pour un front NULL.
+Queue createQueue();
+void enqueue(Queue* q, ActionData data);
+ActionData dequeue(Queue* q);
+int isQueueEmpty(Queue q);
 
-int str_to_num_fr(char *nombre);    //Retournera un entier en fonction du str qui lui correspond.
+int str_to_num_fr(char *nombre);
 int str_to_num_es(char *nombre);
 
-int num_to_chiffre_tot_fr(char *str);   //Utilisera les chiffres obtenus séparement pour les traiter après et obtenir le chiffre total.
+int num_to_chiffre_tot_fr(char *str);
 int num_to_chiffre_tot_es(char *str);
 
-bool detect_chiffre_fr(const char *word);    //Fonction ayant le role de détecter si le str introduit corréspond à un chiffre.
+bool detect_chiffre_fr(const char *word);
 bool detect_chiffre_es(const char *word);
 
 void afficher_Action_fr(char *phrase, Queue* q);
