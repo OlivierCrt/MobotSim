@@ -12,7 +12,7 @@
 
 /**
  * @defgroup gtrait Traitement de commmandes
- * @brief Fonctions nécessaires pour le traitement de commandes. Récu
+ * @brief Fonctions nécessaires pour le traitement de commandes. Transforment les informations envoyées par les traitements d'images et de textes en fonctions python qui permettent une modélisation graphique.  
  * @{
  * 
 */
