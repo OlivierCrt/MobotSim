@@ -460,7 +460,7 @@ void trouverLePlusGros (int ** matrice , int hauteur, int largeur){
 /**
  *  @}
 */
-void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier){
+void main_it(int* largeurimage,int* longueurimage,int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier){
 
 int largeur,hauteur,nbcompo ;
 
@@ -544,13 +544,9 @@ if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_pos
     printf("\x1B[31m\x1B[1mCalcul des rayons impossible il n'y a pas d'objet!\x1B[0m\n");
 }
 printf("-----------------------------------------------\n\n");
-//Fichier txt avec les matrices des plages de la forme vue en TP, j'utilise le script de M.Ferrané afin de les visualiser par la suite
-//if (isObjet(objet_poss_bleu))  { ecrireMatriceDansFichier(objet_poss_bleu,hauteur,largeur,"obj_bleu.dat"); };
 
-//if (isObjet(objet_poss_jaune))  { ecrireMatriceDansFichier(objet_poss_jaune,hauteur,largeur,"obj_jaune.dat"); };
-
-//if (isObjet(objet_poss_Orange))  { ecrireMatriceDansFichier(objet_poss_Orange,hauteur,largeur,"obj_orange.dat"); };
-  
+*largeurimage = largeur ;
+*longueurimage = hauteur ;
 
 return;
 }
