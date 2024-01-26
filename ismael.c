@@ -57,7 +57,7 @@ int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la fi
 
 /**
  * @defgroup fonctions_sec Fonctions partie texte secondaires
- * @brief Fonctions utilisés dans les fonctions principales
+ * @brief Fonctions utilisés dans les fonctions principales du traitement de phrase
  * @{
  */
 /**
