@@ -25,13 +25,14 @@ void main_img(){
         }
     }
 
+    int hauteur,largeur;
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
-    main_it(&rayon_bleu, &rayon_jaune, &rayon_orange,&milieu_bleu, &milieu_jaune, &milieu_orange, nomfichier );
+    main_it(&hauteur, &largeur, &rayon_bleu, &rayon_jaune, &rayon_orange,&milieu_bleu, &milieu_jaune, &milieu_orange, nomfichier);
 
     int *coin_HD = (int*)malloc(2 * sizeof(int));
-    coin_HD[0] = 300;
-    coin_HD[1] = 300;
+    coin_HD[0] = hauteur;
+    coin_HD[1] = largeur;
 
     changementDeBase(coin_HD, milieu_bleu, milieu_jaune, milieu_orange);
    
@@ -53,6 +54,7 @@ void main_txt(){
     int *milieu_bleu =malloc(2 * sizeof(int));int *milieu_jaune=malloc(2 * sizeof(int));int *milieu_orange= malloc(2 * sizeof(int));
     milieu_bleu[0] = milieu_bleu[1] = milieu_jaune[0] = milieu_jaune[1] = milieu_orange[0] = milieu_orange[1] = 0;
 
+    
     char phrase[200];
     char lang[3];
     Queue myQueue = createQueue();
@@ -143,9 +145,14 @@ void main_imgtxt(){
         }
     }
 
+    int hauteur,largeur;
     int rayon_bleu, rayon_jaune, rayon_orange;//-1 si pas de rayon
     int *milieu_bleu, *milieu_jaune, *milieu_orange;//liste vide si existe pas
-    main_it(&rayon_bleu, &rayon_jaune, &rayon_orange,&milieu_bleu, &milieu_jaune, &milieu_orange, nomfichier );
+    main_it(&hauteur, &largeur, &rayon_bleu, &rayon_jaune, &rayon_orange,&milieu_bleu, &milieu_jaune, &milieu_orange, nomfichier);
+
+    int *coin_HD = (int*)malloc(2 * sizeof(int));
+    coin_HD[0] = hauteur;
+    coin_HD[1] = largeur;
 
     char phrase[200];
     char lang[3];
@@ -154,10 +161,6 @@ void main_imgtxt(){
     int mat_compt = 0;
     int i,j;
     char boucle ='\0';
-
-    int *coin_HD = (int*)malloc(2 * sizeof(int));
-    coin_HD[0] = 300;
-    coin_HD[1] = 300;
 
     changementDeBase(coin_HD, milieu_bleu,  milieu_jaune,  milieu_orange);
 
