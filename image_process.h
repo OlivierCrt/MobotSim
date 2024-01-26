@@ -1,5 +1,5 @@
-#ifndef OLIVIER_H
-#define OLIVIER_H
+#ifndef IMAGE_PROCESS_H
+#define IMAGE_PROCESS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,5 +16,5 @@ void ecrireMatriceDansFichier(Groupe_Pixel_ptr groupePixel, int hauteur, int lar
 int dfs (int ** matrice_p , int hauteur , int largeur , int deb_i , int deb_j ,int ** visite);
 void trouverLePlusGros (int ** matrice , int hauteur, int largeur);
 int  trouver_rayon(Groupe_Pixel_ptr objet, int largeur , int hauteur);
-void main_it(int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier);
+void main_it(int* largeurimage,int* longueurimage,int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier);
 #endif 
