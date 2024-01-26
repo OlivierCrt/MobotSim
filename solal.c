@@ -11,7 +11,8 @@
 */
 
 /**
- * @defgroup Feur
+ * @defgroup gtrait Traitement de commmandes
+ * @brief Fonctions nécessaires pour le traitement de commandes. Récu
  * @{
  * 
 */
