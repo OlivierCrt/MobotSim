@@ -92,13 +92,13 @@ def avancer(d):
     '''
     #Fais avancer le robot tant qu'il est dans la zone de l'image.
     while d > 0:
-        if (-50<tl.xcor()<50) and (-50<tl.ycor()<50):
+        if ((d>=95)and(-50<tl.xcor()<50) and (-50<tl.ycor()<50)):
             tl.forward(90)
             d-=95
-        elif (-140<tl.xcor()<140) and (-140<tl.ycor()<140):
+        elif ((d>=9)and(-140<tl.xcor()<140) and (-140<tl.ycor()<140)):
             tl.forward(9)
             d-=9 
-        elif (-150.1<tl.xcor()<150.1) and (-150.1<tl.ycor()<150.1):
+        elif ((d>=1)and(-150.1<tl.xcor()<150.1) and (-150.1<tl.ycor()<150.1)):
             tl.forward(1)
             d-=1          
         else:
@@ -123,13 +123,13 @@ def reculer(d):
     :type d: int
     '''   
     while d > 0:
-        if (-50<tl.xcor()<50) and (-50<tl.ycor()<50):
+        if ((d>=95)and(-50<tl.xcor()<50) and (-50<tl.ycor()<50)):
             tl.backward(90)
             d-=95
-        elif (-140<tl.xcor()<140) and (-140<tl.ycor()<140):
+        elif ((d>=9)and(-140<tl.xcor()<140) and (-140<tl.ycor()<140)):
             tl.backward(9)
             d-=9 
-        elif (-151<tl.xcor()<151) and (-151<tl.ycor()<151):
+        elif ((d>=1)and(-151<tl.xcor()<151) and (-151<tl.ycor()<151)):
             tl.backward(1)
             d-=1
         else:
@@ -197,6 +197,16 @@ def tournobj(x,y,sens):
     :type y: int
     :param sens: Direction de rotation (1 pour horaire, -1 pour anti-horaire).
     :type sens: int
+    '''
+
+    '''
+    angle_obj = tl.towards(x, y)
+    angle_dep = tl.heading()
+    angle_diff = angle_obj - angle_dep
+    if (sens == 1 and angle_diff>0) or (sens == -1 and angle_diff<0) :
+        tl.right(sens*(360-angle_diff))
+    else:
+        tl.right(sens*angle_diff)
     '''
     tl.setheading(tl.towards(x, y))
 
