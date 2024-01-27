@@ -4,10 +4,7 @@
 #include "stdlib.h"
 #include "stdbool.h"
 #include "ctype.h"
-/**
- * @file
- * @brief fichier d isma
-*/
+
 
 Queue createQueue() {    //Initialise et renvoie une nouvelle file vide.
     Queue q;
@@ -55,36 +52,21 @@ int isQueueEmpty(Queue q) {    //Fonction qui nous indiquera simplement si la fi
     return (q.front == NULL);
 }
 
-/**
- * @defgroup fonctions_sec Fonctions partie texte secondaires
- * @brief Fonctions utilisés dans les fonctions principales du traitement de phrase
- * @{
- */
-/**
- *
- * @brief Fonction pour transformer des str en double.
- */
+
 double convertDouble(char *str) {
     char *temp;
     double val = strtod(str, &temp);
     return val;
 }
 
-/**
- * @brief Fonction pour passer n'importe quelle chaine en minuscule.
- * @param str Pointeur vers une chaine de caractères d'un mot quelconque
- */
+
 void toLowercase(char *str) {
     for (int i = 0; str[i]; i++) {
         str[i] = tolower((unsigned char) str[i]);
     }
 }
 
-/**
- * @brief Retournera un entier en fonction du str qui lui correspond en français.
- * @param nombre Chaine de caractéres désignant un chiffre écrit.
- * @return Chiffre désignant le chiffre écrit en lettres.
- */
+
 
 int str_to_num_fr(char *nombre) {
     if (strcmp(nombre, "un") == 0) return 1;
@@ -114,11 +96,7 @@ int str_to_num_fr(char *nombre) {
         return 0;
 }
 
-/**
- * @brief Retournera un entier en fonction du str qui lui correspond en espagnol.
- * @param nombre Chaine de caractéres désignant un chiffre écrit.
- * @return Chiffre désignant le chiffre écrit en lettres.
- */
+
 
 int str_to_num_es(char *nombre) {
     if (strcmp(nombre, "uno") == 0 || strcmp(nombre, "un") == 0) return 1;
@@ -174,11 +152,7 @@ int str_to_num_es(char *nombre) {
         return 0;
 }
 
-/**
- * @brief Utilisera les chiffres écrits obtenus séparement pour les traiter après et obtenir le chiffre total.
- * @param str Chaine de caractéres désignant un chiffre écrit en français.
- * @return Le chiffre désignant le résultat total des chiffres nommées puis traités
- */
+
 
 int num_to_chiffre_tot_fr(char *str) {
     char *mot;
@@ -201,11 +175,7 @@ int num_to_chiffre_tot_fr(char *str) {
     return total;
 }
 
-/**
- * @brief Utilisera les chiffres écrits obtenus séparement pour les traiter après et obtenir le chiffre total.
- * @param str Chaine de caractéres désignant un chiffre écrit en espagnol.
- * @return Le chiffre désignant le résultat total des chiffres nommées puis traités
- */
+
 
 int num_to_chiffre_tot_es(char *str) {
     char *mot;
@@ -228,11 +198,7 @@ int num_to_chiffre_tot_es(char *str) {
     return total;
 }
 
-/**
- * @brief Fonction booléenne ayant le role de détecter si le str introduit corréspond à un chiffre écrit en français.
- * @param word Le mot qu'on compare avec les chaines de caractères de la fonction
- * @return true ou false
- */
+
 
 bool detect_chiffre_fr(const char *word) {
     const char *nombre_mot[] = {
@@ -250,11 +216,7 @@ bool detect_chiffre_fr(const char *word) {
     return false;
 }
 
-/**
- * @brief Fonction booléenne ayant le role de détecter si le str introduit corréspond à un chiffre écrit en espagnol.
- * @param word Le mot qu'on compare avec les chaines de caractères de la fonction
- * @return true ou false
- */
+
 
 bool detect_chiffre_es(const char *word) {
     const char *nombre_mot[] = {
@@ -274,24 +236,7 @@ bool detect_chiffre_es(const char *word) {
     return false;
 }
 
-/**
- * @}
- */
-/**
- * @defgroup Fonctions_prin Fonctions partie texte principales
- * @brief Fonctions qui traitent la phrase
- * @{
- */
-/**
- * @brief Une des fonctions principales du code,"afficher_Action_fr" traitera une phrase en français
- * Elle s'aidera de celles défà définies pour traiter une phrase et la tokeniser, pour la pouvoir
- * ainsi diviser en plusieurs sous-phrases et les traiter individuellement.
- * @param phrase Chaine de caractères désignant la requette texte.
- * @param q File qu'on utilisera pour enregistrer les paramettres qu'on utilisera dans le code qui
- * gére les commandes envoyés au robot
- * @return Paramettres décrivant l'action, la diréction, les unités d'action (mètres ou degrés),
- * les obstacles à prendre en compte et si la phrase est une négation ou une affirmation
- */
+
 
 void afficher_Action_fr(char *phrase, Queue* q){
     char subphrases[5][200];
@@ -581,16 +526,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
 }
 
-/**
- * @brief Une des fonctions principales du code,"afficher_Action_es" traitera une phrase en espagnol
- * Elle s'aidera de celles défà définies pour traiter une phrase et la tokeniser, pour la pouvoir
- * ainsi diviser en plusieurs sous-phrases et les traiter individuellement.
- * @param phrase Chaine de caractères désignant la requette texte.
- * @param q File qu'on utilisera pour enregistrer les paramettres qu'on utilisera dans le code qui
- * gére les commandes envoyés au robot
- * @return Paramettres décrivant l'action, la diréction, les unités d'action (mètres ou degrés),
- * les obstacles à prendre en compte et si la phrase est une négation ou une affirmation
- */
+
 
 void afficher_Action_es(char *phrase, Queue* q){
     char subphrases[5][200];
@@ -860,6 +796,4 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     enqueue(q, resultData);
 }
-/**
- * @}
- */
+
