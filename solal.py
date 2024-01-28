@@ -177,38 +177,11 @@ def gobj(couleur):
     :param couleur: Liste représentant l'objet [x, y, r, coul].
     :type couleur: list
     """
-    #trouve l'angle entre le centre de la boule et le robot
-    angle = tl.towards(couleur[0], couleur[1])
-    #place le robot dans cette direction
-    tl.setheading(angle)
-    #calcul la distance entre le robot et le point le plus proche de la boule
-    distance = tl.distance(couleur[0], couleur[1]) - couleur[2]
-    #fais avancer le robot jusqua ce point
-    tl.forward(distance)
+    angle = tl.towards(couleur[0], couleur[1]) #trouve l'angle entre le centre de la boule et le robot
+    tl.setheading(angle) #place le robot dans cette direction
+    distance = tl.distance(couleur[0], couleur[1]) - couleur[2] #calcul la distance entre le robot et le point le plus proche de la boule
+    tl.forward(distance) #fais avancer le robot jusqu'à ce point
 
-
-def tournobj(x,y,sens):
-    '''
-    Fait tourner le robot sur lui même jusqu'à ce qu'il détecte l'objet spécifié. Tourne par la droite si sens =1 et par la gauche si sens = -1
-
-    :param x: Coordonnée X du centre de l'objet.
-    :type x: int
-    :param y: Coordonnée Y du centre de l'objet.
-    :type y: int
-    :param sens: Direction de rotation (1 pour horaire, -1 pour anti-horaire).
-    :type sens: int
-    '''
-
-    '''
-    angle_obj = tl.towards(x, y)
-    angle_dep = tl.heading()
-    angle_diff = angle_obj - angle_dep
-    if (sens == 1 and angle_diff>0) or (sens == -1 and angle_diff<0) :
-        tl.right(sens*(360-angle_diff))
-    else:
-        tl.right(sens*angle_diff)
-    '''
-    tl.setheading(tl.towards(x, y))
 
 
 def contobj(x,y,r,coul,sens):
