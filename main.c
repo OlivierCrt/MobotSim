@@ -55,7 +55,7 @@ void main_txt(){
     milieu_bleu[0] = milieu_bleu[1] = milieu_jaune[0] = milieu_jaune[1] = milieu_orange[0] = milieu_orange[1] = 0;
 
     
-    char phrase[200];
+    char phrase[1000];
     char lang[3];
     Queue myQueue = createQueue();
     char *mat[5][4];
@@ -154,7 +154,7 @@ void main_imgtxt(){
     coin_HD[0] = hauteur;
     coin_HD[1] = largeur;
 
-    char phrase[200];
+    char phrase[1000];
     char lang[3];
     Queue myQueue = createQueue();
     char *mat[5][4];
