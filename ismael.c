@@ -240,7 +240,7 @@ bool detect_chiffre_es(const char *word) {
 
 void afficher_Action_fr(char *phrase, Queue* q){
     char subphrases[5][1000];
-    char *mots[20];
+    char *mots[100];
     int compt = 0;
     char Avant_chiffre[100] = "", Chiffre_mots[100] = "", Apres_chiffre[100] = "";
     int chiffre;
@@ -255,11 +255,10 @@ void afficher_Action_fr(char *phrase, Queue* q){
     double result;
     int entre_flag = 0;
     int ou_flag=0;
-    char *mots_sub[50];
+    char *mots_sub[100];
     int compt_sub = 0;
     int subphr_compt = 0;
     ActionData resultData;
-
 
     for (i = 0; i < 5; i++) {    //Initialise toutes les sous-phrases à vide.
         subphrases[i][0] = '\0';
@@ -267,16 +266,16 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
     toLowercase(phrase);
 
-
-    mot = strtok(phrase, ponctuation);
-    while (mot != NULL && compt < 20) {
+    char *saveptr1;
+    mot = strtok_r(phrase, ponctuation, &saveptr1);
+    while (mot != NULL && compt < 100) {
         mots[compt++] = mot;
-        mot = strtok(NULL, ponctuation);
+        mot = strtok_r(NULL, ponctuation, &saveptr1);
     }
 
-    //On divise les sous-phrases à chaque fois qu'on trouve un "puis" et on passe a la prochaine sous-phrase, si non on garde la phrase traité diréctement comme une sous-phrase.
-    for (i = 0; i < compt; i++) {
-        if (strcmp(mots[i], "puis") == 0) {
+    // Dividir en subfrases
+    for (int i = 0; i < compt; i++) {
+        if (strcmp(mots[i], "puis") == 0 && subphr_compt < 4) {  // Evitar desbordamiento del array
             subphr_compt++;
         } else {
             strcat(subphrases[subphr_compt], mots[i]);
@@ -528,9 +527,10 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
 
 
+
 void afficher_Action_es(char *phrase, Queue* q){
     char subphrases[5][1000];
-    char *mots[20];
+    char *mots[100];
     int compt = 0;
     char Avant_chiffre[100] = "", Chiffre_mots[100] = "", Apres_chiffre[100] = "";
     int chiffre;
@@ -545,26 +545,27 @@ void afficher_Action_es(char *phrase, Queue* q){
     double result;
     int entre_flag = 0;
     int ou_flag=0;
-    char *mots_sub[50];
+    char *mots_sub[100];
     int compt_sub = 0;
     int subphr_compt = 0;
     ActionData resultData;
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 5; i++) {    //Initialise toutes les sous-phrases à vide.
         subphrases[i][0] = '\0';
     }
 
     toLowercase(phrase);
 
-    mot = strtok(phrase, ponctuation);
-    while (mot != NULL && compt < 20) {
+    char *saveptr1;
+    mot = strtok_r(phrase, ponctuation, &saveptr1);
+    while (mot != NULL && compt < 100) {
         mots[compt++] = mot;
-        mot = strtok(NULL, ponctuation);
+        mot = strtok_r(NULL, ponctuation, &saveptr1);
     }
 
-
-    for (i = 0; i < compt; i++) {
-        if (strcmp(mots[i], "luego") == 0) {
+    // Dividir en subfrases
+    for (int i = 0; i < compt; i++) {
+        if (strcmp(mots[i], "luego") == 0 && subphr_compt < 4) {  // Evitar desbordamiento del array
             subphr_compt++;
         } else {
             strcat(subphrases[subphr_compt], mots[i]);
@@ -573,23 +574,25 @@ void afficher_Action_es(char *phrase, Queue* q){
     }
 
     for (i = 0; i <= subphr_compt; i++) {
+        //printf("\nSubphrase %d: %s\n", i + 1, subphrases[i]);
 
+        //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         nombre_trouve = false;
         strcpy(Avant_chiffre, "");
         strcpy(Chiffre_mots, "");
         strcpy(Apres_chiffre, "");
 
-        mot = strtok(subphrases[i], ponctuation_chiffre);
+        mot = strtok(subphrases[i], ponctuation_chiffre);    //On diférentie les parties de la sous-phrase qui definissent les chiffres ou pas.
         while (mot != NULL) {
-            if (detect_chiffre_es(mot)) {
+            if (detect_chiffre_es(mot)) {    //Si on détecte un mot corréspondant à un chiffre on les garde comme "Chiffre_mots".
                 nombre_trouve = true;
                 strcat(Chiffre_mots, mot);
                 strcat(Chiffre_mots, " ");
             } else {
-                if (!nombre_trouve) {
+                if (!nombre_trouve) {    //Si les mots se trouvent avant la détection des mots corréspondant aux chiffres on les garde comme "Avant_chiffre".
                     strcat(Avant_chiffre, mot);
                     strcat(Avant_chiffre, " ");
-                } else {
+                } else {    //Si les mots se trouvent après la détection des mots corréspondant aux chiffres on les garde comme "Apres_chiffre".
                     strcat(Apres_chiffre, mot);
                     strcat(Apres_chiffre, " ");
                 }
@@ -597,203 +600,244 @@ void afficher_Action_es(char *phrase, Queue* q){
             mot = strtok(NULL, ponctuation_chiffre);
         }
 
+        //On transforme "Chiffre_mots" en chiffre puis on réconstruit la sous-phrase initiale en charactéres et chiffres
         chiffre = num_to_chiffre_tot_es(Chiffre_mots);
         sprintf(subphrases[i], "%s%d %s", Avant_chiffre, chiffre, Apres_chiffre);
+        //printf("Subphrase traité: %s\n", subphrases[i]);
     }
 
+    //printf("Nb ss-phrases : %d\n",subphr_compt+1);
 
-    //for (i = 0; i <= subphr_compt; i++) {
+    // Imprimir las subfrases
+    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j parce que ça nous donne erreur sinon
 
+        //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
+        compt_sub = 0;
+        entre_flag = 0;
 
-    compt_sub = 0;
-    entre_flag = 0;
+        char param1[20] = "";
+        char param2[20] = "";
+        char type[20] = "";
 
-    char param1[20]="";
-    char param2[20]="";
-    char type[20]="";
-
-    compt_sub = 0;
-    mot_sub = strtok(subphrases[i], ponctuation_sub);
-    while (mot_sub != NULL && compt_sub < 20) {
-        mots_sub[compt_sub++] = mot_sub;
-        mot_sub = strtok(NULL, ponctuation_sub);
-    }
-
-    //for (j = 0; j < compt_sub; j++) {
-    //    printf("mot[%d]=%s\n", j, mots_sub[j]);
-    //}
-
-    for (j = 0; j < compt_sub; j++) {
-
-        if(strcmp(mots_sub[0], "no") == 0)
-            sprintf(type, "Negativa");
-        else
-            sprintf(type, "Afirmativa");
-
-
-        if (strcmp(mots_sub[j], "avanzar") == 0 || strcmp(mots_sub[j], "avanza") == 0 || strcmp(mots_sub[j], "avances") == 0 ||
-            strcmp(mots_sub[j], "retroceder") == 0 || strcmp(mots_sub[j], "retrocede") == 0 || strcmp(mots_sub[j], "retrocedas") == 0 ||
-            strcmp(mots_sub[j], "girar") == 0 || strcmp(mots_sub[j], "gira") == 0 || strcmp(mots_sub[j], "gires") == 0 ||
-            strcmp(mots_sub[j], "localizar") == 0 || strcmp(mots_sub[j], "localiza") == 0 || strcmp(mots_sub[j], "localices") == 0 ||
-            strcmp(mots_sub[j], "encontrar") == 0 || strcmp(mots_sub[j], "encuentra") == 0 || strcmp(mots_sub[j], "encuentres") == 0 ||
-            strcmp(mots_sub[j], "rodear") == 0 || strcmp(mots_sub[j], "rodea") == 0 || strcmp(mots_sub[j], "rodées") == 0 ||
-            strcmp(mots_sub[j], "pasar") == 0 || strcmp(mots_sub[j], "pasa") == 0 || strcmp(mots_sub[j], "pases") == 0 ||
-            strcmp(mots_sub[j], "contar") == 0 || strcmp(mots_sub[j], "cuenta") == 0 || strcmp(mots_sub[j], "cuentes") == 0) {
-            action = mots_sub[j];
+        mot_sub = strtok(subphrases[i], ponctuation_sub);
+        while (mot_sub != NULL && compt_sub < 20) {
+            mots_sub[compt_sub++] = mot_sub;
+            mot_sub = strtok(NULL, ponctuation_sub);
         }
 
+        //for (j = 0; j < compt_sub; j++) {
+        //    printf("mot[%d]=%s\n", j, mots_sub[j]);
+        //}
 
-        if(strcmp(action, "rodear") == 0 || strcmp(action, "rodea") == 0 || strcmp(mots_sub[j], "rodées") == 0) {
+        for (j = 0; j < compt_sub; j++) {
+            //Si le mot de la sous-phrase corréspond a un de ceux-là alors le parametre type sur ActionData sera "Négative"
+            if (strcmp(mots_sub[0], "ne") == 0 || strcmp(mots_sub[0], "n") == 0)
+                sprintf(type, "Negativa");
+            else
+                sprintf(type, "Afirmativa");
 
-            if(strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
-                sprintf(param1, "%s", mots_sub[j]);
-
-            if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
-                strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
-                strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
-                if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
-                                          strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
-                    sprintf(param2, "%s %s", mots_sub[j], mots_sub[j + 1]);
-                } else {
-                    sprintf(param2, "%s", mots_sub[j]);
-                }
+            //Si le mot de la sous-phrase corréspond a un de ceux-là alors le parametre action sur ActionData prendra cette valeur
+            if (strcmp(mots_sub[j], "avanzar") == 0 || strcmp(mots_sub[j], "avanza") == 0 ||
+                strcmp(mots_sub[j], "avances") == 0 ||
+                strcmp(mots_sub[j], "retroceder") == 0 || strcmp(mots_sub[j], "retrocede") == 0 ||
+                strcmp(mots_sub[j], "retrocedas") == 0 ||
+                strcmp(mots_sub[j], "girar") == 0 || strcmp(mots_sub[j], "gira") == 0 ||
+                strcmp(mots_sub[j], "gires") == 0 ||
+                strcmp(mots_sub[j], "localizar") == 0 || strcmp(mots_sub[j], "localiza") == 0 ||
+                strcmp(mots_sub[j], "localices") == 0 ||
+                strcmp(mots_sub[j], "encontrar") == 0 || strcmp(mots_sub[j], "encuentra") == 0 ||
+                strcmp(mots_sub[j], "encuentres") == 0 ||
+                strcmp(mots_sub[j], "rodear") == 0 || strcmp(mots_sub[j], "rodea") == 0 ||
+                strcmp(mots_sub[j], "rodées") == 0 ||
+                strcmp(mots_sub[j], "pasar") == 0 || strcmp(mots_sub[j], "pasa") == 0 ||
+                strcmp(mots_sub[j], "pases") == 0 ||
+                strcmp(mots_sub[j], "contar") == 0 || strcmp(mots_sub[j], "cuenta") == 0 ||
+                strcmp(mots_sub[j], "cuentes") == 0) {
+                action = mots_sub[j];
             }
-        }
 
 
-        else if (strcmp(action, "pasar") == 0 || strcmp(action, "pasa") == 0 || strcmp(mots_sub[j], "pases") == 0) {
+            //PHRASE DU TYPE "CONTOURNER PAR LA [DIRECTION] L'[OBJET]"
+            //PHRASE DU TYPE "CONTOURNER L'[OBJET] PAR LA [DIRECTION]"
+            if (strcmp(action, "rodear") == 0 || strcmp(action, "rodea") == 0) {
 
-            if(strcmp(mots_sub[j], "entre") == 0) {
-                entre_flag = 1;
-                continue;
-            }
+                if (strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
+                    sprintf(param1, "%s", mots_sub[j]);
 
-            if (entre_flag == 1 && strcmp(mots_sub[j], "y") == 0){
-                entre_flag = 0;
-                continue;
-            }
-
-            if (entre_flag == 1) {
                 if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
                     strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
                     strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
-                    if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
-                                              strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
-                        sprintf(param1, "%s %s", mots_sub[j], mots_sub[j + 1]);
-                    } else {
-                        sprintf(param1, "%s", mots_sub[j]);
-                    }
-                }
-            } else {
-                if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
-                    strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
-                    strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
-                    if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
-                                              strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
+                    if (j + 1 < compt_sub &&
+                        (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 ||
+                         strcmp(mots_sub[j + 1], "azul") == 0 ||
+                         strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 ||
+                         strcmp(mots_sub[j + 1], "naranja") == 0)) {
                         sprintf(param2, "%s %s", mots_sub[j], mots_sub[j + 1]);
                     } else {
                         sprintf(param2, "%s", mots_sub[j]);
                     }
                 }
             }
-        }
 
-        else if(strcmp(action, "localizar") == 0 || strcmp(action, "localiza") == 0 || strcmp(action, "localices") == 0 ||
-                strcmp(action, "encontrar") == 0 || strcmp(action, "encuentra") == 0 || strcmp(action, "encuentres") == 0) {
 
-            if (ou_flag == 0 && strcmp(mots_sub[j], "o") == 0){
-                ou_flag = 1;
-                continue;
-            }
+                //PHRASE DU TYPE "PASSER ENTRE [OBJET] ET [OBJET]"
+            else if (strcmp(action, "pasar") == 0 || strcmp(action, "pasa") == 0) {
 
-            if (ou_flag == 0) {
-                if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
-                    strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
-                    strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
-                    if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
-                                              strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
-                        sprintf(param1, "%s %s", mots_sub[j], mots_sub[j + 1]);
-                    } else {
-                        sprintf(param1, "%s", mots_sub[j]);
+                if (strcmp(mots_sub[j], "entre") == 0) {
+                    entre_flag = 1;                                         // Mot "entre" trouvé, donc flag_entre (qui indique ça) est mit a 1
+                    continue;
+                }
+
+                // Procesar objetos y colores después de "entre"
+                if (entre_flag == 1 && strcmp(mots_sub[j], "y") == 0) {
+                    entre_flag = 0;                                         // On remet lentre_flag à 0
+                    continue;
+                }
+
+                if (entre_flag == 1) {
+                    if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
+                        strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
+                        strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
+                        if (j + 1 < compt_sub &&
+                            (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 ||
+                             strcmp(mots_sub[j + 1], "azul") == 0 ||
+                             strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 ||
+                             strcmp(mots_sub[j + 1], "naranja") == 0)) {
+                            sprintf(param1, "%s %s", mots_sub[j], mots_sub[j + 1]);
+                        } else {
+                            sprintf(param1, "%s", mots_sub[j]);
+                        }
+                    }
+                } else {
+                    if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
+                        strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
+                        strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
+                        if (j + 1 < compt_sub &&
+                            (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 ||
+                             strcmp(mots_sub[j + 1], "azul") == 0 ||
+                             strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 ||
+                             strcmp(mots_sub[j + 1], "naranja") == 0)) {
+                            sprintf(param2, "%s %s", mots_sub[j], mots_sub[j + 1]);
+                        } else {
+                            sprintf(param2, "%s", mots_sub[j]);
+                        }
                     }
                 }
-            } else {
-                if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
-                    strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
-                    strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
-                    if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
-                                              strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
+            }
+
+                //PHRASE DU TYPE "LOCALISE/TROUVE L'[OBJET]"
+                //PHRASE DU TYPE "LOCALISE/TROUVE L'[OBJET] OU L'[OBJET]"
+            else if (strcmp(action, "localizar") == 0 || strcmp(action, "localiza") == 0 ||
+                     strcmp(action, "encontrar") == 0 || strcmp(action, "encuentra") == 0) {
+
+                if (ou_flag == 0 && strcmp(mots_sub[j], "o") == 0) {
+                    ou_flag = 1;                                         // On remet le flag de "ou" a 1
+                    continue;
+                }
+
+                if (ou_flag == 0) {
+                    if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
+                        strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
+                        strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
+                        if (j + 1 < compt_sub &&
+                            (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 ||
+                             strcmp(mots_sub[j + 1], "azul") == 0 ||
+                             strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 ||
+                             strcmp(mots_sub[j + 1], "naranja") == 0)) {
+                            sprintf(param1, "%s %s", mots_sub[j], mots_sub[j + 1]);
+                        } else {
+                            sprintf(param1, "%s", mots_sub[j]);
+                        }
+                    }
+                } else {
+                    if (strcmp(mots_sub[j], "cubo") == 0 || strcmp(mots_sub[j], "cuadrado") == 0 ||
+                        strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
+                        strcmp(mots_sub[j], "objeto") == 0 || strcmp(mots_sub[j], "obstaculo") == 0) {
+                        if (j + 1 < compt_sub &&
+                            (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 ||
+                             strcmp(mots_sub[j + 1], "azul") == 0 ||
+                             strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 ||
+                             strcmp(mots_sub[j + 1], "naranja") == 0)) {
+                            sprintf(param2, "%s %s", mots_sub[j], mots_sub[j + 1]);
+                        } else {
+                            sprintf(param2, "%s", mots_sub[j]);
+                        }
+                    }
+                }
+            } else if (strcmp(action, "contar") == 0 || strcmp(action, "cuenta") == 0 ||
+                       strcmp(action, "cuentes") == 0) {
+                if (strcmp(mots_sub[j], "cubos") == 0 || strcmp(mots_sub[j], "cuadrados") == 0 ||
+                    strcmp(mots_sub[j], "bolas") == 0 || strcmp(mots_sub[j], "pelotas") == 0 ||
+                    strcmp(mots_sub[j], "objetos") == 0 || strcmp(mots_sub[j], "obstaculos") == 0) {
+                    if (j + 1 < compt_sub &&
+                        (strcmp(mots_sub[j + 1], "rojos") == 0 || strcmp(mots_sub[j + 1], "rojas") == 0 ||
+                         strcmp(mots_sub[j + 1], "azules") == 0 ||
+                         strcmp(mots_sub[j + 1], "amarillos") == 0 || strcmp(mots_sub[j + 1], "amarillas") == 0 ||
+                         strcmp(mots_sub[j + 1], "naranjas") == 0)) {
                         sprintf(param2, "%s %s", mots_sub[j], mots_sub[j + 1]);
                     } else {
                         sprintf(param2, "%s", mots_sub[j]);
                     }
                 }
-            }
-        }
+            } else {
 
-        else if(strcmp(action, "contar") == 0 || strcmp(action, "cuenta") == 0 || strcmp(action, "cuentes") == 0) {
-            if (strcmp(mots_sub[j], "cubos") == 0 || strcmp(mots_sub[j], "cuadrados") == 0 ||
-                strcmp(mots_sub[j], "bolas") == 0 || strcmp(mots_sub[j], "pelotas") == 0 ||
-                strcmp(mots_sub[j], "objetos") == 0 || strcmp(mots_sub[j], "obstaculos") == 0) {
-                if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojos") == 0 || strcmp(mots_sub[j + 1], "rojas") == 0 || strcmp(mots_sub[j + 1], "azules") == 0 ||
-                                          strcmp(mots_sub[j + 1], "amarillos") == 0 || strcmp(mots_sub[j + 1], "amarillas") == 0 || strcmp(mots_sub[j + 1], "naranjas") == 0)) {
-                    sprintf(param2, "%s %s", mots_sub[j], mots_sub[j + 1]);
-                } else {
-                    sprintf(param2, "%s", mots_sub[j]);
+                //PHRASE DU TYPE "AVANCER DE [DISTANCE]"
+                if (strcmp(mots_sub[j], "metros") == 0 || strcmp(mots_sub[j], "metro") == 0 ||
+                    strcmp(mots_sub[j], "centimetros") == 0 || strcmp(mots_sub[j], "milimetros") == 0) {
+                    if (strcmp(mots_sub[j - 1], "y") == 0) {
+                        result = convertDouble(mots_sub[j - 2]);
+                    } else {
+                        result = convertDouble(mots_sub[j - 1]);
+                    }
+                    if (strcmp(mots_sub[j], "centimetros") == 0) {
+                        result *= 0.01;
+                    } else if (strcmp(mots_sub[j], "milimetros") == 0) {
+                        result *= 0.001;
+                    }
+                    sprintf(param2, "%.3f metros ", result);
+                }
+
+                //PHRASE DU TYPE "AVANCER JUSQU'À L'[OBJET]"
+                //PHRASE DU TYPE "TOURNER JUSQU'À LOCALISER L'[OBJET]"
+                //PHRASE DU TYPE "TOURNER À [DIRECTION] JUSQU'À LOCALISER L'[OBJET]"
+                if (strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
+                    strcmp(mots_sub[j], "cuadrado") == 0 || strcmp(mots_sub[j], "cubo") == 0) {
+
+                    if (j + 1 < compt_sub &&
+                        (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 ||
+                         strcmp(mots_sub[j + 1], "azul") == 0 ||
+                         strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 ||
+                         strcmp(mots_sub[j + 1], "naranja") == 0)) {
+                        sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);
+                    } else {
+                        sprintf(param2, "%s ", mots_sub[j]);
+                    }
+                }
+
+                //PHRASE DU TYPE "TOURNER DE [VAL] DEGRÉS"
+                //PHRASE DU TYPE "TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
+                if (strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
+                    sprintf(param1, "%s", mots_sub[j]);
+
+                if (strcmp(mots_sub[j], "grados") == 0 || strcmp(mots_sub[j], "grado") == 0) {
+                    if (strcmp(mots_sub[j - 1], "y") == 0) {
+                        result = convertDouble(mots_sub[j - 2]);
+                    } else {
+                        result = convertDouble(mots_sub[j - 1]);
+                    }
+                    sprintf(param2, "%.0f %s", result, mots_sub[j]);
                 }
             }
         }
 
-        else{
+        //On copie le contenu de action, param1, param2 et type dans les paramétres de resultData, qui est une variable du type ActionData
+        strcpy(resultData.action, action);
+        strcpy(resultData.param1, param1);
+        strcpy(resultData.param2, param2);
+        strcpy(resultData.type, type);
 
-
-            if (strcmp(mots_sub[j], "metros") == 0 || strcmp(mots_sub[j], "metro") == 0 || strcmp(mots_sub[j], "centimetros") == 0 || strcmp(mots_sub[j], "milimetros") == 0) {
-                if(strcmp(mots_sub[j-1], "y") == 0) {
-                    result = convertDouble(mots_sub[j - 2]);
-                }else{
-                    result = convertDouble(mots_sub[j - 1]);
-                }
-                if (strcmp(mots_sub[j], "centimetros") == 0) {
-                    result *= 0.01;
-                } else if (strcmp(mots_sub[j], "milimetros") == 0) {
-                    result *= 0.001;
-                }
-                sprintf(param2, "%.3f metros ", result);
-            }
-
-
-            if (strcmp(mots_sub[j], "bola") == 0 || strcmp(mots_sub[j], "pelota") == 0 ||
-                strcmp(mots_sub[j], "cuadrado") == 0 || strcmp(mots_sub[j], "cubo") == 0) {
-
-                if (j + 1 < compt_sub && (strcmp(mots_sub[j + 1], "rojo") == 0 || strcmp(mots_sub[j + 1], "roja") == 0 || strcmp(mots_sub[j + 1], "azul") == 0 ||
-                                          strcmp(mots_sub[j + 1], "amarillo") == 0 || strcmp(mots_sub[j + 1], "amarilla") == 0 || strcmp(mots_sub[j + 1], "naranja") == 0)) {
-                    sprintf(param2, "%s %s ", mots_sub[j], mots_sub[j + 1]);
-                } else {
-                    sprintf(param2, "%s ", mots_sub[j]);
-                }
-            }
-
-
-
-            if(strcmp(mots_sub[j], "derecha") == 0 || strcmp(mots_sub[j], "izquierda") == 0)
-                sprintf(param1, "%s", mots_sub[j]);
-
-            if(strcmp(mots_sub[j], "grados") == 0 || strcmp(mots_sub[j], "grado") == 0) {
-                if(strcmp(mots_sub[j-1], "y") == 0) {
-                    result = convertDouble(mots_sub[j - 2]);
-                }else{
-                    result = convertDouble(mots_sub[j - 1]);
-                }
-                sprintf(param2, "%.0f %s", result, mots_sub[j]);
-            }
-        }
+        //On enfile le contenu de resultData dans le file du FIFO
+        enqueue(q, resultData);
     }
-
-    strcpy(resultData.action, action);
-    strcpy(resultData.param1, param1);
-    strcpy(resultData.param2, param2);
-    strcpy(resultData.type, type);
-
-    enqueue(q, resultData);
 }
 
