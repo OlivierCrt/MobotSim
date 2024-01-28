@@ -239,7 +239,7 @@ bool detect_chiffre_es(const char *word) {
 
 
 void afficher_Action_fr(char *phrase, Queue* q){
-    char subphrases[5][200];
+    char subphrases[5][1000];
     char *mots[20];
     int compt = 0;
     char Avant_chiffre[100] = "", Chiffre_mots[100] = "", Apres_chiffre[100] = "";
@@ -529,7 +529,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
 
 void afficher_Action_es(char *phrase, Queue* q){
-    char subphrases[5][200];
+    char subphrases[5][1000];
     char *mots[20];
     int compt = 0;
     char Avant_chiffre[100] = "", Chiffre_mots[100] = "", Apres_chiffre[100] = "";
