@@ -6,7 +6,6 @@ sc = tl.Screen()
 tl.speed(2)
 
 
-
 def initialisation(x_HD, y_HD,nom):
     """
     Initialise l'environnement : Donne u titre, place le fond, créé un contour et affiche les coordonnées. 
@@ -82,6 +81,8 @@ def set_robot_position(x, y, angle):
     tl.down()
     tl.width(1) 
     tl.color("aqua")      
+
+
 
 def avancer(d):
     '''
@@ -177,10 +178,14 @@ def gobj(couleur):
     :param couleur: Liste représentant l'objet [x, y, r, coul].
     :type couleur: list
     """
-    angle = tl.towards(couleur[0], couleur[1]) #trouve l'angle entre le centre de la boule et le robot
-    tl.setheading(angle) #place le robot dans cette direction
-    distance = tl.distance(couleur[0], couleur[1]) - couleur[2] #calcul la distance entre le robot et le point le plus proche de la boule
-    tl.forward(distance) #fais avancer le robot jusqu'à ce point
+    #trouve l'angle entre le centre de la boule et le robot
+    angle = tl.towards(couleur[0], couleur[1]) 
+    #place le robot dans cette direction
+    tl.setheading(angle) 
+    #calcul la distance entre le robot et le point le plus proche de la boule
+    distance = tl.distance(couleur[0], couleur[1]) - couleur[2] 
+    #fait avancer le robot jusqu'à ce point
+    tl.forward(distance) 
 
 
 
