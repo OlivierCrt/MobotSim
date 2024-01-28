@@ -335,9 +335,9 @@ void afficher_Action_fr(char *phrase, Queue* q){
         mot = strtok_r(NULL, ponctuation, &saveptr1);
     }
 
-    // Dividir en subfrases
+    // Division en plusieurs sous-phrases
     for (int i = 0; i < compt; i++) {
-        if (strcmp(mots[i], "puis") == 0 && subphr_compt < 4) {  // Evitar desbordamiento del array
+        if (strcmp(mots[i], "puis") == 0 && subphr_compt < 4) {  //Éviter débordement de chaine de caractéres
             subphr_compt++;
         } else {
             strcat(subphrases[subphr_compt], mots[i]);
@@ -380,8 +380,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
     //printf("Nb ss-phrases : %d\n",subphr_compt+1);
 
-    // Imprimir las subfrases
-    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j parce que ça nous donne erreur sinon
+    for (i = 0; i <= subphr_compt; i++) {
 
         //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         compt_sub = 0;
@@ -542,7 +541,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
                     } else if (strcmp(mots_sub[j], "millimètres") == 0) {
                         result *= 0.001;
                     }
-                    sprintf(param2, "%.3f mètres ", result);                     // On converti le résultat en chaine et on les met ensemble
+                    sprintf(param2, "%.3f mètres ", result);                     
                 }
 
                 //PHRASE DU TYPE "AVANCER JUSQU'À L'[OBJET]"
@@ -637,7 +636,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     // Dividir en subfrases
     for (int i = 0; i < compt; i++) {
-        if (strcmp(mots[i], "luego") == 0 && subphr_compt < 4) {  // Evitar desbordamiento del array
+        if (strcmp(mots[i], "luego") == 0 && subphr_compt < 4) {    //Éviter débordement de chaine de caractéres
             subphr_compt++;
         } else {
             strcat(subphrases[subphr_compt], mots[i]);
@@ -680,8 +679,7 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     //printf("Nb ss-phrases : %d\n",subphr_compt+1);
 
-    // Imprimir las subfrases
-    for (i = 0; i <= subphr_compt; i++) {           //On utilise i et après j parce que ça nous donne erreur sinon
+    for (i = 0; i <= subphr_compt; i++) {
 
         //On réinitialise les variables suivantes à chaque itération pour ne pas avoir des problèmes en mémoire.
         compt_sub = 0;
