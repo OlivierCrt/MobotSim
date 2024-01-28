@@ -182,42 +182,40 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
             } 
         }
 
-//Subphrase:"TROUVER L'[OBJET]" ou bien "LOCALISER L'[OBJET]"
 
-        if(strcmp(mat[nbaction][0], "localise") == 0 || strcmp(mat[nbaction][0], "localiser") == 0 || strcmp(mat[nbaction][0], "localizar") == 0 || strcmp(mat[nbaction][0], "localiza") == 0 || strcmp(mat[nbaction][0], "localices") == 0 || strcmp(mat[nbaction][0], "trouve") == 0 || strcmp(mat[nbaction][0], "trouver") == 0 || strcmp(mat[nbaction][0], "encontrar") == 0 || strcmp(mat[nbaction][0], "encuentra") == 0 || strcmp(mat[nbaction][0], "encuentres") == 0){
-            if ((strstr(mat[nbaction][1], "jaune") != NULL) || (strstr(mat[nbaction][1], "amarillo") != NULL) || (strstr(mat[nbaction][1], "amarilla") != NULL)){
+//Subphrase:"CONTOURNER PAR LA [DIRECTION] L'[OBJET]" ou bien "CONTOURNER L'[OBJET] PAR LA [DIRECTION]"
+        if(strcmp(mat[nbaction][0], "contourner") == 0 || strcmp(mat[nbaction][0], "contourne") == 0 || strcmp(mat[nbaction][0], "rodear") == 0 || strcmp(mat[nbaction][0], "rodea") == 0 || strcmp(mat[nbaction][0], "rodées") == 0){
+            if ((strstr(mat[nbaction][2], "jaune") != NULL) || (strstr(mat[nbaction][2], "amarillo") != NULL) || (strstr(mat[nbaction][2], "amarilla") != NULL)){
                 if (rayon_jaune >0){
-                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){
-                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_jaune[0],milieu_jaune[1]);  
+                    if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',-1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);  
                     }
                     else{
-                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_jaune[0],milieu_jaune[1]);
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'yellow',1)", milieu_jaune[0],milieu_jaune[1],rayon_jaune);
                     }
                 }                 
             }
-            else if ((strstr(mat[nbaction][1], "bleu") != NULL)||(strstr(mat[nbaction][1], "bleue") != NULL)||(strstr(mat[nbaction][1], "azul") != NULL)){
+            else if ((strstr(mat[nbaction][2], "bleu") != NULL)||(strstr(mat[nbaction][2], "bleue") != NULL)||(strstr(mat[nbaction][2], "azul") != NULL)){
                 if (rayon_bleu >0){
-                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){
-                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_bleu[0],milieu_bleu[1]);             
+                    if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',-1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);             
                     }
                     else{
-                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_bleu[0],milieu_bleu[1]);
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'blue',1)", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
                     }
                 }
             }
-            else if ((strstr(mat[nbaction][1], "orange") != NULL)||(strstr(mat[nbaction][1], "naranja") != NULL)){
+            else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
                 if (rayon_orange >0){
-                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){             
-                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_orange[0],milieu_orange[1]);      
+                    if ((strstr(mat[nbaction][1], "gauche") != NULL) || (strstr(mat[nbaction][1], "izquierda") != NULL)){             
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',-1)", milieu_orange[0],milieu_orange[1],rayon_orange);      
                     }
                     else{
-                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_orange[0],milieu_orange[1]);  
+                        sprintf(res + strlen(res),";contobj(%d,%d,%d,'orange',1)", milieu_orange[0],milieu_orange[1],rayon_orange);  
                     }
                 }    
             }
         }
-
-//Subphrase:"PASSER ENTRE [OBJET_1] ET [OBJET_2]"
 
 //Subphrase:"COMPTER LE NOMBRE D'[OBJET]"
         if(strcmp(mat[nbaction][0], "compter") == 0 || strcmp(mat[nbaction][0], "compte") == 0 || strcmp(mat[nbaction][0], "contar") == 0 || strcmp(mat[nbaction][0], "cuenta") == 0 || strcmp(mat[nbaction][0], "cuentes") == 0){
