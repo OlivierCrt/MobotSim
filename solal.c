@@ -1,226 +1,251 @@
-import turtle as tl
-import time
-import sys
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <unistd.h>
+#include "solal.h"
 
-sc = tl.Screen() 
-tl.speed(2)
+/**
+ * @file
+ * @brief Ce fichier rassemble les fonctions nécessaires pour le traitement de commandes.
+*/
 
+/**
+ * @defgroup gtrait Traitement de commmandes
+ * @brief Fonctions nécessaires pour le traitement de commandes. Transforment les informations envoyées par les traitements d'images et de textes en fonctions python qui permettent une modélisation graphique.  
+ * @{
+ * 
+*/
 
+/**
+ * @brief Fonction qui permet de changer les coordonnées de la base de l'image vers la base de la modélisation Python Turtle
+ * @param coin_HD à deux dimension correspondant à la matrice initiale du Rouge.
+ * @param milieu_bleu Tableau à deux dimension correspondant à la matrice initiale du Vert.
+ * @param milieu_jaune Tableau à deux dimension correspondant à la matrice initiale du Bleu.
+ * @param milieu_orange Hauteur de l'image iniatiale/tableau.
+*/
 
-def initialisation(x_HD, y_HD,nom):
-    """
-    Initialise l'environnement : Donne u titre, place le fond, créé un contour et affiche les coordonnées. 
+void changementDeBase(int* coin_HD, int* milieu_bleu, int* milieu_jaune, int* milieu_orange) {
+    int recentrage_x = coin_HD[0] / 2;
+    int recentrage_y = coin_HD[1] / 2;
 
-    :param x_HD: Coordonnée X du coin supérieur droit.
-    :type x_HD: int
-    :param y_HD: Coordonnée Y du coin supérieur droit.
-    :type y_HD: int
-    :param nom: Position de l'image.
-    :type nom: str
-    """ 
-    # Titre
-    nomtitre = nom
-    sc.title("MODELISATION: " + nomtitre.split("/")[-1]) 
+    coin_HD[0] -= recentrage_x;
+    coin_HD[1] -= recentrage_y;
 
-    #Place le fond d'écran après remplacé l'extension par .gif
-    indice_txt = nom.find("txt") 
-    newnom = nom[:indice_txt] + "gif" 
-    newnom+= newnom[indice_txt + 3:]
-    sc.bgpic(newnom)
+    milieu_bleu[0] -= recentrage_x;
+    milieu_bleu[1] = -milieu_bleu[1] + recentrage_y;
 
-    sc.setup(2*x_HD + 50,2*y_HD + 50) 
+    milieu_jaune[0] -= recentrage_x;
+    milieu_jaune[1] = -milieu_jaune[1] + recentrage_y;
 
-    tl.up()
-    tl.right(90)
-    longueur_cote = x_HD * 2 +10 
-    tl.goto(x_HD+5, y_HD+5)
+    milieu_orange[0] -= recentrage_x;
+    milieu_orange[1] = -milieu_orange[1] + recentrage_y;
+}
 
-    # Traçage du contour
-    tl.width(20)                 
-    tl.color('DarkGreen')          
-    tl.down()                   
-    for i in range(4):
-        tl.forward(longueur_cote)
-        tl.right(90)
+/**
+ * @brief Fonction qui prends en entrée les informations connues sur l'environnement. Puis, les transforme en appels de fonctions python qui s'éxecutent pour modéliser l'environnement.
+ * @param nomfichier chemin d'accès de l'image que l'on modélise
+ * @param coin_HD duo d'entiers correspondants aux coordonnées (x,y) du coin droit de l'image que l'on modélise
+ * @param rayon_bleu entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_jaune entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_orange entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param milieu_bleu duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule bleue ; vaut [] si il n'y en a pas
+ * @param milieu_jaune duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule jaune ; vaut [] si il n'y en a pas
+ * @param milieu_orange duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule orange ; vaut [] si il n'y en a pas
+*/
 
-    # Affichage des coordonnées
-    tl.width(1) 
-    tl.up()
-    tl.color('red')
-    cox,coy= -x_HD-5, -y_HD-10
-    while cox < x_HD:
-        tl.goto(cox,coy)    
-        tl.write(cox+5, font=("Calibri", 8, "bold"),align='center')
-        cox+=50
-    cox,coy= -x_HD-2.5, -y_HD+45
-    while coy < y_HD:
-        tl.goto(cox,coy)
-        tl.write(coy+5, font=("Calibri", 8, "bold"),align='center')
-        coy+=50
-    tl.down()
+void modeliserEnvironnement(char nomfichier[],int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune,int *milieu_orange){
 
+    char res[1000] = "";
 
+   sprintf(res + strlen(res),"initialisation(%d,%d,'%s')",coin_HD[0],coin_HD[1],nomfichier);
+  
+    if (rayon_bleu > 0){
+        sprintf(res + strlen(res),";boule(%d,%d,%d,'blue')", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
+    }
+    if (rayon_jaune >0){
+        sprintf(res + strlen(res),";boule(%d,%d,%d,'yellow')", milieu_jaune[0],milieu_jaune[1],rayon_jaune);
+    }
+    if (rayon_orange >0){
+        sprintf(res + strlen(res),";boule(%d,%d,%d,'orange')", milieu_orange[0],milieu_orange[1],rayon_orange);
+    }    
 
-# Fonction pour setup le robot
-def set_robot_position(x, y, angle):
-    """
-    Place le robot dans la position d'où est prise la photo, puis configure son apparence et l'apparence de son tracé.
-
-    :param x: Coordonnée X du centre du robot.
-    :type x: int
-    :param y: Coordonnée Y du centre du robot.
-    :type y: int
-    :param angle_degrees: Orientation initiale du robot en degrés.
-    :type angle_degrees: int
-    """
-    tl.up()
-    tl.goto(x, y)
-    tl.shape()
-    tl.shapesize(2, 2)
-    tl.fillcolor("aqua")
-    tl.setheading(angle)
-    tl.down()
-    tl.width(1) 
-    tl.color("aqua")      
-
-def avancer(d):
-    '''
-    Permet au robot d'avancer sans sortir de l'image.
-
-    :param d: Distance à parcourir.
-    :type d: int
-    '''
-    #Fais avancer le robot tant qu'il est dans la zone de l'image.
-    while d > 0:
-        if ((d>=95)and(-50<tl.xcor()<50) and (-50<tl.ycor()<50)):
-            tl.forward(90)
-            d-=95
-        elif ((d>=9)and(-140<tl.xcor()<140) and (-140<tl.ycor()<140)):
-            tl.forward(9)
-            d-=9 
-        elif ((d>=1)and(-150.1<tl.xcor()<150.1) and (-150.1<tl.ycor()<150.1)):
-            tl.forward(1)
-            d-=1          
-        else:
-            d=0 
-    #Dans le cas où le robot serait sorti de la zone de quelques millimètres, il est replacé dedans.
-    if tl.xcor()>150:
-        tl.setx(150)
-    if tl.xcor()<-150:
-        tl.setx(-150)
-    if tl.ycor()>150:
-        tl.sety(150)
-    if tl.ycor()<-150:
-        tl.sety(-150)
-        
+    sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
 
 
-def reculer(d):
-    '''
-    Permet au robot de reculer sans sortir de l'image. Même fonction qu'au dessus mais pour reculer.
+    FILE* python_process = popen("python3 solal.py", "w");
+    fprintf(python_process, "%s", res);
+    fclose(python_process);
+} 
 
-    :param d: Distance à parcourir.
-    :type d: int
-    '''   
-    while d > 0:
-        if ((d>=95)and(-50<tl.xcor()<50) and (-50<tl.ycor()<50)):
-            tl.backward(90)
-            d-=95
-        elif ((d>=9)and(-140<tl.xcor()<140) and (-140<tl.ycor()<140)):
-            tl.backward(9)
-            d-=9 
-        elif ((d>=1)and(-151<tl.xcor()<151) and (-151<tl.ycor()<151)):
-            tl.backward(1)
-            d-=1
-        else:
-            d=0
-    if tl.xcor()>150:
-        tl.setx(150)
-    if tl.xcor()<-150:
-        tl.setx(-150)
-    if tl.ycor()>150:
-        tl.sety(150)
-    if tl.ycor()<-150:
-        tl.sety(-150)
+/**
+ * @brief Fonction qui prends en entrée les informations connues sur l'environnement et les mots-clés extraits de la phrase entrée par l'utilisateur. Puis, les transforme en appels de fonctions python  qui s'éxecutent pour modéliser l'environnement et les actions du robots.
+ * @param nomfichier chemin d'accès de l'image que l'on modélise
+ * @param mat matrice contenant tous les mots-clés extraits de la phrase entrée par l'utilisateur : jusqu'à 5 éléments de type[[action],[param1],[param2]]
+ * @param mat_compt entier correspondant au nombre d'éléments dans "mat"
+ * @param coin_HD duo d'entiers correspondants aux coordonnées (x,y) du coin droit de l'image que l'on modélise
+ * @param rayon_bleu entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_jaune entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param rayon_orange entier correspondant à la taille de la boule bleue ; vaut -1 si il n'y en a pas
+ * @param milieu_bleu duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule bleue ; vaut [] si il n'y en a pas
+ * @param milieu_jaune duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule jaune ; vaut [] si il n'y en a pas
+ * @param milieu_orange duo d'entiers correspondants aux coordonnées (x,y) du centre de la boule orange ; vaut [] si il n'y en a pas
+*/
 
+void modeliserActions(char nomfichier[], char *mat[5][4], int mat_compt, int *coin_HD, int rayon_bleu, int rayon_jaune,int rayon_orange,int *milieu_bleu,int *milieu_jaune, int *milieu_orange){ 
+    char res[1000] = "";
 
+    sprintf(res + strlen(res),"tl.speed(0)");
+    sprintf(res + strlen(res),";initialisation(%d,%d,'%s')",coin_HD[0],coin_HD[1],nomfichier);
 
-def boule(x, y, r, coul):
-    '''
-    Dessine une boule de couleur "coul" de centre (x,y) et de rayon r.
-
-    :param x: Coordonnée X du centre de la boule.
-    :type x: int
-    :param y: Coordonnée Y du centre de la boule.
-    :type y: int
-    :param r: Rayon de la boule.
-    :type r: int
-    :param coul: Couleur de la boule.
-    :type c
-    '''
+    if (rayon_bleu >0){
+        sprintf(res + strlen(res),";boule(%d,%d,%d,'blue')", milieu_bleu[0],milieu_bleu[1],rayon_bleu);
+    }
+    if (rayon_jaune >0){
+        sprintf(res + strlen(res),";boule(%d,%d,%d,'yellow')", milieu_jaune[0],milieu_jaune[1],rayon_jaune);
+    }
+    if (rayon_orange >0){
+        sprintf(res + strlen(res),";boule(%d,%d,%d,'orange')", milieu_orange[0],milieu_orange[1],rayon_orange);
+    }
+      
+    sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
+    sprintf(res + strlen(res),";tl.speed(1);time.sleep(1)");
     
-    tl.up()
-    tl.goto(x-r,y)
-    tl.color(coul)
-    tl.down()
-    tl.fillcolor(coul)
-    tl.begin_fill()
-    tl.circle(r)
-    tl.end_fill()
 
+for (int nbaction=0;nbaction<mat_compt;nbaction++){
 
+    if(strcmp(mat[nbaction][3], "Négative") != 0 || strcmp(mat[nbaction][3], "Negativa") != 0){
+ 
+//Subphrase:"Avancer de [Distance] mètres"
+        if(strcmp(mat[nbaction][0], "avancer") == 0 || strcmp(mat[nbaction][0], "avance") == 0 || strcmp(mat[nbaction][0], "avanzar") == 0 || strcmp(mat[nbaction][0], "avanza") == 0 || strcmp(mat[nbaction][0], "avances") == 0){
+            if (strstr(mat[nbaction][2], "mètres") != NULL){
+                char *substring = "mètres";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+                sprintf(res + strlen(res),";avancer(%s)", mat[nbaction][2]); 
+            }
+            else if (strstr(mat[nbaction][2], "metros") != NULL){
+                char *substring = "metros";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+                sprintf(res + strlen(res),";avancer(%s)", mat[nbaction][2]);            
+            }
+        }   
+//Subphrase:"Reculer de [Distance] mètres"
+        if(strcmp(mat[nbaction][0], "reculer") == 0 || strcmp(mat[nbaction][0], "recule") == 0 || strcmp(mat[nbaction][0], "retroceder") == 0 || strcmp(mat[nbaction][0], "retrocede") == 0 || strcmp(mat[nbaction][0], "retrocedas") == 0 ){
+            if (strstr(mat[nbaction][2], "mètres") != NULL){
+                char *substring = "mètres";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+                sprintf(res + strlen(res),";reculer(%s)", mat[nbaction][2]);
+            }
+            else if (strstr(mat[nbaction][2], "metros") != NULL){
+                char *substring = "metros";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+                sprintf(res + strlen(res),";reculer(%s)", mat[nbaction][2]);           
+            }
+        }
+//Subphrase:"Tourner de [Val] degrés" ; Subphrase:"TOURNER À [DIRECTION] DE [VAL] DEGRÉS"
+        if(strcmp(mat[nbaction][0], "tourner") == 0 || strcmp(mat[nbaction][0], "tourne") == 0 || strcmp(mat[nbaction][0], "girar") == 0 || strcmp(mat[nbaction][0], "gira") == 0 || strcmp(mat[nbaction][0], "gires") == 0){
+            if (strstr(mat[nbaction][2], "degrés") != NULL){
+                char *substring = "degrés";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+            }
+            else if (strstr(mat[nbaction][2], "degré") != NULL){
+                char *substring = "degré";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+            }
+            else if (strstr(mat[nbaction][2], "grados") != NULL){
+                char *substring = "grados";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));
+            }
+            else if (strstr(mat[nbaction][2], "grado") != NULL){
+                char *substring = "grado";
+                char *ptr = strstr(mat[nbaction][2], substring);
+                strcpy(ptr, ptr + strlen(substring));        
+            }
+            if (strcmp(mat[nbaction][1], "gauche") == 0 || strcmp(mat[nbaction][1], "izquierda") == 0) {
+                    sprintf(res + strlen(res),";tl.left(%s)", mat[nbaction][2]);
+            }
+            else{
+                sprintf(res + strlen(res),";tl.right(%s)", mat[nbaction][2]);
+            } 
+        }
 
-def gobj(couleur): 
-    """
-    Déplace le robot vers le point le plus proche de la boule en paramètre.
+//Subphrase:"TROUVER L'[OBJET]" ou bien "LOCALISER L'[OBJET]"
 
-    :param couleur: Liste représentant l'objet [x, y, r, coul].
-    :type couleur: list
-    """
-    angle = tl.towards(couleur[0], couleur[1]) #trouve l'angle entre le centre de la boule et le robot
-    tl.setheading(angle) #place le robot dans cette direction
-    distance = tl.distance(couleur[0], couleur[1]) - couleur[2] #calcul la distance entre le robot et le point le plus proche de la boule
-    tl.forward(distance) #fais avancer le robot jusqu'à ce point
+        if(strcmp(mat[nbaction][0], "localise") == 0 || strcmp(mat[nbaction][0], "localiser") == 0 || strcmp(mat[nbaction][0], "localizar") == 0 || strcmp(mat[nbaction][0], "localiza") == 0 || strcmp(mat[nbaction][0], "localices") == 0 || strcmp(mat[nbaction][0], "trouve") == 0 || strcmp(mat[nbaction][0], "trouver") == 0 || strcmp(mat[nbaction][0], "encontrar") == 0 || strcmp(mat[nbaction][0], "encuentra") == 0 || strcmp(mat[nbaction][0], "encuentres") == 0){
+            if ((strstr(mat[nbaction][1], "jaune") != NULL) || (strstr(mat[nbaction][1], "amarillo") != NULL) || (strstr(mat[nbaction][1], "amarilla") != NULL)){
+                if (rayon_jaune >0){
+                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_jaune[0],milieu_jaune[1]);  
+                    }
+                    else{
+                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_jaune[0],milieu_jaune[1]);
+                    }
+                }                 
+            }
+            else if ((strstr(mat[nbaction][1], "bleu") != NULL)||(strstr(mat[nbaction][1], "bleue") != NULL)||(strstr(mat[nbaction][1], "azul") != NULL)){
+                if (rayon_bleu >0){
+                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){
+                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_bleu[0],milieu_bleu[1]);             
+                    }
+                    else{
+                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_bleu[0],milieu_bleu[1]);
+                    }
+                }
+            }
+            else if ((strstr(mat[nbaction][1], "orange") != NULL)||(strstr(mat[nbaction][1], "naranja") != NULL)){
+                if (rayon_orange >0){
+                    if ((strstr(mat[nbaction][2], "gauche") != NULL) || (strstr(mat[nbaction][2], "izquierda") != NULL)){             
+                        sprintf(res + strlen(res),";tournobj(%d,%d,-1)", milieu_orange[0],milieu_orange[1]);      
+                    }
+                    else{
+                        sprintf(res + strlen(res),";tournobj(%d,%d,1)", milieu_orange[0],milieu_orange[1]);  
+                    }
+                }    
+            }
+        }
 
+//Subphrase:"PASSER ENTRE [OBJET_1] ET [OBJET_2]"
 
+//Subphrase:"COMPTER LE NOMBRE D'[OBJET]"
+        if(strcmp(mat[nbaction][0], "compter") == 0 || strcmp(mat[nbaction][0], "compte") == 0 || strcmp(mat[nbaction][0], "contar") == 0 || strcmp(mat[nbaction][0], "cuenta") == 0 || strcmp(mat[nbaction][0], "cuentes") == 0){
+            if ((strstr(mat[nbaction][2], "balles") != NULL) || (strstr(mat[nbaction][2], "boules") != NULL) || (strstr(mat[nbaction][2], "bolas") != NULL)|| (strstr(mat[nbaction][2], "pelotas") != NULL)){                
+                if ((strstr(mat[nbaction][2], "jaune") != NULL) || (strstr(mat[nbaction][2], "amarillo") != NULL) || (strstr(mat[nbaction][2], "amarilla") != NULL)){
+                    sprintf(res + strlen(res),";print('---> IL Y A %d BOULE JAUNE.')",((rayon_jaune > 0) ? 1 : 0)); 
+                }                
+                else if ((strstr(mat[nbaction][2], "bleu") != NULL)||(strstr(mat[nbaction][2], "bleue") != NULL)||(strstr(mat[nbaction][2], "azul") != NULL)){
+                    sprintf(res + strlen(res),";print('---> IL Y A %d BOULE BLEUE.')",((rayon_bleu > 0) ? 1 : 0));
+                }
+                else if ((strstr(mat[nbaction][2], "orange") != NULL)||(strstr(mat[nbaction][2], "naranja") != NULL)){
+                    sprintf(res + strlen(res),";print('---> IL Y A %d BOULE ORANGE.')",((rayon_orange > 0) ? 1 : 0));
+                }    
+                else{
+                    int nb_boules = 0;
+                    if (rayon_jaune >0){nb_boules+=1;}
+                    if (rayon_bleu >0){nb_boules+=1;}
+                    if (rayon_orange >0){nb_boules+=1;}
+                    sprintf(res + strlen(res),";print('---> IL Y A %d BOULES(S)).')",nb_boules);
+                }
+            }
+            else{
+                sprintf(res + strlen(res),";print('---> OBJET INEXISTANT.')");
+            }
+        }      
+    }
+}
 
-def contobj(x,y,r,coul,sens):
-    """
-    Fais avancer le robot jusqu'à l'objet spécifié puis le contourne. Par la droite si sens =1 et par la gauche si sens = -1
+FILE* python_process = popen("python3 solal.py", "w");
+fprintf(python_process, "%s", res);
+fclose(python_process);
+}
 
-    :param x: Coordonnée X du centre de l'objet.
-    :type x: int
-    :param y: Coordonnée Y du centre de l'objet.
-    :type y: int
-    :param r: Rayon de l'objet.
-    :type r: int
-    :param coul: Couleur de l'objet.
-    :type coul: str
-    :param sens: Direction de rotation (1 pour horaire, -1 pour anti-horaire).
-    :type sens: int
-    """
-    gobj([x,y,r,coul])
-    tl.right(sens*90)
-    tl.forward(r)
-    tl.left(sens*90)
-    tl.forward(2*r)
-    tl.left(sens*90)
-    tl.forward(r)
-    tl.right(sens*90)
-   
-          
-
-#Ne s'exécute que si ce code est exécuté en tant que code principal
-if __name__ == "__main__":
-    #Assure que le robot est bien en mode standard.
-    tl.mode("standard")
-    #Lis les fonctions envoyé par le .c
-    code_turtle = sys.stdin.read() 
-    #Exécute ces fonctions
-    exec(code_turtle)
-
-#Attend 3 secondes que le robot ait terminé.
-time.sleep(3)
-#La fenêtre se ferme en cliquant dessus.
-sc.exitonclick()
-
+/**
+ * @}
+ * 
+*/
