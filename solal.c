@@ -116,8 +116,14 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
 
     if(strcmp(mat[nbaction][3], "Négative") != 0 || strcmp(mat[nbaction][3], "Negativa") != 0){
  
-//Subphrase:"Avancer de [Distance] mètres"
+//Subphrase:"Avancer de [Distance] mètres" ou bien "Avancer de [Distance] mètres à [Direction]"
         if(strcmp(mat[nbaction][0], "avancer") == 0 || strcmp(mat[nbaction][0], "avance") == 0 || strcmp(mat[nbaction][0], "avanzar") == 0 || strcmp(mat[nbaction][0], "avanza") == 0 || strcmp(mat[nbaction][0], "avances") == 0){
+            if (strcmp(mat[nbaction][1], "gauche") == 0 || strcmp(mat[nbaction][1], "izquierda") == 0) {
+                    sprintf(res + strlen(res),";tl.left(90)");
+            }
+            if (strcmp(mat[nbaction][1], "droite") == 0 || strcmp(mat[nbaction][1], "derecha") == 0) {
+                    sprintf(res + strlen(res),";tl.right(90)");
+            }
             if (strstr(mat[nbaction][2], "mètres") != NULL){
                 char *substring = "mètres";
                 char *ptr = strstr(mat[nbaction][2], substring);
