@@ -1,19 +1,20 @@
 all: main
 
-main: main.o ismael.o olivier.o solal.o
-	gcc main.o ismael.o olivier.o solal.o -o main
+main: main.o traitementTexte.o traitementImage.o traitementCommande.o
+	gcc main.o traitementTexte.o traitementImage.o traitementCommande.o -o main
 
 main.o: main.c
 	gcc -c main.c -o main.o
 
-ismael.o: ismael.c
-	gcc -c ismael.c -o ismael.o
+traitementTexte.o: traitementTexte.c
+	gcc -c traitementTexte.c -o traitementTexte.o
 
-olivier.o: olivier.c
-	gcc -c olivier.c -o olivier.o
+traitementImage.o: traitementImage.c
+	gcc -c traitementImage.c -o traitementImage.o
 
 solal.o: solal.c
-	gcc -c solal.c -o solal.o
+	gcc -c traitementCommande.c -o traitementCommande.o
 
 clean:
-	rm -f main main.o ismael.o olivier.o solal.o
+	rm -f main main.o traitementTexte.o traitementImage.o traitementCommande.o
+
