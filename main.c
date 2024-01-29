@@ -5,9 +5,9 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#include "olivier.h"
-#include "ismael.h"
-#include "solal.h"
+#include "traitementImage.h"
+#include "traitementTexte.h"
+#include "traitementCommande.h"
 
 void main_img(){
     printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
@@ -130,7 +130,7 @@ void main_txt(){
 void main_imgtxt(){
 
     printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
-    char nomfichier[100]; //Utilisé par la simulation aussi
+    char nomfichier[100]; 
    
     int verif=0;
     while( verif !=1){
@@ -267,19 +267,3 @@ int main() {
     main();
 }
 
-
-
-/*
-IMG_5402.txt
-exemples de phrase pour tester
-
-avancer de 1000 mètres puis tourner de 70 degrés puis reculer de 150 mètres puis tourner de 50 degrés
-avance jusqua la boule jaune puis avance jusqua la boule orange puis avance jusqua la boule bleue
-contourne la balle bleue par la droite
-
-compter le nb de boul
-#rajouter la phrase de type trouver une balle rouge, ou bleue
-#rajouter la phrase combien il y a t il de balles
-
-mettre un menu avec 1 faire la modélisation ; 2 faire les instruction ; 3 faire les 2 l'un apres l'autre ; 4 quitter 
-*/
