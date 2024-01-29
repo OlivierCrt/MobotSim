@@ -1,4 +1,4 @@
-//Olivier Crampette
+//Auteur : Olivier Crampette
 
 /**
  * @file
