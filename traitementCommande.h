@@ -2,7 +2,7 @@
 
 /**
  * @file
- * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque solal.h
+ * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque traitementCommande.h
  * Il fournit des fonctions pour le traitement de commandes qui permettent
  * la modélisation graphique à l'aide de Python Turtle.
  *
