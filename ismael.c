@@ -308,6 +308,7 @@ void afficher_Action_fr(char *phrase, Queue* q){
     int chiffre;
     char ponctuation_chiffre[] = " ";
     char *mot;
+    char *save;
     char ponctuation[] = " ',.!?";
     bool nombre_trouve = false;
     char *action;
@@ -328,11 +329,10 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
     toLowercase(phrase);
 
-    char *saveptr1;
-    mot = strtok_r(phrase, ponctuation, &saveptr1);
+    mot = strtok_r(phrase, ponctuation, &save);
     while (mot != NULL && compt < 100) {
         mots[compt++] = mot;
-        mot = strtok_r(NULL, ponctuation, &saveptr1);
+        mot = strtok_r(NULL, ponctuation, &save);
     }
 
     // Division en plusieurs sous-phrases
@@ -607,6 +607,7 @@ void afficher_Action_es(char *phrase, Queue* q){
     int chiffre;
     char ponctuation_chiffre[] = " ";
     char *mot;
+    char *save;
     char ponctuation[] = " ',.!?";
     bool nombre_trouve = false;
     char *action;
@@ -627,11 +628,10 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     toLowercase(phrase);
 
-    char *saveptr1;
-    mot = strtok_r(phrase, ponctuation, &saveptr1);
+    mot = strtok_r(phrase, ponctuation, &save);
     while (mot != NULL && compt < 100) {
         mots[compt++] = mot;
-        mot = strtok_r(NULL, ponctuation, &saveptr1);
+        mot = strtok_r(NULL, ponctuation, &save);
     }
 
     // Dividir en subfrases
