@@ -1,3 +1,17 @@
+// Auteur Ismael Monge Rouchdi
+
+/**
+ * @file
+ * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque ismael.h
+ * Il fournit des fonctions pour le traitement de texte
+ * 
+ * @author Ismaël
+ * @date 29 janvier 2024
+ */
+
+#ifndef TRAITEMENTTEXTE_H
+#define TRAITEMENTTEXTE_H
+
 #include "string.h"
 #include "stdbool.h"
 #include "stdio.h"
@@ -41,3 +55,4 @@ bool detect_chiffre_es(const char *word);
 
 void afficher_Action_fr(char *phrase, Queue* q);
 void afficher_Action_es(char *phrase, Queue* q);
+#endif
