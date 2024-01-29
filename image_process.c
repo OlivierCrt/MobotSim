@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>//uniquement pour le controle de chemin d acces
-#include "olivier.h"
+#include "image_process.h"
 
 
 /**
@@ -17,7 +17,7 @@
  * Elle permet aussi de savoir si ces pixels détectés forment des objets et ainsi les utiliser dans les autres partie du pfr1.
  *
  * @section usage Usage
- * - Inclure le header image_process.h dans votre projet.
+ * - Inclure le fichier header voulu dans votre projet.
  * - Utiliser les differentes fonctions de traitement.
  *
  * @section features Fonctionnalités
@@ -49,15 +49,17 @@
 */
 
 /**
- * @defgroup Groupe_pixel
+ * @defgroup Detection_image Détection d'image
+ * @brief Fonctions concernant la partie de détection d'image du projet, se base essentiellement sur du seuillage. @see Hors_spec
  * @{
 */
 /**
  * 
  * 
  *  
+ * 
+ * @struct Groupe_pixel_s
  * @brief Structure d'un groupe de pixel.
- * @struct Groupe_Pixel_s
  * 
  */
 struct Groupe_Pixel_s {
@@ -68,10 +70,6 @@ struct Groupe_Pixel_s {
 };
 
 //Allocation pixel
-/**
- * @brief Fonction exclue du groupe.
- * @cond EXCLURE_FONCTION
- */
 
 Groupe_Pixel_ptr alloc_Groupe_Pixel(int nbp , int** matrice_ass_param,char * couleur){
     Groupe_Pixel_ptr res = malloc(sizeof(struct Groupe_Pixel_s)) ;
@@ -142,6 +140,16 @@ Groupe_Pixel_ptr detecterPixelsJaune(int **matriceR, int ** matriceG, int ** mat
 
     return (alloc_Groupe_Pixel(nbPixelsObjet , objetDetecte,"Jaune"));
 }
+
+/**
+ * @brief Fonction de detection de pixel dans la plage de couleur Bleu , utilisation de seuil RGB avec valeur min et max.
+ * @param matriceR Tableau à deux dimension correspondant à la matrice initiale du Rouge.
+ * @param matriceG Tableau à deux dimension correspondant à la matrice initiale du Vert.
+ * @param matriceB Tableau à deux dimension correspondant à la matrice initiale du Bleu.
+ * @param hauteur Hauteur de l'image iniatiale/tableau.
+ * @param largeur Largeur de l'image initaiale/tableau.
+ * @return Pointeur vers un groupe de pixel, on ne peut pas encore dissocier le groupe d'un objet @see isObjet()
+*/
 Groupe_Pixel_ptr detecterPixelsBleu(int **matriceR, int ** matriceG, int ** matriceB,int hauteur , int largeur) {
     int ** objetDetecte = malloc(hauteur * sizeof(int * )) ;
     //allocation
@@ -176,6 +184,16 @@ Groupe_Pixel_ptr detecterPixelsBleu(int **matriceR, int ** matriceG, int ** matr
     }
     return (alloc_Groupe_Pixel(nbPixelsObjet , objetDetecte,"Bleu"));
 }
+
+/**
+ * @brief Fonction de detection de pixel dans la plage de couleur Orange , utilisation de seuil RGB avec valeur min et max.
+ * @param matriceR Tableau à deux dimension correspondant à la matrice initiale du Rouge.
+ * @param matriceG Tableau à deux dimension correspondant à la matrice initiale du Vert.
+ * @param matriceB Tableau à deux dimension correspondant à la matrice initiale du Bleu.
+ * @param hauteur Hauteur de l'image iniatiale/tableau.
+ * @param largeur Largeur de l'image initaiale/tableau.
+ * @return Pointeur vers un groupe de pixel, on ne peut pas encore dissocier le groupe d'un objet @see isObjet()
+*/
 Groupe_Pixel_ptr detecterPixelsOrange(int **matriceR, int ** matriceG, int ** matriceB,int hauteur , int largeur) {
     int ** objetDetecte = malloc(hauteur * sizeof(int * )) ;
     //allocation
@@ -210,14 +228,11 @@ Groupe_Pixel_ptr detecterPixelsOrange(int **matriceR, int ** matriceG, int ** ma
     }
     return (alloc_Groupe_Pixel(nbPixelsObjet , objetDetecte,"Orange"));
 }
-/**@}*/
+
 
 
 // Fonctions de renvoi pour l'intégration
-/**
- * @defgroup Fonctions_utiles
- * @{
-*/
+
 /**
  * @brief Fonction pour trouver le milieu d'un objet, ne donne le milieu uniquement si le groupe est un objet @see isObjet().
  *
@@ -343,11 +358,116 @@ char* get_couleur(Groupe_Pixel_ptr groupe){
 }
 /**
  * @brief Fonction pour connaitre si un groupe de pixel est un objet.
+ * @param groupe Groupe détecté par les fonctions de detections.
  * @return Booleen.
 */
 bool isObjet (Groupe_Pixel_ptr groupe){
     return (groupe->nbpixel_g>30 );
 
+}
+
+/**
+ * @brief Fonction principale pour le traitement de l'image.
+ *
+ * @param largeurimage Pointeur vers la variable qui stocke la largeur de l'image.
+ * @param longueurimage Pointeur vers la variable qui stocke la hauteur de l'image.
+ * @param rayon_bleu Pointeur vers la variable qui stocke le rayon de l'objet bleu.
+ * @param rayon_jaune Pointeur vers la variable qui stocke le rayon de l'objet jaune.
+ * @param rayon_orange Pointeur vers la variable qui stocke le rayon de l'objet orange.
+ * @param milieu_bleu Pointeur vers la matrice qui stocke le milieu de l'objet bleu.
+ * @param milieu_jaune Pointeur vers la matrice qui stocke le milieu de l'objet jaune.
+ * @param milieu_orange Pointeur vers la matrice qui stocke le milieu de l'objet orange.
+ * @param nomFichier Nom du fichier image à traiter.
+ */
+void main_it(int* largeurimage,int* longueurimage,int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier){
+
+int largeur,hauteur,nbcompo ;
+
+
+
+ FILE *fichier = fopen(nomFichier, "r");
+
+    if (fichier == NULL) {
+        perror("Erreur lors de l'ouverture du fichier.");
+        return ;
+    }
+
+
+fscanf(fichier,"%d",&largeur) ;
+fscanf(fichier,"%d",&hauteur) ;
+fscanf(fichier,"%d", &nbcompo) ;
+printf("\n\n");
+printf("\x1B[1m---------------TRAITEMENT D'IMAGE--------------\x1B[0m\n\n");
+printf("\x1B[4mCARACTERISTIQUES IMAGE:\x1B[0m\n\n");
+printf("Largeur : %d\n",largeur);
+printf("Hauteur : %d\n",hauteur);
+printf("Nbcompo : %d\n",nbcompo);
+printf("\n");
+//Matrice initiales
+int ** matrice_init_red =malloc(hauteur*sizeof(int*));
+int ** matrice_init_green =malloc(hauteur*sizeof(int*));
+int ** matrice_init_blue =malloc(hauteur*sizeof(int*));
+//Allocations
+for (int p = 0; p < hauteur; p++) {
+        matrice_init_red[p] = malloc(largeur * sizeof(int));
+        matrice_init_green[p] = malloc(largeur * sizeof(int));
+        matrice_init_blue[p] = malloc(largeur * sizeof(int));
+    }
+//R
+for (int i=0 ;i<hauteur ; i++){
+    for(int j=0 ; j<largeur ; j++){
+        fscanf(fichier,"%d",&matrice_init_red[i][j]);
+    }
+}
+//G
+int x,y ;
+for (x=0 ;x<hauteur ; x++){
+    for(y=0 ; y<largeur ; y++){
+        fscanf(fichier,"%d",&matrice_init_green[x][y]);
+    }
+}
+//B
+int a,b ;
+for (a=0 ;a<hauteur ; a++){
+    for(b=0 ; b<largeur ; b++){
+        fscanf(fichier,"%d",&matrice_init_blue[a][b]);
+    }
+}
+Groupe_Pixel_ptr objet_poss_bleu = detecterPixelsBleu(matrice_init_red , matrice_init_green , matrice_init_blue , hauteur , largeur);
+Groupe_Pixel_ptr objet_poss_jaune = detecterPixelsJaune(matrice_init_red , matrice_init_green , matrice_init_blue , hauteur , largeur);
+Groupe_Pixel_ptr objet_poss_Orange = detecterPixelsOrange(matrice_init_red , matrice_init_green , matrice_init_blue , hauteur , largeur);
+//dfs et lpg
+//trouverLePlusGros(objet_poss_Orange->matrice_associe ,hauteur , largeur );
+//dETECTION
+printf("\x1B[4mDETECTIONS DES OBJETS :\x1B[0m\n\n");
+if(isObjet(objet_poss_bleu)){printf("Objet de couleur \x1B[34mBleu\x1B[0m détecté!\n");}
+if(isObjet(objet_poss_jaune)){printf("Objet de couleur \x1B[33mJaune\x1B[0m détecté!\n");}
+if(isObjet(objet_poss_Orange)){printf("Objet de couleur \x1B[38;5;208mOrange\x1B[0m détecté!\n");}
+if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
+    printf("\x1B[31m\x1B[1mAucun objet détecté!\x1B[0m\n");
+}
+//Milieux
+printf("\n\x1B[4mCALCULS DES MILIEUX :\x1B[0m\n\n");
+*milieu_bleu = trouver_milieu(objet_poss_bleu, largeur, hauteur);
+*milieu_jaune = trouver_milieu(objet_poss_jaune, largeur, hauteur);
+*milieu_orange = trouver_milieu(objet_poss_Orange, largeur, hauteur);
+if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
+    printf("\x1B[31m\x1B[1mCalcul des milieux impossible il n'y a pas d'objet!\x1B[0m\n");
+}
+printf("\n\x1B[4mRAYON DES OBJETS\x1B[0m\n\n");
+//rayons
+*rayon_bleu = trouver_rayon(objet_poss_bleu, largeur, hauteur);
+*rayon_jaune = trouver_rayon(objet_poss_jaune, largeur, hauteur);
+*rayon_orange = trouver_rayon(objet_poss_Orange, largeur, hauteur);
+if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
+    printf("\x1B[31m\x1B[1mCalcul des rayons impossible il n'y a pas d'objet!\x1B[0m\n");
+}
+printf("-----------------------------------------------\n\n");
+
+*largeurimage = largeur ;
+*longueurimage = hauteur ;
+
+return;
 }
 /**
  * @}
@@ -356,6 +476,7 @@ bool isObjet (Groupe_Pixel_ptr groupe){
 //Pas demandé dans le dossier mais pratique pour visualiser les plages detectées en noir et blanc
 /**
  * @defgroup Hors_spec
+ * @brief Fonction hors programme.
  * @{
 */
 /**
@@ -460,95 +581,4 @@ void trouverLePlusGros (int ** matrice , int hauteur, int largeur){
 /**
  *  @}
 */
-void main_it(int* largeurimage,int* longueurimage,int *rayon_bleu, int *rayon_jaune, int *rayon_orange,int **milieu_bleu, int **milieu_jaune, int **milieu_orange, char* nomFichier){
-
-int largeur,hauteur,nbcompo ;
-
-
-
- FILE *fichier = fopen(nomFichier, "r");
-
-    if (fichier == NULL) {
-        perror("Erreur lors de l'ouverture du fichier.");
-        return ;
-    }
-
-
-fscanf(fichier,"%d",&largeur) ;
-fscanf(fichier,"%d",&hauteur) ;
-fscanf(fichier,"%d", &nbcompo) ;
-printf("\n\n");
-printf("\x1B[1m---------------TRAITEMENT D'IMAGE--------------\x1B[0m\n\n");
-printf("\x1B[4mCARACTERISTIQUES IMAGE:\x1B[0m\n\n");
-printf("Largeur : %d\n",largeur);
-printf("Hauteur : %d\n",hauteur);
-printf("Nbcompo : %d\n",nbcompo);
-printf("\n");
-//Matrice initiales
-int ** matrice_init_red =malloc(hauteur*sizeof(int*));
-int ** matrice_init_green =malloc(hauteur*sizeof(int*));
-int ** matrice_init_blue =malloc(hauteur*sizeof(int*));
-//Allocations
-for (int p = 0; p < hauteur; p++) {
-        matrice_init_red[p] = malloc(largeur * sizeof(int));
-        matrice_init_green[p] = malloc(largeur * sizeof(int));
-        matrice_init_blue[p] = malloc(largeur * sizeof(int));
-    }
-//R
-for (int i=0 ;i<hauteur ; i++){
-    for(int j=0 ; j<largeur ; j++){
-        fscanf(fichier,"%d",&matrice_init_red[i][j]);
-    }
-}
-//G
-int x,y ;
-for (x=0 ;x<hauteur ; x++){
-    for(y=0 ; y<largeur ; y++){
-        fscanf(fichier,"%d",&matrice_init_green[x][y]);
-    }
-}
-//B
-int a,b ;
-for (a=0 ;a<hauteur ; a++){
-    for(b=0 ; b<largeur ; b++){
-        fscanf(fichier,"%d",&matrice_init_blue[a][b]);
-    }
-}
-Groupe_Pixel_ptr objet_poss_bleu = detecterPixelsBleu(matrice_init_red , matrice_init_green , matrice_init_blue , hauteur , largeur);
-Groupe_Pixel_ptr objet_poss_jaune = detecterPixelsJaune(matrice_init_red , matrice_init_green , matrice_init_blue , hauteur , largeur);
-Groupe_Pixel_ptr objet_poss_Orange = detecterPixelsOrange(matrice_init_red , matrice_init_green , matrice_init_blue , hauteur , largeur);
-//dfs et lpg
-//trouverLePlusGros(objet_poss_Orange->matrice_associe ,hauteur , largeur );
-//dETECTION
-printf("\x1B[4mDETECTIONS DES OBJETS :\x1B[0m\n\n");
-if(isObjet(objet_poss_bleu)){printf("Objet de couleur \x1B[34mBleu\x1B[0m détecté!\n");}
-if(isObjet(objet_poss_jaune)){printf("Objet de couleur \x1B[33mJaune\x1B[0m détecté!\n");}
-if(isObjet(objet_poss_Orange)){printf("Objet de couleur \x1B[38;5;208mOrange\x1B[0m détecté!\n");}
-if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
-    printf("\x1B[31m\x1B[1mAucun objet détecté!\x1B[0m\n");
-}
-//Milieux
-printf("\n\x1B[4mCALCULS DES MILIEUX :\x1B[0m\n\n");
-*milieu_bleu = trouver_milieu(objet_poss_bleu, largeur, hauteur);
-*milieu_jaune = trouver_milieu(objet_poss_jaune, largeur, hauteur);
-*milieu_orange = trouver_milieu(objet_poss_Orange, largeur, hauteur);
-if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
-    printf("\x1B[31m\x1B[1mCalcul des milieux impossible il n'y a pas d'objet!\x1B[0m\n");
-}
-printf("\n\x1B[4mRAYON DES OBJETS\x1B[0m\n\n");
-//rayons
-*rayon_bleu = trouver_rayon(objet_poss_bleu, largeur, hauteur);
-*rayon_jaune = trouver_rayon(objet_poss_jaune, largeur, hauteur);
-*rayon_orange = trouver_rayon(objet_poss_Orange, largeur, hauteur);
-if(!isObjet(objet_poss_bleu) && !isObjet(objet_poss_jaune) && !isObjet(objet_poss_Orange)){
-    printf("\x1B[31m\x1B[1mCalcul des rayons impossible il n'y a pas d'objet!\x1B[0m\n");
-}
-printf("-----------------------------------------------\n\n");
-
-*largeurimage = largeur ;
-*longueurimage = hauteur ;
-
-return;
-}
-
 
