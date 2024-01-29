@@ -1,9 +1,11 @@
+// Auteur : Solal Danton Laloy
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "solal.h"
+#include "traitementCommande.h"
 
 /**
  * @file
@@ -73,7 +75,7 @@ void modeliserEnvironnement(char nomfichier[],int *coin_HD, int rayon_bleu, int 
     sprintf(res + strlen(res),";set_robot_position(0,%d, 90)",-((coin_HD[1])-10));
 
 
-    FILE* python_process = popen("python3 solal.py", "w");
+    FILE* python_process = popen("python3 modelisation.py", "w");
     fprintf(python_process, "%s", res);
     fclose(python_process);
 } 
@@ -263,7 +265,7 @@ for (int nbaction=0;nbaction<mat_compt;nbaction++){
     }
 }
 
-FILE* python_process = popen("python3 solal.py", "w");
+FILE* python_process = popen("python3 modelisation.py", "w");
 fprintf(python_process, "%s", res);
 fclose(python_process);
 }
