@@ -12,7 +12,7 @@ traitementTexte.o: traitementTexte.c
 traitementImage.o: traitementImage.c
 	gcc -c traitementImage.c -o traitementImage.o
 
-solal.o: solal.c
+traitementCommande.o: traitementCommande.c
 	gcc -c traitementCommande.c -o traitementCommande.o
 
 clean:
