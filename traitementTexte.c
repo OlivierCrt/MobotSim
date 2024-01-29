@@ -1,13 +1,15 @@
-#include "ismael.h"
+// Auteur : Ismaël Monge Rouchdi
+
 #include "stdio.h"
 #include "string.h"
 #include "stdlib.h"
 #include "stdbool.h"
 #include "ctype.h"
+#include "traitementTexte.h"
 
 /**
  * @file
- * @brief Fichier avec les fonctions de traitement de texte
+ * @brief Ce fichier rassemble les fonctions utiles au traitement de texte
 */
 
 Queue createQueue() {    //Initialise et renvoie une nouvelle file vide.
@@ -308,7 +310,6 @@ void afficher_Action_fr(char *phrase, Queue* q){
     int chiffre;
     char ponctuation_chiffre[] = " ";
     char *mot;
-    char *save;
     char ponctuation[] = " ',.!?";
     bool nombre_trouve = false;
     char *action;
@@ -329,10 +330,11 @@ void afficher_Action_fr(char *phrase, Queue* q){
 
     toLowercase(phrase);
 
-    mot = strtok_r(phrase, ponctuation, &save);
+    char *saveptr1;
+    mot = strtok_r(phrase, ponctuation, &saveptr1);
     while (mot != NULL && compt < 100) {
         mots[compt++] = mot;
-        mot = strtok_r(NULL, ponctuation, &save);
+        mot = strtok_r(NULL, ponctuation, &saveptr1);
     }
 
     // Division en plusieurs sous-phrases
@@ -607,7 +609,6 @@ void afficher_Action_es(char *phrase, Queue* q){
     int chiffre;
     char ponctuation_chiffre[] = " ";
     char *mot;
-    char *save;
     char ponctuation[] = " ',.!?";
     bool nombre_trouve = false;
     char *action;
@@ -628,10 +629,11 @@ void afficher_Action_es(char *phrase, Queue* q){
 
     toLowercase(phrase);
 
-    mot = strtok_r(phrase, ponctuation, &save);
+    char *saveptr1;
+    mot = strtok_r(phrase, ponctuation, &saveptr1);
     while (mot != NULL && compt < 100) {
         mots[compt++] = mot;
-        mot = strtok_r(NULL, ponctuation, &save);
+        mot = strtok_r(NULL, ponctuation, &saveptr1);
     }
 
     // Dividir en subfrases
