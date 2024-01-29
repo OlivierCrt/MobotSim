@@ -1,5 +1,7 @@
-#ifndef SOLAL_H
-#define SOLAL_H
+//Auteur : Solal Danton Laloy
+
+#ifndef TRAITEMENTCOMMANDE_H
+#define TRAITEMENTCOMMANDE_H
 
 #include <stdio.h>
 #include <stdlib.h>
