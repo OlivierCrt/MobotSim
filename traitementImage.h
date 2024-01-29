@@ -1,5 +1,7 @@
-#ifndef IMAGE_PROCESS_H
-#define IMAGE_PROCESS_H
+//Olivier Crampette
+
+#ifndef TRAITEMENTIMAGE_H
+#define TRAITEMENTIMAGE_H
 
 #include <stdio.h>
 #include <stdlib.h>
