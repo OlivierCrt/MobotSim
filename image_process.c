@@ -1,45 +1,11 @@
+//Auteur : Olivier Crampette
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <unistd.h>//uniquement pour le controle de chemin d acces
-#include "image_process.h"
+#include <unistd.h>
+#include "traitementImage.h"
 
-
-/**
- * @mainpage Déplacement de robot par compréhension syntaxique et détection de couleurs.
- *
- * @section intro Introduction
- * Ce programme est composé de trois parties utilisables seules et inter-compatibles.
- * - Traitement de texte et compréhension syntaxique.
- * - Detection d'obstacles par la couleur.
- * - Simulation robotique. 
- *    
- * Elle permet aussi de savoir si ces pixels détectés forment des objets et ainsi les utiliser dans les autres partie du pfr1.
- *
- * @section usage Usage
- * - Inclure le fichier header voulu dans votre projet.
- * - Utiliser les differentes fonctions de traitement.
- *
- * @section features Fonctionnalités
- * - Detection d'objets de couleurs orange,bleu ou jaune dans une image.
- * - Groupement et manipulation de pixels en utilisant la detection de couleur.
- * - Trouver le centre d'objet dans une image.
- * - Trouver le nombre d'objet dans une image.(1 par couleur)
- * - Trouver le rayon d'un objet.
- * - Ecrire dans un nouveau fichier texte les matrices des plages detectés.
- *
- * @section example Example
- * @code
- * #include <stdio.h>
- * #include <stdlib.h>
- * #include "image_process.h"
- *
- * int main() {
- *     // code
- *     return 0;
- * }
- * @endcode
- */
 
 /**
  * @file
@@ -581,4 +547,3 @@ void trouverLePlusGros (int ** matrice , int hauteur, int largeur){
 /**
  *  @}
 */
-
