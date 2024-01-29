@@ -22,7 +22,7 @@
  * Elle permet aussi de savoir si ces pixels détectés forment des objets et ainsi les utiliser dans les autres partie du pfr1.
  *
  * @section usage Usage
- * - Inclure les headers olivier.h, ismael.h et solal.h dans votre projet.
+ * - Inclure les headers "traitementImage.h", "traitementTexte.h" et "traitementCommande.h" dans votre projet.
  * - Utiliser les differentes fonctions de traitement.
  *
  * @section features Fonctionnalités
