@@ -2,7 +2,7 @@
 
 /**
  * @file
- * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque ismael.h
+ * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque traitementTexte.h
  * Il fournit des fonctions pour le traitement de texte
  * 
  * @author Ismaël
