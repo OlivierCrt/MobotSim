@@ -2,15 +2,15 @@
 
 /**
  * @file
- * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque olivier.h
+ * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque traitementImage.h
  * Il fournit des fonctions pour le traitement d'images 
  *
  * @author Olivier
  * @date 29 janvier 2024
  */
 
-#ifndef IMAGE_PROCESS_H
-#define IMAGE_PROCESS_H
+#ifndef TRAITEMENTIMAGE_H
+#define TRAITEMENTIMAGE_H
 
 #include <stdio.h>
 #include <stdlib.h>
