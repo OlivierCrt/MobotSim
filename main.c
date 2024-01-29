@@ -9,9 +9,59 @@
 #include "traitementTexte.h"
 #include "traitementCommande.h"
 
+
+/**
+ * @mainpage Déplacement de robot par compréhension syntaxique et détection de couleurs.
+ *
+ * @section intro Introduction
+ * Ce programme est composé de trois parties utilisables seules et inter-compatibles.
+ * - Traitement de texte et compréhension syntaxique.
+ * - Detection d'obstacles par la couleur.
+ * - Simulation robotique. 
+ *    
+ * Elle permet aussi de savoir si ces pixels détectés forment des objets et ainsi les utiliser dans les autres partie du pfr1.
+ *
+ * @section usage Usage
+ * - Inclure les headers olivier.h, ismael.h et solal.h dans votre projet.
+ * - Utiliser les differentes fonctions de traitement.
+ *
+ * @section features Fonctionnalités
+ * - Detection d'objets de couleurs orange,bleu ou jaune dans une image.
+ * - Groupement et manipulation de pixels en utilisant la detection de couleur.
+ * - Trouver le centre d'objet dans une image.
+ * - Trouver le nombre d'objet dans une image.(1 par couleur)
+ * - Trouver le rayon d'un objet.
+ * - Ecrire dans un nouveau fichier texte les matrices des plages detectés.
+ * \n
+ * - Détecter des mots Espagnols ou Français dans un phrase
+ * - Segmenter une phrase en plusieurs sous-phrases
+ * - Identifier identifier les mots importants dans une sous-phrase
+ * - Transformer une phrase en mots-clés 
+ * \n
+ * - Modéliser graphiquement une image
+ * - Modéliser graphiquement des déplacements sur une image
+ *
+ * @section example Entête
+ * @code
+ * #include <stdio.h>
+ * #include <stdlib.h>
+ * #include <stdbool.h>
+ * #include <string.h>
+ * #include <ctype.h>
+ * #include <unistd.h>
+ * #include "traitementImage.h"
+ * #include "traitementTexte.h"
+ * #include "traitementCommande.h"
+ * 
+ *
+ * 
+ * @endcode
+ */
+
+
 void main_img(){
     printf("\n\x1B[1m---------------CHARGEMENT DU FICHIER--------------\x1B[0m\n\n");
-    char nomfichier[100]; //Utilisé par la simulation aussi
+    char nomfichier[100]; 
     int verif=0;
     while( verif !=1){
         printf("Veuillez entrer le chemin d'accès de l'image que vous souhaitez utiliser : ");
@@ -48,7 +98,7 @@ void main_img(){
 }
 
 void main_txt(){
-    char nomfichier[100]= "images/IMG_5408.txt"; 
+    char nomfichier[100]= "images/IMG_5408.txt"; // fichier avec un fond sans boule pour la modélisation sans boules
 
     int rayon_bleu =-1;int rayon_jaune=-1;int rayon_orange=-1;
     int *milieu_bleu =malloc(2 * sizeof(int));int *milieu_jaune=malloc(2 * sizeof(int));int *milieu_orange= malloc(2 * sizeof(int));
@@ -217,14 +267,16 @@ void main_imgtxt(){
     }
     printf("\n");
 
-/*
+
+    /*
     for(i = 0; i < mat_compt; i++) {
         for(j = 0; j < 4; j++) {
             printf("\t%s\t", mat[i][j]);
         }
         printf("\n");
     }   
-*/
+    */
+
 
     printf("-----------------------------------------------\n\n");
 
