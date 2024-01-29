@@ -1,3 +1,4 @@
+#Auteur : Solal Danton Laloy
 
 import turtle as tl
 import time
