@@ -24,6 +24,7 @@
  * @section usage Usage
  * - Inclure les headers "traitementImage.h", "traitementTexte.h" et "traitementCommande.h" dans votre projet.
  * - Utiliser les differentes fonctions de traitement.
+ * - Avoir un sous dossier "images" avec les images .txt .jpeg et .gif 
  *
  * @section features Fonctionnalités
  * - Detection d'objets de couleurs orange,bleu ou jaune dans une image.
