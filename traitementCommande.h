@@ -1,5 +1,15 @@
 //Auteur : Solal Danton Laloy
 
+/**
+ * @file
+ * @brief Ce fichier contient les déclarations des fonctions de la bibliothèque solal.h
+ * Il fournit des fonctions pour le traitement de commandes qui permettent
+ * la modélisation graphique à l'aide de Python Turtle.
+ *
+ * @author Solal
+ * @date 29 janvier 2024
+ */
+
 #ifndef TRAITEMENTCOMMANDE_H
 #define TRAITEMENTCOMMANDE_H
 
