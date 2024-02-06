@@ -12,21 +12,21 @@
 #ifndef TRAITEMENTTEXTE_H
 #define TRAITEMENTTEXTE_H
 
-#include "string.h"
 #include "stdbool.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "ctype.h"
 
-typedef struct {
+typedef struct{
     char action[20];
     char param1[20];
     char param2[20];
+} ActionData;
+
+typedef struct{
     char type[20];
-}ActionData;
+} typePhrase;
 
 typedef struct node {
     ActionData data;
+    typePhrase typeData;
     struct node* next;
 } Node;
 
@@ -40,8 +40,8 @@ double convertDouble(char *str);
 void toLowercase(char *str);
 
 Queue createQueue();
-void enqueue(Queue* q, ActionData data);
-ActionData dequeue(Queue* q);
+void enqueue(Queue* q, ActionData data, typePhrase typeData);
+Node dequeue(Queue* q);
 int isQueueEmpty(Queue q);
 
 int str_to_num_fr(char *nombre);
