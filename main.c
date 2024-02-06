@@ -147,13 +147,15 @@ void main_txt(){
     printf("\n");
     printf("\x1B[4mSEPARATION EN MOTS-CLES:\x1B[0m\n");
     while (!isQueueEmpty(myQueue) && mat_compt < 5) {
-        ActionData action = dequeue(&myQueue);
+        Node node = dequeue(&myQueue);
+        ActionData action = node.data;
+        typePhrase type = node.typeData;
         printf("\nAction: %s\nParametre 1: %s\nParametre 2: %s\nType de phrase: %s\n",
-               action.action, action.param1, action.param2, action.type);
+               action.action, action.param1, action.param2, type.type);
         mat[mat_compt][0] = strdup(action.action);
         mat[mat_compt][1] = strdup(action.param1);
         mat[mat_compt][2] = strdup(action.param2);
-        mat[mat_compt][3] = strdup(action.type);
+        mat[mat_compt][3] = strdup(type.type);
         mat_compt++;
     }
     printf("\n");
