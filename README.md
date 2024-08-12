@@ -15,5 +15,3 @@ This program serves 3 functions:
 3rd function: Simulate robot movements in a virtual environment
 
 For further information, please refer to the documentation available on the repository or contact me.
-
-Translated with DeepL.com (free version)
