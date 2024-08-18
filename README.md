@@ -10,8 +10,8 @@ This program serves 3 functions:
 -its diameter
 -its area
 
-2nd function: Text processing, when the user enters a text command, the program deduces the functions to be performed, for example 
+2nd function: Text processing, when the user enters a text command, the program deduces the functions to be performed.
 
-3rd function: Simulate robot movements in a virtual environment
+3rd function: Simulate robot movements in a virtual environment.
 
 For further information, please refer to the documentation available on the repository or contact me.
