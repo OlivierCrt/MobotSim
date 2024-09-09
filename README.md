@@ -8,7 +8,7 @@ This project is designed to simulate a mobile robot, providing functionalities f
 
 ##  Overview
 
-MoBot aims to help analyze the robot's environment and respond to user text commands, while simulating its movements.we use an image database provided in the specifications.
+MoBot aims to help analyze the robot's environment and respond to user text commands, while simulating its movements. We use an image database provided in the specifications. The program need an image .png and a convert of this image in .txt (1 pixel = 1value between  and 256, special header, check images folder)
 
 ###  Key Features
 
@@ -23,6 +23,7 @@ MoBot offers three core functionalities:
 
 2. **Text Processing**
    - Interprets user text commands and deduces the corresponding actions to be performed by the robot.
+      -  Languages : French, Spanish
 
 3. **Robot Movement Simulation**
    - Simulates robot movements in a virtual environment based on the image and text input data.
@@ -51,8 +52,8 @@ To get started with MoBot, follow these steps:
 ---
 ##  Documentation
 
-For more technical informations, please refer to the [documentation folder]([https://github.com](https://github.com/OlivierCrt/MobotSim/blob/main/Documentation_G4.zip))
- in this repository.
+For more technical informations, please refer to the [documentation folder](https://github.com/OlivierCrt/MobotSim/blob/main/Documentation_G4.zip)
+ in this repository. Just exctract and open index.html.
 
 ---
 
