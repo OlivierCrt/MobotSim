@@ -41,7 +41,15 @@ To get started with MoBot, follow these steps:
 
 ---
 
-## 📚 Documentation
+##  Usage
+
+1. **Compile and run the executable**:
+   ```bash
+   make
+   ./main
+   
+---
+##  Documentation
 
 For more technical informations, please refer to the [documentation folder]([https://github.com](https://github.com/OlivierCrt/MobotSim/blob/main/Documentation_G4.zip))
  in this repository.
