@@ -1,6 +1,6 @@
 #  MoBot - Mobile Robot Simulation
 
-Welcome to **MoBot**! This project is designed to simulate a mobile robot, providing functionalities for image analysis, text command processing, and robot movement simulation in a virtual environment.
+This project is designed to simulate a mobile robot, providing functionalities for image analysis, text command processing, and robot movement simulation in a virtual environment.
 
 > **Note**: This is the first phase of a larger project, with the ultimate goal of implementing these functions on a real robot by the end of the year.
 
