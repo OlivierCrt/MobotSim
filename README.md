@@ -62,7 +62,18 @@ For more technical informations, please refer to the [documentation folder](http
 All balls are detected regardless of number, null cases are functional. Diameters are also pretty good, except in a few photos. To go further, the use of deep learning libraries would allow us to greatly adjust the results, but in the project specifications I can only use base C for image processing.
 
 2.**Text processing**:
+Working really well on a lot of sentence in french and spannish for exemple :
+
+French
+- compte le nombre de boules puis tourne de 180 degrés vers la gauche puis recule de 1000 mètres
+- avance de 1000 mètres puis tourne de cent quatre vingt dix neuf degrés vers la droite puis avance de deux cent mètres
+
+Spannish
+- gira de 50 grados hacia la izquierda luego avanzar de doscientos y un metros
+- avanza a la pelota azul luego gira de sesenta grados luego avanza de 126 metros
+
 
 3.**Simulation**:
+Working perfectly videos [Here](drive)
 
 
