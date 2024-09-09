@@ -49,6 +49,11 @@ For more technical informations, please refer to the [documentation folder]([htt
 ---
 
 ## Some results
-1.**Image processing**: We have grouped all the tests together in a single photo [photo](images/)
+1.**Image processing**: We have grouped all the tests together in a single photo [photo](images/Modélisations.png.JPG) 
+All balls are detected regardless of number, null cases are functional. Diameters are also pretty good, except in a few photos. To go further, the use of deep learning libraries would allow us to greatly adjust the results, but this is forbidden in the project specifications.
+
+2.**Text processing**:
+
+3.**Simulation**:
 
 
