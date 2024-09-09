@@ -43,11 +43,12 @@ To get started with MoBot, follow these steps:
 
 ## 📚 Documentation
 
-For more technical informations, please refer to the [documentation folder](https://github.com)
+For more technical informations, please refer to the [documentation folder]([https://github.com](https://github.com/OlivierCrt/MobotSim/blob/main/Documentation_G4.zip))
  in this repository.
 
 ---
 
 ## Some results
+1.**Image processing**: We have grouped all the tests together in a single photo [photo](images/)
 
 
