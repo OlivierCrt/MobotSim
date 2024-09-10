@@ -68,7 +68,7 @@ French
 - compte le nombre de boules puis tourne de 180 degrés vers la gauche puis recule de 1000 mètres
 - avance de 1000 mètres puis tourne de cent quatre vingt dix neuf degrés vers la droite puis avance de deux cent mètres
 
-Spannish
+Spanish
 - gira de 50 grados hacia la izquierda luego avanzar de doscientos y un metros
 - avanza a la pelota azul luego gira de sesenta grados luego avanza de 126 metros
 
