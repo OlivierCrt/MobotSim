@@ -36,7 +36,7 @@ To get started with MoBot, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/OlivierCrt/mobot.git
+   git clone https://github.com/OlivierCrt/MobotSim.git
    cd mobot
 2. **Install Python Libraries**: Make sure you have Python 3.x installed. Turtle is a base lib for theses versions.
 
