@@ -69,7 +69,7 @@ French
 - avance de 1000 mètres puis tourne de cent quatre vingt dix neuf degrés vers la droite puis avance de deux cent mètres
 
 Spanish
-- gira de 50 grados hacia la izquierda luego avanzar de doscientos y un metros
+- gira de 50 grados hacia la izquierda luego avanzar de doscientos metros
 - avanza a la pelota azul luego gira de sesenta grados luego avanza de 126 metros
 
 
