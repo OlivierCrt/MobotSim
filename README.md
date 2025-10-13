@@ -1,6 +1,6 @@
 #  MoBotSim - Mobile Robot Simulation
 
-This project is designed to simulate a mobile robot, providing functionalities for image analysis, text command processing, and robot movement simulation in a virtual environment.Global results video : [Here](https://github.com/OlivierCrt/MobotSim/blob/main/Presentation.mp4)
+This project is designed to simulate a mobile robot, providing functionalities for image analysis, text command processing, and robot movement simulation in a virtual environment. Global results video : [Here](https://github.com/OlivierCrt/MobotSim/blob/main/Presentation.mp4)
 
 
 > **Note**: This is the first phase of a larger project, with the ultimate goal of implementing these functions on a real robot by the end of the year.
